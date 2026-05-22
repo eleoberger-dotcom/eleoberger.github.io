@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Révision oral de bac — Explication linéaire</title>
+<title>Révision oral de bac — Mme Berger</title>
 <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #f5f4f0; color: #1a1a18; min-height: 100vh; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #faf8f3; color: #1a1a18; min-height: 100vh; }
   input, textarea, select, button { font-family: inherit; outline: none; }
   input, textarea, select { background: #fff; border: 0.5px solid #ccc; border-radius: 8px; padding: 7px 10px; font-size: 13px; width: 100%; color: #1a1a18; }
   input:focus, textarea:focus, select:focus { border-color: #888; }
@@ -24,18 +24,65 @@
 <body>
 <div id="root"></div>
 <script type="text/babel">
-const { useState } = React;
+const { useState, useEffect, useRef } = React;
 
-const defaultTextes = [
+// ============================================================
+// OBJETS D'ÉTUDE
+// ============================================================
+
+const objetsEtude = [
   {
-    id: 1,
-    numero: "EL 1",
-    titre: "Clôture de l'amour",
-    auteur: "Pascal Rambert",
-    date: "2011",
+    id: "theatre",
+    numero: "I",
+    label: "Théâtre",
+    titre: "Théâtre du XVIIᵉ au XXIᵉ siècle",
     parcours: "Théâtre et dispute",
-    mouvement: "Théâtre contemporain",
-    extrait: `AUDREY
+    oeuvre: "Nathalie Sarraute, Pour un oui ou pour un non",
+    couleur: "#8b5e3c",
+    couleurClair: "#f0e6dc",
+    cours: [
+      {
+        titre: "Présentation de l'œuvre et du parcours",
+        contenu: `**Nathalie Sarraute** (1900-1999) est une romancière, dramaturge et essayiste du XXᵉ siècle, pionnière du Nouveau Roman. Son premier essai, *Tropismes* (1939), réfléchit déjà sur la parole en explorant les « sous-conversations », ce qui se cache sous nos paroles quotidiennes.
+
+*Pour un oui ou pour un non* est à l'origine une pièce écrite pour la radio en 1981 et publiée en 1982. C'est un texte centré sur la parole des personnages : la parole est un thème de recherche privilégié de Sarraute.
+
+**Le parcours « Théâtre et dispute »** invite à réfléchir sur le conflit comme moteur dramatique. La dispute joue un triple rôle : dramatique (accélère l'action), psychologique (révèle les personnages) et moral (oppose des valeurs).`
+      },
+      {
+        titre: "Notions clés du parcours",
+        contenu: `**Tropisme** : mouvement intérieur inconscient qui affleure sous la conversation ordinaire. Concept central de Sarraute.
+
+**Sous-conversation** : ce qui se cache derrière les paroles échangées, les non-dits, les intentions implicites.
+
+**Agôn** (théâtre antique) : combat verbal entre deux personnages qui s'opposent.
+
+**Stichomythie** : succession rapide de courtes répliques qui se répondent, créant un rythme de duel.
+
+**Incommunicabilité** : impossibilité de se comprendre par le langage, thème majeur du théâtre du XXᵉ siècle (Beckett, Ionesco, Sarraute).
+
+**Théâtre de l'Absurde** : courant du XXᵉ siècle qui met en scène l'absurdité de la condition humaine (Beckett, *En attendant Godot* ; Ionesco).`
+      },
+      {
+        titre: "Mises en scène à connaître",
+        contenu: `**Simone Benmussa (1986, Théâtre du Rond-Point)** : création française avec Sami Frey et Jean-François Balmer, qui interchangeaient H1 et H2 d'une soirée à l'autre. Scénographie épurée, deux fauteuils gris.
+
+**Jacques Lassalle (1998, La Colline)** : met l'accent sur le langage comme exploration de « régions silencieuses et obscures ».
+
+**Christiane Pasquier (2013)** : utilise des dessins animés projetés pour suggérer les tropismes intérieurs.
+
+**Sylvain Maurice (Lucernaire)** : scénographie inspirée de Vasarely, colorée, qui souligne le caractère abstrait de la pièce.
+
+**Adaptation cinéma** : Jacques Doillon a réalisé un film d'après la pièce.`
+      }
+    ],
+    textes: [
+      {
+        numero: "EL 1",
+        titre: "Clôture de l'amour",
+        auteur: "Pascal Rambert",
+        date: "2011",
+        extrait: `AUDREY
 je t'aime comme jamais une fiction je veux un enfant une fiction je veux encore un enfant et aussi je veux encore encore un enfant une fiction un mausolée une prison une vie épouvantable ?
 ça c'est une vie épouvantable, Stan ?
 lève la tête
@@ -51,49 +98,46 @@ il est super ton nouveau scénario
 on va s'éclater
 ça va être top
 oui on va faire des étincelles dans le registre malheur chagrin désespoir on va tous se mettre à la décroissance ça va être génial on va tous se mettre à la décroissance de la joie de l'entrain des perspectives enchantées.`,
-    problematique: "Comment le personnage d'Audrey réfute-t-il l'argumentation de Stan ?",
-    etapes: [
-      {
-        label: "L. 1–13",
-        titre: "La reprise des paroles de Stan",
-        procedes: [
-          "Épiphore : répétition de « une fiction » (l. 1–3) — reprend la sentence de Stan pour la retourner contre lui",
-          "Absence de ponctuation — urgence, colère, souffle haletant",
-          "Énumération « un mausolée une prison une vie épouvantable » — reprend les termes de Stan",
-          "Didascalie interne et impératifs : « lève la tête » (répété) — renversement du rapport de force",
-          "Question rhétorique « ça c'était notre vie ? » — solitude, monologue",
-          "Insulte « pauvre connard » — haine, violence après la longue tirade de Stan",
-          "Répétition du négatif « rien » — anéantissement du discours adverse",
-          "Épanorthose « tu as parlé tu as tellement parlé » — la tirade lui a semblé une éternité",
-          "Épizeuxe « mais d'accord d'accord » — exaspération"
+        problematique: "Comment le personnage d'Audrey réfute-t-il l'argumentation de Stan ?",
+        etapes: [
+          {
+            label: "L. 1–13",
+            titre: "La reprise des paroles de Stan",
+            procedes: [
+              "Épiphore : répétition de « une fiction » — reprend la sentence de Stan pour la retourner contre lui",
+              "Absence de ponctuation — urgence, colère, souffle haletant",
+              "Énumération « un mausolée une prison une vie épouvantable » — reprend les termes de Stan",
+              "Didascalie interne et impératifs « lève la tête » (répété) — renversement du rapport de force",
+              "Question rhétorique « ça c'était notre vie ? » — solitude, monologue",
+              "Insulte « pauvre connard » — haine, violence après la longue tirade de Stan",
+              "Répétition du négatif « rien » — anéantissement du discours adverse",
+              "Épanorthose « tu as parlé tu as tellement parlé » — la tirade lui a semblé une éternité",
+              "Épizeuxe « mais d'accord d'accord » — exaspération"
+            ]
+          },
+          {
+            label: "L. 14–fin",
+            titre: "La projection dans un avenir sombre qu'elle tente de refuser",
+            procedes: [
+              "Futur de prédiction « va produire des monstres » — dystopie annoncée",
+              "Énumération + métaphore « rat crevé de chagrin » — scènes tristes de la vie séparée",
+              "Subordonnée relative poétique « des semaines où l'horizon est mort » — solitude à venir",
+              "Asyndète « déposez d'abord la came non déposez d'abord le cash » — scène de guerre métaphorique",
+              "Concession « tu as raison » — effet rhétorique pour ridiculiser la démonstration adverse",
+              "Ironie / antiphrase : « bravo », « jolie », « super », « on va s'éclater », « ça va être top »",
+              "Métaphore détournée « on va faire des étincelles » — registre malheur/chagrin/désespoir",
+              "Rythme ternaire « malheur chagrin désespoir » et « la joie de l'entrain des perspectives enchantées »",
+              "Ironie finale sur la décroissance — détournement d'un concept politique"
+            ]
+          }
         ]
       },
       {
-        label: "L. 14–fin",
-        titre: "La projection dans un avenir sombre qu'elle tente de refuser",
-        procedes: [
-          "Futur de prédiction « va produire des monstres » — dystopie annoncée",
-          "Énumération + métaphore « rat crevé de chagrin » — scènes tristes de la vie séparée",
-          "Subordonnée relative poétique « des semaines où l'horizon est mort » — solitude à venir",
-          "Asyndète « déposez d'abord la came non déposez d'abord le cash » — scène de guerre métaphorique",
-          "Concession « tu as raison » — effet rhétorique pour ridiculiser la démonstration adverse",
-          "Ironie / antiphrase : « bravo », « jolie », « super », « on va s'éclater », « ça va être top »",
-          "Métaphore détournée « on va faire des étincelles » — registre malheur/chagrin/désespoir",
-          "Rythme ternaire « malheur chagrin désespoir » et « la joie de l'entrain des perspectives enchantées »",
-          "Ironie finale sur la décroissance — détournement d'un concept politique pour désigner la décroissance du bonheur"
-        ]
-      }
-    ]
-  },
-  {
-    id: 2,
-    numero: "EL 2",
-    titre: "Scène d'exposition de Pour un oui ou pour un non",
-    auteur: "Nathalie Sarraute",
-    date: "1981",
-    parcours: "Le langage et ses dessous",
-    mouvement: "Nouveau Roman / Théâtre de la parole",
-    extrait: `H.1. – Écoute, je voulais te demander… C'est un peu pour ça que je suis venu… je voudrais savoir… que s'est-il passé ? Qu'est-ce que tu as contre moi ?
+        numero: "EL 2",
+        titre: "Scène d'exposition",
+        auteur: "Nathalie Sarraute",
+        date: "1981",
+        extrait: `H.1. – Écoute, je voulais te demander… C'est un peu pour ça que je suis venu… je voudrais savoir… que s'est-il passé ? Qu'est-ce que tu as contre moi ?
 H.2. – Mais rien… Pourquoi ?
 H.1. – Oh, je ne sais pas… Il me semble que tu t'éloignes… tu ne fais plus jamais signe… il faut toujours que ce soit moi…
 H.2. – Tu sais bien : je prends rarement l'initiative, j'ai peur de déranger.
@@ -111,49 +155,46 @@ H.I. – Ah tu vois, j'ai donc raison…
 H.2. – Que veux-tu… je t'aime tout autant, tu sais… ne crois pas ça… mais c'est plus fort que moi…
 H.1. – Qu'est-ce qui est plus fort ? Pourquoi ne veux-tu pas le dire ? Il y a donc eu quelque chose…
 H.2. – Non… vraiment rien… Rien qu'on puisse dire…`,
-    problematique: "Comment cette scène d'exposition joue-t-elle sur l'incertitude des répliques pour annoncer un des thèmes centraux de la pièce ?",
-    etapes: [
-      {
-        label: "L. 1–11",
-        titre: "Les personnages posent l'énigme première de leur éloignement",
-        procedes: [
-          "Dénomination « H1 » / « H2 » — suppression du personnage traditionnel, théâtre centré sur l'intériorité",
-          "Impératif « Écoute » (l. 1) — double énonciation, accent immédiat sur la parole",
-          "Points de suspension et aposiopèse (tout le texte) — parole qui se cherche, malaise",
-          "Modalisateur « un peu » (l. 1) — objet flou, incertitude du discours dès l'ouverture",
-          "Conditionnel poli « je voudrais savoir » — début de la recherche sur le langage",
-          "Épanorthose : deux questions successives (l. 2) — possible question de grammaire sur l'interrogation",
-          "Négation partielle + dévoir : « tu ne fais plus jamais signe… il faut toujours que ce soit moi » — déséquilibre dans la relation",
-          "Pronom « nous » (l. 8) — H1 tient à l'amitié, cherche à être rassuré",
-          "Antithèse « quelque chose » / « rien » (l. 3 et 8) — opposition structurante du texte"
+        problematique: "Comment cette scène d'exposition joue-t-elle sur l'incertitude des répliques pour annoncer un des thèmes centraux de la pièce ?",
+        etapes: [
+          {
+            label: "L. 1–11",
+            titre: "Les personnages posent l'énigme première de leur éloignement",
+            procedes: [
+              "Dénomination « H1 » / « H2 » — suppression du personnage traditionnel, théâtre centré sur l'intériorité",
+              "Impératif « Écoute » (l. 1) — double énonciation, accent immédiat sur la parole",
+              "Points de suspension et aposiopèse (tout le texte) — parole qui se cherche, malaise",
+              "Modalisateur « un peu » (l. 1) — objet flou, incertitude du discours",
+              "Conditionnel poli « je voudrais savoir » — début de la recherche sur le langage",
+              "Épanorthose : deux questions successives — possible question de grammaire",
+              "Négation partielle : « tu ne fais plus jamais signe… il faut toujours que ce soit moi » — déséquilibre",
+              "Pronom « nous » — H1 tient à l'amitié, cherche à être rassuré",
+              "Antithèse « quelque chose » / « rien » — opposition structurante du texte"
+            ]
+          },
+          {
+            label: "L. 12–fin",
+            titre: "Le début de l'analyse de leur amitié",
+            procedes: [
+              "Antithèse jamais / toujours — fossé entre les deux, vocabulaire radical",
+              "Locution « par contre » — H2 s'éloigne dans le vocabulaire même",
+              "Tournure emphatique « il y a des choses que je n'oublie pas » — sonne comme une menace",
+              "Épanorthose + négation « rien dont je me souvienne » — mémoire subjective",
+              "Prosopopée de la mère + registre pathétique — tentative de renouer par l'affection passée",
+              "Didascalie « hausse les épaules » + exclamation — exaspération de H2",
+              "Adverbe « Si » + impératif « dis-moi » — H1 relance, ne veut pas abandonner",
+              "Champ lexical de l'éloignement : « distance », « autre bout du monde »",
+              "Pronoms sans référent (« ça », « quelque chose ») — discours qui tourne en rond"
+            ]
+          }
         ]
       },
       {
-        label: "L. 12–fin",
-        titre: "Le début de l'analyse de leur amitié",
-        procedes: [
-          "Antithèse jamais / toujours (l. 11–12) — fossé entre les deux, vocabulaire radical",
-          "Locution « par contre » (l. 12) — H2 s'éloigne dans le vocabulaire même",
-          "Tournure emphatique « il y a des choses que je n'oublie pas » — sonne comme une menace",
-          "Épanorthose + négation « rien dont je me souvienne » — mémoire subjective, souvenirs divergents",
-          "Prosopopée de la mère + registre pathétique (l. 16–17) — tentative de renouer par l'affection passée",
-          "Didascalie « hausse les épaules » + exclamation — exaspération de H2, refus de répondre",
-          "Adverbe « Si » + impératif « dis-moi » (l. 20) — H1 relance, ne veut pas abandonner",
-          "Champ lexical de l'éloignement : « distance », « autre bout du monde » — éloignement physique mimant le psychologique",
-          "Pronoms sans référent (« ça », « quelque chose ») — discours qui tourne en rond, impuissance du langage"
-        ]
-      }
-    ]
-  },
-  {
-    id: 3,
-    numero: "EL 3",
-    titre: "« C'est bien, ça »",
-    auteur: "Nathalie Sarraute",
-    date: "1981",
-    parcours: "Le langage et ses dessous",
-    mouvement: "Nouveau Roman / Théâtre de la parole",
-    extrait: `H. 1 : Allons, vas-y…
+        numero: "EL 3",
+        titre: "« C'est bien, ça »",
+        auteur: "Nathalie Sarraute",
+        date: "1981",
+        extrait: `H. 1 : Allons, vas-y…
 H. 2 : Eh bien, c'est juste des mots…
 H. 1 : Des mots ? Entre nous ? Ne me dis pas qu'on a eu des mots... ce n'est pas possible... et je m'en serais souvenu…
 H. 2 : Non, pas des mots comme ça... d'autres mots... pas ceux dont on dit qu'on les a « eus »... Des mots qu'on n'a pas « eus », justement... On ne sait pas comment ils vous viennent…
@@ -178,172 +219,501 @@ H. 2 : Oh peu importe... une réussite quelconque…
 H. 1 : Et alors je t'aurais dit : « C'est bien, ça ? »
 H. 2, soupire : Pas tout à fait ainsi... il y avait entre « C'est bien » et « ça » un intervalle plus grand : « C'est biiien…… ça... » Un « étirement : « biiien... » et un suspens avant que « ça » arrive... ce n'est pas sans importance.
 H. 1 : Et ça... oui, c'est le cas de le dire... ce « ça » précédé d'un suspens t'a poussé à rompre...`,
-    problematique: "Comment le dévoilement du motif, d'apparence dérisoire, de la dispute, permet-il de réfléchir sur ce qui se cache derrière le langage quotidien ?",
-    etapes: [
-      {
-        label: "L. 1–17",
-        titre: "La montée du suspens",
-        procedes: [
-          "Double impératif « Allons, vas-y » (l. 1) — H1 ne tient plus, pression maximale",
-          "Adverbe « juste » dans « c'est juste des mots » — ironie pour le public (double énonciation)",
-          "Double interrogation « Des mots ? Entre nous ? » — outrage de H1",
-          "Jeu sur l'expression figée « avoir des mots » + parallélisme + guillemets sur « eus » — les non-dits, les sous-conversations",
-          "Négation totale « On ne sait pas comment ils vous viennent » — parole pré-consciente",
-          "Subordonnée de condition tronquée « Mais si je te les dis… » — menace, poids des mots une fois prononcés",
-          "Reprise « rien » / « ce rien » avec déterminant — le rien est bien quelque chose",
-          "Didascalie « soupire » (répétée) — agacement, fatigue, renoncement de H2",
-          "Parallèle « tu » / « vous » + « du reste » (tic de langage de H2) — H2 s'affirme comme incompris singulier"
+        problematique: "Comment le dévoilement du motif, d'apparence dérisoire, de la dispute, permet-il de réfléchir sur ce qui se cache derrière le langage quotidien ?",
+        etapes: [
+          {
+            label: "L. 1–17",
+            titre: "La montée du suspens",
+            procedes: [
+              "Double impératif « Allons, vas-y » — pression maximale",
+              "Adverbe « juste » dans « c'est juste des mots » — ironie pour le public",
+              "Double interrogation « Des mots ? Entre nous ? » — outrage de H1",
+              "Jeu sur l'expression « avoir des mots » + guillemets sur « eus » — sous-conversations",
+              "Négation totale « On ne sait pas comment ils vous viennent » — parole pré-consciente",
+              "Subordonnée tronquée « Mais si je te les dis… » — menace, poids des mots",
+              "Reprise « rien » / « ce rien » — le rien est bien quelque chose",
+              "Didascalie « soupire » (répétée) — agacement, renoncement",
+              "Parallèle « tu » / « vous » + « du reste » (tic de langage de H2)"
+            ]
+          },
+          {
+            label: "L. 17–fin",
+            titre: "La révélation",
+            procedes: [
+              "Répétition triple « tu m'as dit » — difficulté à avouer, suspens",
+              "Chute comique : « C'est bien… ça… » en discours rapporté",
+              "Négations « j'ai dû mal entendre », « Ce n'est pas vrai » — incompréhension",
+              "Démonstratifs « ce suspens », « cet accent » — démonstration sonore, l'intonation",
+              "Question rhétorique « à quoi bon ? » — H2 en victime",
+              "Double interrogation « ce n'est pas une plaisanterie ? » — ironie de H1",
+              "Conditionnel + anadiplose « réussite » + vocabulaire de l'illusion",
+              "Reprise du pronom indéfini « ça » — l'objet du conflit reste énigme"
+            ]
+          }
         ]
       },
       {
-        label: "L. 17–fin",
-        titre: "La révélation",
-        procedes: [
-          "Répétition triple « tu m'as dit » — difficulté à avouer, suspens ménagé",
-          "Chute comique : « C'est bien… ça… » en discours rapporté — dérisoire au regard de l'attente",
-          "Suite de négations « j'ai dû mal entendre », « Ce n'est pas vrai », « ce n'est pas possible » — incompréhension totale de H1",
-          "Déterminants démonstratifs « ce suspens », « cet accent » — démonstration sonore, l'intonation révèle les intentions",
-          "Question rhétorique « à quoi bon ? » — H2 se place en victime, en incompris",
-          "Double interrogation « ce n'est pas une plaisanterie ? Tu parles sérieusement ? » — agacement, ironie de H1",
-          "Conditionnel + anadiplose « réussite » + vocabulaire de l'illusion (« rêve », « trompe ») — H1 reconstitue la scène, doute léger",
-          "Reprise finale du pronom indéfini « ça » précisé par « ce » — on a l'objet du conflit, mais il reste une énigme"
+        numero: "EL 4",
+        titre: "Le dénouement",
+        auteur: "Nathalie Sarraute",
+        date: "1981",
+        extrait: `H. 2 : Et moi... eh bien, puisque nous en sommes là... et moi, vois-tu, quand je suis chez toi, c'est comme de la claustrophobie... je suis dans un édifice fermé de tous côtés... partout des compartiments, des cloisons, des étages… j'ai envie de m'échapper... mais même quand j'en suis sorti, quand je suis revenu chez moi, j'ai du mal à... à…
+H. 1 : Oui ? du mal à faire quoi ?
+H. 2 : Du mal à reprendre vie... parfois encore le lendemain je me sens comme un peu inerte... et autour de moi aussi… il faut du temps pour que ça revienne, pour que je sente ça de nouveau, cette pulsation, un pouls qui se remet à battre… alors tu vois…
+H. 1 : Oui. Je vois. Un silence. A quoi bon s'acharner ?
+H. 2 : Ce serait tellement plus sain…
+H. 1 : Pour chacun de nous... plus salutaire…
+H. 2 : La meilleure solution…
+H. 1 : Mais tu sais bien comment nous sommes. Même toi, tu n'as pas osé le prendre sur toi.
+H. 2 : Non. J'ai besoin qu'on m'autorise.
+H. 1 : Et moi donc, tu me connais... Un silence. Qu'est-ce que tu crois... si on introduisait une demande… à nous deux, cette fois... on pourrait peut-être mieux expliquer... on aurait peut-être plus de chances…
+H. 2 : Non... à quoi bon ? Je peux tout te dire d'avance... Je vois leur air... « Eh bien, de quoi s'agit-il encore ? De quoi ? Qu'est-ce qu'ils racontent ? Quelles taupes ? Quelles pelouses ? Quels sables mouvants ? Quels camps ennemis ? Voyons un peu leurs dossiers... Rien... on a beau chercher... examiner les points d'ordinaire les plus chauds... rien d'autre nulle part que les signes d'une amitié parfaite… »
+H. 1 : C'est vrai.
+H. 2 : « Et ils demandent à rompre. Ils ne veulent plus se revoir de leur vie... quelle honte... »
+H. 1 : Oui, aucun doute possible, aucune hésitation : déboutés tous les deux.
+H. 2 : « Et même, qu'ils y prennent garde... qu'ils fassent très attention. On sait quelles peines encourent ceux qui ont l'outrecuidance de se permettre ainsi, sans raison... ils seront signalés... on ne s'en approchera qu'avec prudence, avec la plus extrême méfiance... Chacun saura de quoi ils sont capables, de quoi ils peuvent se rendre coupables : ils peuvent rompre pour un oui ou pour un non »
+H. 1 : Pour un oui... ou pour un non ? Un silence.
+H. 2 : Oui ou non ?…
+H. 1 : Ce n'est pourtant pas la même chose…
+H. 2 : En effet : Oui. Ou non.
+H. 1 : Oui.
+H. 2 : Non !`,
+        problematique: "En quoi le dénouement de Pour un oui ou pour un non se présente-t-il comme une résolution ambiguë ?",
+        etapes: [
+          {
+            label: "L. 1–12",
+            titre: "« Agree to disagree » : un accord apparent sur la rupture",
+            procedes: [
+              "Subordonnée de cause « puisque nous en sommes là » — répond au « nous n'en sommes pas là » de la scène d'exposition",
+              "Comparaison « c'est comme de la claustrophobie » — métaphore récurrente du piège",
+              "Métaphore « édifice fermé… compartiments, cloisons, étages » — // Kafka, cauchemar de l'enfermement",
+              "Champ lexical de la mort / de la vie en antithèse — manichéisme oui/non, noir/blanc",
+              "Anadiplose « alors tu vois » / « Je vois » — rare moment d'accord",
+              "Didascalie « Un silence » — décision de rupture actée dans le silence"
+            ]
+          },
+          {
+            label: "L. 13–29",
+            titre: "Le retour de la société comme troisième personnage",
+            procedes: [
+              "Question rhétorique « À quoi bon s'acharner ? » — écho de la scène d'exposition",
+              "Comparatifs « plus sain » / « plus salutaire » — la rupture comme survie",
+              "Stichomythies — accord rythmé entre les deux personnages",
+              "Conjonction « Mais » — retournement de situation",
+              "Pronom indéfini « on » dans « J'ai besoin qu'on m'autorise » — qui ? réplique enfantine",
+              "Suite de prosopopées (la société qui juge) — incompréhension extérieure",
+              "Vocabulaire administratif et judiciaire : « dossiers », « déboutés », « casier »",
+              "Adjectif mélioratif « parfaite » + double négation « rien »… « nulle part »"
+            ]
+          },
+          {
+            label: "L. 30–fin",
+            titre: "La relance cyclique : un dénouement ambigu",
+            procedes: [
+              "Expression figée « pour un oui ou pour un non » — illumination, explication du titre",
+              "Délexicalisation : « Pour un oui... ou pour un non ? » — l'expression est rendue vivante",
+              "Didascalie « Silence » — relance la machine à recherche",
+              "Réflexion grammaticale sur les adverbes oui / non — duel ultime",
+              "Exclamations finales « Oui. » / « Non ! » — impossibilité de la résolution",
+              "Dénouement cyclique // Beckett, Fin de partie, En attendant Godot — théâtre de l'absurde"
+            ]
+          }
         ]
       }
+    ],
+    lecturesCursives: [
+      { titre: "Juste la fin du monde", auteur: "Jean-Luc Lagarce", resume: "Le fils retourne dans sa famille pour l'informer de sa mort prochaine. Ce sont les retrouvailles avec le cercle familial où l'on se dit l'amour que l'on se porte à travers les éternelles querelles. De cette visite qu'il voulait définitive, le fils repartira sans avoir rien dit." },
+      { titre: "Clôture de l'amour", auteur: "Pascal Rambert", resume: "Un couple clôture son amour en deux monologues qui vont au bout de leur pensée, deux longues phrases qui ne sauraient s'interrompre, manière de solder les vieux comptes et marquer dans une langue poussée à bloc le territoire des corps." },
+      { titre: "Les Justes", auteur: "Albert Camus", resume: "En février 1905, à Moscou, un groupe de terroristes du parti socialiste révolutionnaire organise un attentat contre le grand-duc Serge. Camus évoque ces grandes ombres, leur juste révolte, leur fraternité difficile, les efforts démesurés qu'elles firent pour se mettre en accord avec le meurtre." }
+    ],
+    quiz: [
+      { q: "Que sont les « tropismes » chez Sarraute ?", options: ["Des figures de style", "Des mouvements intérieurs inconscients qui affleurent sous la conversation", "Des personnages secondaires", "Des accessoires de scène"], r: 1 },
+      { q: "Pourquoi les personnages sont-ils appelés H1 et H2 ?", options: ["Pour insister sur leur anonymat et concentrer l'attention sur la parole", "Parce qu'ils sont historiens", "Pour imiter le théâtre classique", "Par souci de brièveté"], r: 0 },
+      { q: "Qu'est-ce qu'une stichomythie ?", options: ["Une longue tirade", "Une succession rapide de courtes répliques qui se répondent", "Un monologue intérieur", "Une didascalie longue"], r: 1 },
+      { q: "Dans Clôture de l'amour, quelle figure Audrey utilise-t-elle en répétant « une fiction » ?", options: ["Anaphore", "Épiphore", "Chiasme", "Métaphore"], r: 1 },
+      { q: "Qu'est-ce qu'une aposiopèse ?", options: ["Une exagération", "Une phrase interrompue, laissée en suspens", "Une répétition en fin de vers", "Une comparaison"], r: 1 },
+      { q: "Quel est le motif réel de la dispute dans la pièce ?", options: ["Une trahison amoureuse", "Une dette d'argent", "Une intonation : « C'est bien… ça… »", "Un héritage"], r: 2 },
+      { q: "Le dénouement de la pièce est…", options: ["Une réconciliation totale", "Une rupture nette et claire", "Cyclique et ambigu, sur les mots « Oui » / « Non ! »", "La mort d'un des personnages"], r: 2 },
+      { q: "À quel courant peut-on rattacher Sarraute par sa réflexion sur le langage et l'incommunicabilité ?", options: ["Le naturalisme", "Le théâtre de l'Absurde et le Nouveau Roman", "Le classicisme", "Le romantisme"], r: 1 },
+      { q: "Que signifie « agree to disagree » appliqué au dénouement ?", options: ["Les personnages se mettent d'accord pour ne pas être d'accord", "Ils renoncent à parler", "Ils trouvent un compromis", "Ils signent un contrat"], r: 0 },
+      { q: "Quelle pièce de Beckett est souvent rapprochée de Pour un oui ou pour un non pour son dénouement cyclique ?", options: ["Le Roi se meurt", "En attendant Godot", "Le Misanthrope", "Antigone"], r: 1 }
     ]
+  },
+  {
+    id: "poesie",
+    numero: "II",
+    label: "Poésie",
+    titre: "Poésie du XIXᵉ au XXIᵉ siècle",
+    parcours: "La nature, la poésie, l'intime",
+    oeuvre: "Hélène Dorion, Mes forêts",
+    couleur: "#4a7c59",
+    couleurClair: "#e3ede5",
+    cours: [
+      {
+        titre: "Présentation de l'œuvre et du parcours",
+        contenu: `**Hélène Dorion** est une poétesse québécoise contemporaine, francophone, première écrivaine vivante à intégrer les œuvres au programme du bac. Elle a longtemps vécu dans les Laurentides : la présence de la forêt autour d'elle est consubstantielle à sa présence au monde depuis l'enfance.
+
+*Mes forêts* (2021, Éditions Bruno Doucey) est un recueil de poésie écrit pendant la pandémie et le confinement. Il a été conçu comme une **symphonie** : « avec des mouvements contrastés, mais une progression depuis la voix plutôt solitaire et concentrée du début, vers le mouvement choral et plus ample de la troisième partie. »
+
+**Le parcours « La nature, la poésie, l'intime »** invite à réfléchir sur les liens entre l'observation de la nature, l'écriture poétique et l'expression de l'intime.`
+      },
+      {
+        titre: "Structure du recueil",
+        contenu: `Le recueil est composé de **quatre sections**, traversées par un poème leitmotiv intitulé « Mes forêts » qui revient comme un refrain :
+
+**1. L'écorce incertaine** — 25 poèmes courts. L'écorce désigne aussi bien celle des arbres que l'épiderme de la personne. Titre construit sur un contraste : dureté de l'« écorce » / fragilité de l'« incertaine ».
+
+**2. Une chute de galets** — un seul long poème. Disposition typographique évoquant visuellement une chute. Leitmotiv : « c'est le bruit du monde / dans l'écoulement du temps ».
+
+**3. L'onde du chaos** — 30 poèmes de longueur inégale. Écriture poétique du chaos, point culminant de la symphonie. « Il fait un temps de bourrasques et de cicatrices… »
+
+**4. Le bruissement du temps** — trois longs poèmes (« Avant l'aube », « Avant l'horizon », « Avant la nuit ») qui sont trois genèses : de l'univers, de l'humanité, de la poète.
+
+Le recueil commence et se termine par un poème « Mes forêts ».`
+      },
+      {
+        titre: "Tradition poétique et nature",
+        contenu: `**Antiquité** : Lucrèce (*De natura rerum*), Virgile (*Les Géorgiques* — la nature comme *locus amoenus*), Sappho (poésie sensuelle où nature et sentiments fusionnent).
+
+**Romantisme XIXᵉ** : Lamartine, Hugo, et les naturalistes américains (Thoreau, *Walden ou la vie dans les bois*, 1854). La nature est la muse, le poète l'apostrophe, la tutoie.
+
+**Comparaison Lamartine / Dorion** : Lamartine apostrophe la montagne dans une ode classique ; Dorion s'efface (pronom « on »), pratique une humilité (du latin *humus*, la terre), refuse l'effusion lyrique. Elle dit en se méfiant du dire.
+
+**Poésie contemporaine** : héritage de Rilke, Cécile Coulon. Vers libres, syntaxe elliptique, langage épuré.`
+      },
+      {
+        titre: "Le langage d'Hélène Dorion",
+        contenu: `**Procédés majeurs** :
+- La **métaphore** est la figure centrale du recueil (passage de l'observation à la perception intime)
+- Le **vers libre** sans ponctuation : le rythme repose sur les silences, les blancs typographiques
+- Un **lyrisme épuré** : sentiments exprimés sans hyperbole ni emphase
+- Une **langue courante**, un **lexique précis**, peu de termes savants
+- Une **syntaxe travaillée** : juxtaposition elliptique des propositions
+
+**Inspiration musicale** : le recueil est pensé comme une symphonie. Les silences sont aussi importants que les mots. Les pages presque blanches sont autant de **clairières** à l'intérieur du livre.
+
+**Le titre « Mes forêts »** : déterminant possessif qui n'est pas une domination mais une relation intime. Le pluriel évoque les métamorphoses, la succession d'images dans le temps. La forêt est à la fois physique et symbolique : « Mes forêts » désigne la nature, mais aussi la vie de la poétesse, ses blessures, son passé, son imaginaire — et les poèmes du recueil eux-mêmes (forêt de pages).`
+      },
+      {
+        titre: "Thèmes récurrents et enjeux contemporains",
+        contenu: `**La nature** : marche symbolique dans la forêt, observation de la vie et des effets de sa destruction. L'arbre comme métaphore (« la force métaphorique de l'arbre est infinie », Dorion). Espace stratifié de la forêt (écorce, canopée…).
+
+**La vie, entre célébration et méditation** : associée au thème du temps et des cycles de renaissance. L'écriture comme transformation de soi.
+
+**Le temps et la précarité de l'être** : « le temps jamais ne s'arrête / nous dit l'arbre / nous dit la forêt ».
+
+**Enjeux écologiques** : Dorion n'est pas militante mais fait preuve de lucidité face aux paradoxes du monde contemporain. « je ne sais pas / ce qui se tait en moi / quand la forêt / cesse de rêver »
+
+**Critique du monde moderne** : réseaux sociaux, écrans, sigles (arn, zip, fmi, pib, sdf, vip…) qui forment une Tour de Babel où les gens ne se comprennent plus.
+
+**Vocabulaire de la fragilité** : « fracture », « faille », « déchirure », « brèche », « frêle » — mots qui évoquent une porte d'entrée vers l'intimité.`
+      }
+    ],
+    textes: [
+      {
+        numero: "EL 5",
+        titre: "L'Isolement (à compléter)",
+        auteur: "Alphonse de Lamartine",
+        date: "1820",
+        extrait: "[À compléter — fiche détaillée non encore renseignée]",
+        problematique: "[À compléter]",
+        etapes: []
+      }
+    ],
+    lecturesCursives: [],
+    quiz: [
+      { q: "Quelle est la structure musicale revendiquée du recueil Mes forêts ?", options: ["Une sonate", "Une symphonie", "Un opéra", "Un concerto"], r: 1 },
+      { q: "Combien de sections principales compte le recueil ?", options: ["Trois", "Quatre", "Cinq", "Six"], r: 1 },
+      { q: "Quel poème revient comme un leitmotiv dans tout le recueil ?", options: ["« La cime »", "« L'horizon »", "« Mes forêts »", "« L'écorce »"], r: 2 },
+      { q: "À quel concept latin renvoie l'humilité de Dorion ?", options: ["humus (la terre)", "humanus (humain)", "humilis (bas)", "humor (humeur)"], r: 0 },
+      { q: "Qu'est-ce qu'un vers libre ?", options: ["Un vers de douze syllabes", "Un vers qui ne respecte pas les règles classiques de mètre et de rime", "Un vers sans verbe", "Un vers sans sujet"], r: 1 },
+      { q: "Quel auteur américain est cité pour son lien avec la vie en forêt ?", options: ["Walt Whitman", "Henry David Thoreau", "Emily Dickinson", "Edgar Allan Poe"], r: 1 },
+      { q: "Comment Dorion s'adresse-t-elle à la nature, par rapport aux romantiques ?", options: ["Elle l'apostrophe et la tutoie", "Elle s'efface et l'observe avec humilité", "Elle la personnifie systématiquement", "Elle l'ignore"], r: 1 },
+      { q: "Quelle figure de style est la plus présente dans le recueil ?", options: ["La litote", "L'anaphore", "La métaphore", "Le chiasme"], r: 2 },
+      { q: "Quel poète romantique est comparé à Dorion dans le cours ?", options: ["Victor Hugo", "Alfred de Vigny", "Alphonse de Lamartine", "Alfred de Musset"], r: 2 },
+      { q: "Le titre « Mes forêts » utilise un déterminant possessif qui exprime…", options: ["Une domination sur la nature", "Une relation intime, non hiérarchique", "Une revendication de propriété", "Un héritage familial"], r: 1 }
+    ]
+  },
+  {
+    id: "roman",
+    numero: "III",
+    label: "Roman",
+    titre: "Roman et récit du Moyen Âge au XXIᵉ siècle",
+    parcours: "[À compléter]",
+    oeuvre: "[À renseigner]",
+    couleur: "#5b6c8a",
+    couleurClair: "#e1e6ed",
+    cours: [
+      { titre: "À compléter", contenu: "Les cours et fiches de cet objet d'étude seront ajoutés prochainement." }
+    ],
+    textes: [],
+    lecturesCursives: [],
+    quiz: []
+  },
+  {
+    id: "idees",
+    numero: "IV",
+    label: "Littérature d'idées",
+    titre: "Littérature d'idées du XVIᵉ au XVIIIᵉ siècle",
+    parcours: "[À compléter]",
+    oeuvre: "[À renseigner]",
+    couleur: "#a85c5c",
+    couleurClair: "#f0dede",
+    cours: [
+      { titre: "À compléter", contenu: "Les cours et fiches de cet objet d'étude seront ajoutés prochainement." }
+    ],
+    textes: [],
+    lecturesCursives: [],
+    quiz: []
   }
 ];
 
-const quiz = [
-  { q: "Qu'est-ce qu'une anaphore ?", options: ["Répétition d'un mot en début de phrases ou de vers successifs", "Figure qui atténue une réalité désagréable", "Opposition de deux termes dans une même phrase", "Substitution d'un mot par une périphrase"], r: 0 },
-  { q: "La litote consiste à…", options: ["Exagérer une réalité pour créer un effet", "Dire moins pour suggérer davantage", "Comparer deux éléments avec un outil comparatif", "Répéter la même idée en des termes différents"], r: 1 },
-  { q: "Quel registre est associé à la grandeur héroïque et à l'élévation du style ?", options: ["Comique", "Tragique", "Épique", "Lyrique"], r: 2 },
-  { q: "L'hyperbole est une figure d'…", options: ["Atténuation", "Analogie", "Exagération", "Substitution"], r: 2 },
-  { q: "Dans un texte argumentatif, la concession consiste à…", options: ["Réfuter d'emblée l'opinion adverse", "Accorder temporairement un point à l'adversaire avant de le contredire", "Multiplier les exemples pour convaincre", "Définir un terme avant de le critiquer"], r: 1 },
-  { q: "Qu'appelle-t-on « focalisation interne » ?", options: ["Le narrateur sait tout sur tous les personnages", "Le récit est focalisé depuis le point de vue d'un personnage", "Le narrateur est extérieur et neutre", "Le lecteur en sait plus que le personnage"], r: 1 },
-  { q: "Le chiasme est une figure qui…", options: ["Répète un son vocalique", "Inverse l'ordre des termes dans deux propositions parallèles", "Substitue un terme abstrait à un terme concret", "Associe deux mots contradictoires"], r: 1 },
-  { q: "L'euphémisme diffère de la litote en ce qu'il…", options: ["Exagère pour plaire", "Atténue pour ne pas choquer, sans intention d'insistance implicite", "Crée une tension dramatique", "S'adresse directement au lecteur"], r: 1 },
-  { q: "Dans Clôture de l'amour, quelle figure Audrey utilise-t-elle en répétant « une fiction » ?", options: ["Anaphore", "Épiphore", "Épizeuxe", "Chiasme"], r: 1 },
-  { q: "Dans Pour un oui ou pour un non, pourquoi les personnages sont-ils appelés H1 et H2 ?", options: ["Pour insister sur leur anonymat social et concentrer l'attention sur la parole", "Pour signaler qu'ils sont historiens", "Parce que Sarraute ne connaissait pas leurs noms", "Pour imiter le théâtre classique"], r: 0 },
-  { q: "Qu'est-ce qu'une aposiopèse ?", options: ["Une figure d'exagération", "Une phrase interrompue, laissée en suspens", "Une répétition en fin de vers", "Un retour en arrière narratif"], r: 1 },
-  { q: "Qu'est-ce qu'un tropisme selon Sarraute ?", options: ["Une figure de style fondée sur la comparaison", "Un mouvement intérieur inconscient qui affleure sous la conversation ordinaire", "Un genre théâtral du XXe siècle", "Une technique de mise en scène"], r: 1 },
+// ============================================================
+// QUESTIONS D'ENTRETIEN
+// ============================================================
+
+const questionsEntretien = [
+  "Qu'avez-vous ressenti en lisant cette œuvre ? Pourquoi ?",
+  "A-t-elle eu un impact sur vous ? Lequel ?",
+  "Vous a-t-elle fait réfléchir ? En quoi ?",
+  "Vous a-t-elle ému ? Pourquoi ? Quel passage vous a le plus ému ?",
+  "Qu'avez-vous pensé de la fin du livre ? Vous a-t-elle plu, déçu, ou laissé indifférent ?",
+  "Imaginiez-vous une autre fin ? Laquelle ? Pourquoi ?",
+  "Qu'avez-vous pensé du début du livre ?",
+  "Vous attendiez-vous à lire une telle œuvre ? Pourquoi ?",
+  "Que pensez-vous du titre choisi par l'auteur ? Vous semble-t-il judicieux ?",
+  "Pourriez-vous imaginer un autre titre ? Lequel et pourquoi ?",
+  "Vous a-t-il semblé facile d'entrer dans l'œuvre ? Pourquoi ?",
+  "Quel personnage trouvez-vous le plus attachant / intéressant / détestable ? Pourquoi ?",
+  "Certains personnages vous ont-ils laissé indifférent ? Pourquoi ?",
+  "Quels faits vous ont le plus marqué dans le livre ? Pourquoi ?",
+  "Quels passages du livre avez-vous trouvé les plus intéressants et pourquoi ?",
+  "Êtes-vous d'accord avec les idées défendues par l'auteur ? Pourquoi ?",
+  "À quelle musique / image / objet associeriez-vous l'œuvre ? Pourquoi ?",
+  "Pensez-vous que cette œuvre peut encore nous intéresser aujourd'hui ? En quoi ?",
+  "Pensez-vous que cette œuvre aurait pu être écrite à notre époque ? Pourquoi ?",
+  "De quels détails ou éléments du livre pensez-vous vous souvenir dans plusieurs années ?",
+  "Que vous a apporté la lecture de cette œuvre ?",
+  "La recommanderiez-vous ? Pourquoi ?",
+  "Si vous deviez ne conserver qu'une seule page de l'œuvre, laquelle choisiriez-vous ? Pourquoi ?"
 ];
 
-function buildClaudePrompt(t) {
-  return `Tu es un examinateur du baccalauréat français pour l'épreuve orale de Français (Première générale). L'élève va te présenter une explication linéaire du texte suivant :
-
-${t.numero} — ${t.auteur} (${t.date})
-Titre : ${t.titre}
-Parcours associé : ${t.parcours}
-Mouvement littéraire : ${t.mouvement}
-
-Extrait :
-« ${t.extrait} »
-
-Problématique de l'élève : ${t.problematique}
-
-Plan :
-${t.etapes.map((e, i) => `Mouvement ${i+1} (${e.label}) : ${e.titre}`).join('\n')}
-
-Ton rôle : mener l'entretien (10 minutes environ) après la présentation de l'élève. Tu poses des questions précises, bienveillantes mais exigeantes, sur les procédés stylistiques, la portée du texte, le contexte historique et littéraire, le parcours associé. Tu rebondis sur les réponses. Tu poses obligatoirement une question de grammaire en lien avec le texte. Commence par accueillir l'élève et lui demander de commencer sa présentation. Réponds toujours en français, de façon concise (3 à 5 phrases max par prise de parole).`;
-}
+// ============================================================
+// STYLES
+// ============================================================
 
 const css = {
-  card: { background: "#fff", border: "0.5px solid #ddd", borderRadius: 12, padding: "1.25rem" },
+  card: { background: "#fff", border: "0.5px solid #ddd", borderRadius: 12, padding: "1.5rem" },
   label: { fontSize: 11, textTransform: "uppercase", letterSpacing: "0.08em", color: "#888", display: "block", marginBottom: 4 },
-  btn: { padding: "7px 18px", fontSize: 13, fontWeight: 500, borderRadius: 8, border: "0.5px solid #ccc", background: "#f5f4f0", cursor: "pointer" },
-  tabBtn: (active) => ({ padding: "7px 16px", fontSize: 13, fontWeight: active ? 500 : 400, borderRadius: 8, border: active ? "0.5px solid #aaa" : "0.5px solid transparent", background: active ? "#fff" : "transparent", color: active ? "#1a1a18" : "#888", cursor: "pointer" }),
+  btn: { padding: "8px 18px", fontSize: 13, fontWeight: 500, borderRadius: 8, border: "0.5px solid #ccc", background: "#fff", cursor: "pointer", color: "#1a1a18" },
+  btnDark: { padding: "10px 22px", fontSize: 14, fontWeight: 500, borderRadius: 8, border: "none", background: "#1a1a18", color: "#fff", cursor: "pointer" },
 };
 
+// ============================================================
+// APP
+// ============================================================
+
 function App() {
-  const [tab, setTab] = useState("fiches");
-  const [selectedId, setSelectedId] = useState(1);
+  const [view, setView] = useState("home"); // home, objet, entretien
+  const [objetId, setObjetId] = useState(null);
+
+  if (view === "home") return <Home onNavigate={(v, id) => { setView(v); setObjetId(id); }} />;
+  if (view === "objet") return <Objet objet={objetsEtude.find(o => o.id === objetId)} onBack={() => setView("home")} />;
+  if (view === "entretien") return <Entretien onBack={() => setView("home")} />;
+}
+
+function Home({ onNavigate }) {
+  return (
+    <div style={{ maxWidth: 760, margin: "0 auto", padding: "3rem 1.25rem" }}>
+      <div style={{ marginBottom: "2.5rem" }}>
+        <h1 style={{ fontSize: 28, fontWeight: 500, marginBottom: 6 }}>Révision oral de bac</h1>
+        <p style={{ fontSize: 14, color: "#888" }}>Lycée Jean Prévost · 1ères G · Mme Berger</p>
+      </div>
+
+      <h2 style={{ fontSize: 13, textTransform: "uppercase", letterSpacing: "0.08em", color: "#888", marginBottom: "1rem" }}>Objets d'étude</h2>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 12, marginBottom: "2.5rem" }}>
+        {objetsEtude.map(o => (
+          <button key={o.id} onClick={() => onNavigate("objet", o.id)} style={{
+            textAlign: "left", padding: "1.25rem", borderRadius: 12,
+            border: "0.5px solid #ddd", background: "#fff", cursor: "pointer",
+            transition: "all 0.15s",
+          }}
+          onMouseOver={e => { e.currentTarget.style.borderColor = o.couleur; e.currentTarget.style.background = o.couleurClair; }}
+          onMouseOut={e => { e.currentTarget.style.borderColor = "#ddd"; e.currentTarget.style.background = "#fff"; }}>
+            <div style={{ fontSize: 11, fontWeight: 500, color: o.couleur, marginBottom: 4 }}>{o.numero} · {o.label}</div>
+            <div style={{ fontSize: 15, fontWeight: 500, marginBottom: 4 }}>{o.titre}</div>
+            <div style={{ fontSize: 12, color: "#888", marginBottom: 6 }}>Parcours : {o.parcours}</div>
+            <div style={{ fontSize: 12, color: "#666", fontStyle: "italic" }}>{o.oeuvre}</div>
+          </button>
+        ))}
+      </div>
+
+      <h2 style={{ fontSize: 13, textTransform: "uppercase", letterSpacing: "0.08em", color: "#888", marginBottom: "1rem" }}>2ᵉ partie de l'oral</h2>
+      <button onClick={() => onNavigate("entretien")} style={{
+        width: "100%", textAlign: "left", padding: "1.25rem", borderRadius: 12,
+        border: "0.5px solid #ddd", background: "#fff", cursor: "pointer",
+      }}
+      onMouseOver={e => { e.currentTarget.style.borderColor = "#888"; e.currentTarget.style.background = "#f5f4f0"; }}
+      onMouseOut={e => { e.currentTarget.style.borderColor = "#ddd"; e.currentTarget.style.background = "#fff"; }}>
+        <div style={{ fontSize: 15, fontWeight: 500, marginBottom: 4 }}>🎙 Entraînement à l'entretien</div>
+        <div style={{ fontSize: 13, color: "#666" }}>Questions sur votre lecture cursive — voix synthétique + réponse écrite</div>
+      </button>
+    </div>
+  );
+}
+
+function Objet({ objet, onBack }) {
+  const [tab, setTab] = useState("cours");
+  const [texteIdx, setTexteIdx] = useState(0);
   const [qIdx, setQIdx] = useState(0);
   const [quizScore, setQuizScore] = useState(0);
   const [quizAnswer, setQuizAnswer] = useState(null);
   const [quizDone, setQuizDone] = useState(false);
-  const [simTexteId, setSimTexteId] = useState(1);
-  const [copied, setCopied] = useState(false);
+  const [coursIdx, setCoursIdx] = useState(0);
 
-  const texte = defaultTextes.find(t => t.id === selectedId);
+  const tabStyle = (t) => ({
+    padding: "8px 14px", fontSize: 13, fontWeight: tab === t ? 500 : 400,
+    borderRadius: 8, border: tab === t ? `0.5px solid ${objet.couleur}` : "0.5px solid transparent",
+    background: tab === t ? objet.couleurClair : "transparent",
+    color: tab === t ? objet.couleur : "#888", cursor: "pointer"
+  });
 
   function handleQuizAnswer(idx) {
     if (quizAnswer !== null) return;
     setQuizAnswer(idx);
-    if (idx === quiz[qIdx].r) setQuizScore(s => s + 1);
+    if (idx === objet.quiz[qIdx].r) setQuizScore(s => s + 1);
   }
-
   function nextQuestion() {
-    if (qIdx + 1 >= quiz.length) { setQuizDone(true); return; }
+    if (qIdx + 1 >= objet.quiz.length) { setQuizDone(true); return; }
     setQIdx(q => q + 1); setQuizAnswer(null);
   }
-
   function resetQuiz() { setQIdx(0); setQuizScore(0); setQuizAnswer(null); setQuizDone(false); }
 
-  function openSim() {
-    const t = defaultTextes.find(x => x.id === simTexteId);
-    const url = "https://claude.ai/new?q=" + encodeURIComponent(buildClaudePrompt(t));
-    window.open(url, "_blank");
+  function openSim(texte) {
+    const prompt = `Tu es un examinateur du baccalauréat français pour l'épreuve orale de Français (Première générale). L'élève va te présenter une explication linéaire du texte suivant :
+
+${texte.numero} — ${texte.auteur} (${texte.date})
+Titre : ${texte.titre}
+Œuvre : ${objet.oeuvre}
+Parcours associé : ${objet.parcours}
+
+Extrait :
+« ${texte.extrait} »
+
+Problématique de l'élève : ${texte.problematique}
+
+Plan :
+${texte.etapes.map((e, i) => `Mouvement ${i+1} (${e.label}) : ${e.titre}`).join('\n')}
+
+Ton rôle : mener l'entretien (10 minutes environ) après la présentation de l'élève. Tu poses des questions précises, bienveillantes mais exigeantes, sur les procédés stylistiques, la portée du texte, le contexte historique et littéraire, le parcours associé. Tu rebondis sur les réponses. Tu poses obligatoirement une question de grammaire en lien avec le texte. Commence par accueillir l'élève et lui demander de commencer sa présentation. Réponds toujours en français, de façon concise (3 à 5 phrases max par prise de parole).`;
+    window.open("https://claude.ai/new?q=" + encodeURIComponent(prompt), "_blank");
   }
 
-  function copyPrompt() {
-    const t = defaultTextes.find(x => x.id === simTexteId);
-    navigator.clipboard.writeText(buildClaudePrompt(t)).then(() => {
-      setCopied(true); setTimeout(() => setCopied(false), 2000);
-    });
-  }
+  const texte = objet.textes[texteIdx];
+  const cours = objet.cours[coursIdx];
 
   return (
-    <div style={{ maxWidth: 720, margin: "0 auto", padding: "2rem 1rem" }}>
-      <h1 style={{ fontSize: 20, fontWeight: 500, marginBottom: 4 }}>Révision oral de bac — Français</h1>
-      <p style={{ fontSize: 13, color: "#888", marginBottom: "1.5rem" }}>Lycée Jean Prévost · 1ères G · Mme Berger</p>
+    <div style={{ maxWidth: 760, margin: "0 auto", padding: "2rem 1.25rem" }}>
+      <button onClick={onBack} style={{ background: "none", border: "none", color: "#888", fontSize: 13, cursor: "pointer", marginBottom: "1rem", padding: 0 }}>← Retour</button>
 
-      <div style={{ display: "flex", gap: 6, marginBottom: "1.5rem", flexWrap: "wrap" }}>
-        {[["fiches","Fiches de révision"],["quiz","Quiz"],["sim","Simulation d'oral"]].map(([k,l]) => (
-          <button key={k} style={css.tabBtn(tab===k)} onClick={() => setTab(k)}>{l}</button>
-        ))}
+      <div style={{ marginBottom: "1.5rem", paddingBottom: "1rem", borderBottom: `2px solid ${objet.couleur}` }}>
+        <div style={{ fontSize: 11, fontWeight: 500, color: objet.couleur, marginBottom: 4, textTransform: "uppercase", letterSpacing: "0.08em" }}>{objet.numero} · {objet.titre}</div>
+        <h1 style={{ fontSize: 22, fontWeight: 500, marginBottom: 4 }}>{objet.oeuvre}</h1>
+        <p style={{ fontSize: 13, color: "#888" }}>Parcours : {objet.parcours}</p>
       </div>
 
-      {tab === "fiches" && (
+      <div style={{ display: "flex", gap: 6, marginBottom: "1.5rem", flexWrap: "wrap" }}>
+        <button style={tabStyle("cours")} onClick={() => setTab("cours")}>Cours</button>
+        <button style={tabStyle("textes")} onClick={() => setTab("textes")} disabled={objet.textes.length === 0}>Textes ({objet.textes.length})</button>
+        <button style={tabStyle("cursives")} onClick={() => setTab("cursives")} disabled={objet.lecturesCursives.length === 0}>Lectures cursives</button>
+        <button style={tabStyle("quiz")} onClick={() => setTab("quiz")} disabled={objet.quiz.length === 0}>Quiz</button>
+      </div>
+
+      {tab === "cours" && (
         <div>
           <div style={{ display: "flex", gap: 8, marginBottom: "1rem", flexWrap: "wrap" }}>
-            {defaultTextes.map(t => (
-              <button key={t.id} onClick={() => setSelectedId(t.id)} style={{ ...css.btn, fontWeight: selectedId===t.id ? 500 : 400, background: selectedId===t.id ? "#fff" : "#f5f4f0" }}>{t.numero} — {t.auteur}</button>
+            {objet.cours.map((c, i) => (
+              <button key={i} onClick={() => setCoursIdx(i)} style={{
+                ...css.btn, fontSize: 12,
+                background: coursIdx === i ? objet.couleurClair : "#fff",
+                borderColor: coursIdx === i ? objet.couleur : "#ddd",
+                color: coursIdx === i ? objet.couleur : "#666"
+              }}>{c.titre}</button>
             ))}
           </div>
-
-          {texte && (
-            <div style={css.card}>
-              <div style={{ marginBottom: "0.75rem" }}>
-                <span style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: "0.08em", color: "#888" }}>{texte.mouvement} · {texte.date} · {texte.numero}</span>
-                <h2 style={{ fontSize: 16, fontWeight: 500, margin: "4px 0 2px" }}>{texte.auteur}, <em>{texte.titre}</em></h2>
-                <p style={{ fontSize: 13, color: "#888" }}>Parcours : {texte.parcours}</p>
-              </div>
-
-              <div style={{ background: "#f5f4f0", borderRadius: 8, padding: "0.75rem 1rem", marginBottom: "1rem", fontSize: 13, lineHeight: 1.8, fontStyle: "italic", whiteSpace: "pre-wrap", maxHeight: 220, overflowY: "auto" }}>
-                {texte.extrait}
-              </div>
-
-              <div style={{ marginBottom: "1rem" }}>
-                <span style={css.label}>Problématique</span>
-                <p style={{ fontSize: 14, lineHeight: 1.6, borderLeft: "2px solid #ccc", paddingLeft: 12 }}>{texte.problematique}</p>
-              </div>
-
-              <span style={css.label}>Étapes du parcours linéaire</span>
-              <div style={{ display: "flex", flexDirection: "column", gap: 10, marginTop: 8 }}>
-                {texte.etapes.map((e, i) => (
-                  <div key={i} style={{ border: "0.5px solid #ddd", borderRadius: 8, padding: "0.75rem 1rem" }}>
-                    <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 6 }}>
-                      <span style={{ fontSize: 11, fontWeight: 500, background: "#f5f4f0", padding: "2px 8px", borderRadius: 20, color: "#666", whiteSpace: "nowrap" }}>{e.label}</span>
-                      <span style={{ fontSize: 14, fontWeight: 500 }}>{e.titre}</span>
-                    </div>
-                    <ul style={{ margin: "0 0 0 16px", fontSize: 13, color: "#555", lineHeight: 1.8 }}>
-                      {e.procedes.map((p, j) => <li key={j}>{p}</li>)}
-                    </ul>
-                  </div>
-                ))}
-              </div>
+          <div style={css.card}>
+            <h3 style={{ fontSize: 17, fontWeight: 500, marginBottom: "1rem" }}>{cours.titre}</h3>
+            <div style={{ fontSize: 14, lineHeight: 1.75, color: "#333", whiteSpace: "pre-wrap" }}>
+              {cours.contenu.split('\n\n').map((para, i) => (
+                <p key={i} style={{ marginBottom: "0.85rem" }} dangerouslySetInnerHTML={{ __html: para.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>').replace(/\*(.+?)\*/g, '<em>$1</em>') }} />
+              ))}
             </div>
-          )}
+          </div>
+        </div>
+      )}
+
+      {tab === "textes" && texte && (
+        <div>
+          <div style={{ display: "flex", gap: 8, marginBottom: "1rem", flexWrap: "wrap" }}>
+            {objet.textes.map((t, i) => (
+              <button key={i} onClick={() => setTexteIdx(i)} style={{
+                ...css.btn, fontSize: 12,
+                background: texteIdx === i ? objet.couleurClair : "#fff",
+                borderColor: texteIdx === i ? objet.couleur : "#ddd",
+                color: texteIdx === i ? objet.couleur : "#666"
+              }}>{t.numero} — {t.titre}</button>
+            ))}
+          </div>
+          <div style={css.card}>
+            <div style={{ marginBottom: "1rem" }}>
+              <span style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: "0.08em", color: "#888" }}>{texte.numero} · {texte.date}</span>
+              <h3 style={{ fontSize: 17, fontWeight: 500, margin: "4px 0" }}>{texte.auteur}, <em>{texte.titre}</em></h3>
+            </div>
+
+            <div style={{ background: "#faf8f3", borderRadius: 8, padding: "1rem 1.25rem", marginBottom: "1.25rem", fontSize: 13, lineHeight: 1.85, fontStyle: "italic", whiteSpace: "pre-wrap", maxHeight: 280, overflowY: "auto", border: "0.5px solid #eee" }}>
+              {texte.extrait}
+            </div>
+
+            <div style={{ marginBottom: "1.25rem" }}>
+              <span style={css.label}>Problématique</span>
+              <p style={{ fontSize: 14, lineHeight: 1.6, borderLeft: `2px solid ${objet.couleur}`, paddingLeft: 12 }}>{texte.problematique}</p>
+            </div>
+
+            {texte.etapes.length > 0 && (
+              <>
+                <span style={css.label}>Plan détaillé</span>
+                <div style={{ display: "flex", flexDirection: "column", gap: 10, marginTop: 8, marginBottom: "1.25rem" }}>
+                  {texte.etapes.map((e, i) => (
+                    <div key={i} style={{ border: "0.5px solid #ddd", borderRadius: 8, padding: "0.85rem 1rem" }}>
+                      <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 6 }}>
+                        <span style={{ fontSize: 11, fontWeight: 500, background: objet.couleurClair, padding: "2px 8px", borderRadius: 20, color: objet.couleur, whiteSpace: "nowrap" }}>{e.label}</span>
+                        <span style={{ fontSize: 14, fontWeight: 500 }}>{e.titre}</span>
+                      </div>
+                      <ul style={{ margin: "0 0 0 16px", fontSize: 13, color: "#555", lineHeight: 1.8 }}>
+                        {e.procedes.map((p, j) => <li key={j}>{p}</li>)}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+
+                <button onClick={() => openSim(texte)} style={{ ...css.btnDark, background: objet.couleur }}>
+                  S'entraîner à l'oral avec Claude →
+                </button>
+              </>
+            )}
+          </div>
+        </div>
+      )}
+
+      {tab === "cursives" && (
+        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+          {objet.lecturesCursives.map((l, i) => (
+            <div key={i} style={css.card}>
+              <h3 style={{ fontSize: 16, fontWeight: 500, marginBottom: 4 }}>{l.titre}</h3>
+              <p style={{ fontSize: 13, color: "#888", marginBottom: "0.75rem" }}>{l.auteur}</p>
+              <p style={{ fontSize: 14, lineHeight: 1.7, color: "#444" }}>{l.resume}</p>
+            </div>
+          ))}
         </div>
       )}
 
@@ -351,65 +721,153 @@ function App() {
         <div style={css.card}>
           {!quizDone ? (
             <>
-              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.75rem" }}>
-                <span style={{ fontSize: 12, color: "#888" }}>Question {qIdx+1} / {quiz.length}</span>
+              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "1rem" }}>
+                <span style={{ fontSize: 12, color: "#888" }}>Question {qIdx+1} / {objet.quiz.length}</span>
                 <span style={{ fontSize: 12, color: "#888" }}>Score : {quizScore}</span>
               </div>
-              <div style={{ background: "#f5f4f0", borderRadius: 8, padding: "0.75rem 1rem", marginBottom: "1rem" }}>
-                <p style={{ fontSize: 15, fontWeight: 500, lineHeight: 1.5 }}>{quiz[qIdx].q}</p>
+              <div style={{ background: objet.couleurClair, borderRadius: 8, padding: "0.9rem 1.1rem", marginBottom: "1rem" }}>
+                <p style={{ fontSize: 15, fontWeight: 500, lineHeight: 1.5, color: objet.couleur }}>{objet.quiz[qIdx].q}</p>
               </div>
               <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                {quiz[qIdx].options.map((opt, i) => {
+                {objet.quiz[qIdx].options.map((opt, i) => {
                   let bg = "#fff", bc = "#ddd", col = "#1a1a18";
                   if (quizAnswer !== null) {
-                    if (i === quiz[qIdx].r) { bg = "#eafaf1"; bc = "#27ae60"; col = "#1a6b3a"; }
+                    if (i === objet.quiz[qIdx].r) { bg = "#eafaf1"; bc = "#27ae60"; col = "#1a6b3a"; }
                     else if (i === quizAnswer) { bg = "#fdf0ef"; bc = "#e74c3c"; col = "#a93226"; }
                   }
                   return (
-                    <button key={i} onClick={() => handleQuizAnswer(i)} style={{ textAlign: "left", padding: "10px 14px", fontSize: 14, borderRadius: 8, border: `0.5px solid ${bc}`, background: bg, color: col, cursor: quizAnswer===null ? "pointer" : "default", lineHeight: 1.5 }}>{opt}</button>
+                    <button key={i} onClick={() => handleQuizAnswer(i)} style={{ textAlign: "left", padding: "11px 14px", fontSize: 14, borderRadius: 8, border: `0.5px solid ${bc}`, background: bg, color: col, cursor: quizAnswer===null ? "pointer" : "default", lineHeight: 1.5 }}>{opt}</button>
                   );
                 })}
               </div>
               {quizAnswer !== null && (
-                <button onClick={nextQuestion} style={{ ...css.btn, marginTop: "1rem" }}>
-                  {qIdx+1 >= quiz.length ? "Voir le résultat" : "Question suivante →"}
+                <button onClick={nextQuestion} style={{ ...css.btnDark, background: objet.couleur, marginTop: "1.25rem" }}>
+                  {qIdx+1 >= objet.quiz.length ? "Voir le résultat" : "Question suivante →"}
                 </button>
               )}
             </>
           ) : (
             <div style={{ textAlign: "center", padding: "1.5rem 0" }}>
-              <p style={{ fontSize: 36, fontWeight: 500, marginBottom: 8 }}>{quizScore} / {quiz.length}</p>
+              <p style={{ fontSize: 42, fontWeight: 500, marginBottom: 8, color: objet.couleur }}>{quizScore} / {objet.quiz.length}</p>
               <p style={{ fontSize: 14, color: "#888", marginBottom: "1.5rem" }}>
-                {quizScore >= 10 ? "Excellent travail !" : quizScore >= 7 ? "Bon début, continue à réviser." : "Reprends tes fiches avant de réessayer."}
+                {quizScore >= objet.quiz.length * 0.8 ? "Excellent travail !" : quizScore >= objet.quiz.length * 0.5 ? "Bon début, continue à réviser." : "Reprends tes fiches avant de réessayer."}
               </p>
               <button onClick={resetQuiz} style={css.btn}>Recommencer le quiz</button>
             </div>
           )}
         </div>
       )}
+    </div>
+  );
+}
 
-      {tab === "sim" && (
-        <div style={css.card}>
-          <p style={{ fontSize: 14, lineHeight: 1.7, color: "#666", marginBottom: "1.25rem" }}>
-            La simulation s'ouvre dans <strong>claude.ai</strong> avec le prompt de l'examinateur déjà configuré. Un compte Claude gratuit suffit.
-          </p>
-          <div style={{ marginBottom: "1.25rem" }}>
-            <label style={css.label}>Texte pour la simulation</label>
-            <select value={simTexteId} onChange={e => setSimTexteId(Number(e.target.value))} style={{ width: "auto" }}>
-              {defaultTextes.map(t => <option key={t.id} value={t.id}>{t.numero} — {t.auteur}, {t.titre}</option>)}
-            </select>
+function Entretien({ onBack }) {
+  const [currentQ, setCurrentQ] = useState(null);
+  const [reponse, setReponse] = useState("");
+  const [historique, setHistorique] = useState([]);
+  const [voiceSupported, setVoiceSupported] = useState(false);
+
+  useEffect(() => {
+    if ('speechSynthesis' in window) setVoiceSupported(true);
+  }, []);
+
+  function poserQuestion() {
+    const dispo = questionsEntretien.filter(q => !historique.includes(q));
+    const pool = dispo.length > 0 ? dispo : questionsEntretien;
+    const q = pool[Math.floor(Math.random() * pool.length)];
+    setCurrentQ(q);
+    setReponse("");
+    if (voiceSupported) {
+      const u = new SpeechSynthesisUtterance(q);
+      u.lang = "fr-FR";
+      u.rate = 0.95;
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.speak(u);
+    }
+  }
+
+  function relireQuestion() {
+    if (currentQ && voiceSupported) {
+      const u = new SpeechSynthesisUtterance(currentQ);
+      u.lang = "fr-FR";
+      u.rate = 0.95;
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.speak(u);
+    }
+  }
+
+  function validerReponse() {
+    if (currentQ && reponse.trim()) {
+      setHistorique(h => [...h, currentQ]);
+      setCurrentQ(null);
+      setReponse("");
+    }
+  }
+
+  return (
+    <div style={{ maxWidth: 760, margin: "0 auto", padding: "2rem 1.25rem" }}>
+      <button onClick={onBack} style={{ background: "none", border: "none", color: "#888", fontSize: 13, cursor: "pointer", marginBottom: "1rem", padding: 0 }}>← Retour</button>
+
+      <div style={{ marginBottom: "1.5rem", paddingBottom: "1rem", borderBottom: "2px solid #1a1a18" }}>
+        <div style={{ fontSize: 11, fontWeight: 500, color: "#888", marginBottom: 4, textTransform: "uppercase", letterSpacing: "0.08em" }}>2ᵉ partie de l'oral</div>
+        <h1 style={{ fontSize: 22, fontWeight: 500, marginBottom: 4 }}>🎙 Entraînement à l'entretien</h1>
+        <p style={{ fontSize: 13, color: "#888" }}>Questions sur votre lecture cursive</p>
+      </div>
+
+      {!voiceSupported && (
+        <div style={{ background: "#fff3cd", border: "0.5px solid #ffc107", borderRadius: 8, padding: "0.75rem 1rem", marginBottom: "1rem", fontSize: 13, color: "#856404" }}>
+          ⚠ Votre navigateur ne supporte pas la synthèse vocale. Les questions s'afficheront uniquement en texte.
+        </div>
+      )}
+
+      <div style={{ ...css.card, marginBottom: "1rem" }}>
+        <p style={{ fontSize: 14, lineHeight: 1.7, color: "#555", marginBottom: "1rem" }}>
+          Cliquez sur le bouton pour qu'une question vous soit posée à l'oral. Répondez à l'écrit comme vous le feriez à l'oral, puis validez pour passer à la suivante. <strong>L'examinateur peut vous poser n'importe quelle question sur votre lecture cursive</strong>, alors entraînez-vous à varier vos réponses selon le livre que vous avez choisi.
+        </p>
+
+        {!currentQ ? (
+          <button onClick={poserQuestion} style={css.btnDark}>
+            🎙 Poser une question
+          </button>
+        ) : (
+          <div>
+            <div style={{ background: "#1a1a18", color: "#fff", borderRadius: 8, padding: "1rem 1.25rem", marginBottom: "1rem", display: "flex", alignItems: "flex-start", gap: 10 }}>
+              <div style={{ fontSize: 20 }}>🎙</div>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontSize: 11, opacity: 0.6, marginBottom: 4, textTransform: "uppercase", letterSpacing: "0.08em" }}>Examinateur</div>
+                <div style={{ fontSize: 15, lineHeight: 1.5 }}>{currentQ}</div>
+              </div>
+              {voiceSupported && (
+                <button onClick={relireQuestion} title="Réécouter" style={{ background: "rgba(255,255,255,0.1)", border: "none", color: "#fff", borderRadius: 6, padding: "4px 10px", fontSize: 12, cursor: "pointer" }}>🔊</button>
+              )}
+            </div>
+
+            <textarea
+              value={reponse}
+              onChange={e => setReponse(e.target.value)}
+              placeholder="Votre réponse…"
+              rows={6}
+              style={{ width: "100%", fontSize: 14, padding: "10px 12px", resize: "vertical", lineHeight: 1.6, marginBottom: "0.75rem" }}
+            />
+
+            <div style={{ display: "flex", gap: 8 }}>
+              <button onClick={validerReponse} disabled={!reponse.trim()} style={{ ...css.btnDark, opacity: reponse.trim() ? 1 : 0.4 }}>
+                Valider et question suivante →
+              </button>
+              <button onClick={() => { setCurrentQ(null); setReponse(""); }} style={css.btn}>
+                Passer
+              </button>
+            </div>
           </div>
-          <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-            <button onClick={openSim} style={{ ...css.btn, background: "#1a1a18", color: "#fff", border: "none" }}>
-              Ouvrir dans Claude →
-            </button>
-            <button onClick={copyPrompt} style={css.btn}>
-              {copied ? "Copié ✓" : "Copier le prompt"}
-            </button>
+        )}
+      </div>
+
+      {historique.length > 0 && (
+        <div style={{ marginTop: "1.5rem" }}>
+          <span style={{ ...css.label, marginBottom: 8 }}>Questions déjà posées ({historique.length})</span>
+          <div style={{ fontSize: 12, color: "#888", lineHeight: 1.6 }}>
+            {historique.map((q, i) => <div key={i} style={{ padding: "4px 0", borderBottom: "0.5px solid #eee" }}>{i+1}. {q}</div>)}
           </div>
-          <p style={{ fontSize: 12, color: "#aaa", marginTop: "1rem", lineHeight: 1.6 }}>
-            Si le lien ne s'ouvre pas directement, copiez le prompt et collez-le dans une nouvelle conversation Claude.
-          </p>
         </div>
       )}
     </div>
