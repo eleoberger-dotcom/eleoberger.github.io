@@ -382,40 +382,235 @@ const s = {
   objBtn: (a,c) => ({ padding:'6px 14px', fontSize:12, fontWeight:a?600:400, borderRadius:20, border:`1px solid ${a?c:'#ddd'}`, background:a?c+'22':'#f5f4f0', color:a?c:'#888', cursor:'pointer' }),
 };
 
+// ─── DONNÉES OBJETS D'ÉTUDE ─────────────────────────────────────────────────
+
+const OBJETS_INFO = {
+  theatre: {
+    oeuvre: 'Pour un oui ou pour un non',
+    auteur: 'Nathalie Sarraute',
+    date: '1982',
+    parcours: 'Théâtre et dispute',
+    cours: [
+      { titre: 'L\'autrice : Nathalie Sarraute (1900–1999)', items: [
+        'Romancière, dramaturge et essayiste, figure majeure du Nouveau Roman.',
+        'Premier essai majeur : Tropismes (1939), qui théorise les « mouvements intérieurs » inavoués.',
+        'Œuvres clés : Le Planétarium (1959), Les Fruits d\'or (1963), Enfance (1983).',
+        'Pour un oui ou pour un non est à l\'origine une pièce radiophonique (1981), publiée en 1982.'
+      ]},
+      { titre: 'L\'œuvre : Pour un oui ou pour un non', items: [
+        'Pièce courte centrée sur le langage : deux amis (H1 et H2) confrontent leurs sous-conversations.',
+        'Personnages désignés par des initiales : suppression du personnage traditionnel.',
+        'Le motif de la dispute : une intonation, un suspens dans la phrase « C\'est bien… ça… ».',
+        'Pas de dénouement classique : la pièce se referme sur un duel verbal « Oui. » / « Non ! »',
+        'Thèmes : l\'incommunicabilité, le poids des non-dits, la violence latente du langage quotidien.'
+      ]},
+      { titre: 'Le parcours associé : « Théâtre et dispute »', items: [
+        'Étude de la dispute comme moteur dramatique : conflit verbal qui structure l\'action.',
+        'Lectures cursives possibles : Molière, Marivaux (Le Jeu de l\'amour et du hasard), Rambert (Clôture de l\'amour).',
+        'Question clé : comment la dispute révèle-t-elle les enjeux profonds des personnages et de la société ?',
+        'Procédés à maîtriser : stichomythies, didascalies, registres polémique et ironique, double énonciation.'
+      ]},
+    ]
+  },
+  poesie: {
+    oeuvre: 'Mes Forêts',
+    auteur: 'Hélène Dorion',
+    date: '2021',
+    parcours: 'La poésie, la nature, l\'intime',
+    cours: [
+      { titre: 'L\'autrice : Hélène Dorion (née en 1958)', items: [
+        'Poétesse québécoise, autrice d\'une vingtaine d\'ouvrages.',
+        'Chevalière de l\'Ordre National du Québec, élue à l\'Académie des Lettres.',
+        'Écriture marquée par une dimension philosophique et écologique.',
+        'Mes Forêts (2021) : recueil majeur, structuré en plusieurs sections sur l\'arbre, le temps, la nature.'
+      ]},
+      { titre: 'Le recueil : Mes Forêts', items: [
+        'Recueil de poésie contemporaine, vers libres, absence de ponctuation.',
+        'Le motif central : la forêt comme espace total — vie, mort, mémoire, écriture.',
+        'Structure en sections : « L\'écorce incertaine », « L\'onde du chaos », « Le bruissement du temps »...',
+        'Plaidoyer écologique : dénonciation de la destruction de la nature et de l\'indifférence humaine.',
+        'Dimension d\'art poétique : la forêt comme source du poème, espace de la quête de soi.'
+      ]},
+      { titre: 'Le parcours associé : « La poésie, la nature, l\'intime »', items: [
+        'Articulation entre paysage extérieur et paysage intérieur du poète.',
+        'Lectures cursives possibles : Lamartine (Méditations poétiques), Hugo, Ponge, Bonnefoy.',
+        'Tradition romantique : le paysage sentimental, le moi qui se projette dans la nature.',
+        'Tradition contemporaine : la poésie comme acte écologique, comme témoignage.'
+      ]},
+    ]
+  },
+  roman: {
+    oeuvre: 'Manon Lescaut',
+    auteur: 'Abbé Prévost',
+    date: '1731',
+    parcours: 'Personnages en marge, plaisirs du romanesque',
+    cours: [
+      { titre: 'L\'auteur : l\'Abbé Prévost (1697–1763)', items: [
+        '[À enrichir avec votre cours]'
+      ]},
+      { titre: 'L\'œuvre : Manon Lescaut', items: [
+        '[À enrichir avec votre cours sur l\'œuvre — intrigue, personnages, structure narrative, etc.]'
+      ]},
+      { titre: 'Le parcours : « Personnages en marge, plaisirs du romanesque »', items: [
+        '[À enrichir avec votre cours sur le parcours]'
+      ]},
+    ]
+  },
+  idees: {
+    oeuvre: 'Discours de la servitude volontaire',
+    auteur: 'Étienne de La Boétie',
+    date: '1576',
+    parcours: 'Défendre et entretenir la liberté',
+    cours: [
+      { titre: 'L\'auteur : Étienne de La Boétie (1530–1563)', items: [
+        'Humaniste, magistrat et écrivain français de la Renaissance, né à Sarlat en Périgord.',
+        'Ami intime de Montaigne, mort à seulement 32 ans.',
+        'Œuvre brève mais brillante : poèmes, traductions, et surtout le Discours de la servitude volontaire.',
+        'Composé sans doute dès ses années étudiantes (1548–1553), publié posthume en 1576.'
+      ]},
+      { titre: 'L\'œuvre : Discours de la servitude volontaire', items: [
+        'Aussi appelé Le Contr\'un, en raison de sa portée anti-monarchique.',
+        'Retourne la question classique de la tyrannie : pourquoi les peuples se laissent-ils opprimer ?',
+        'Forge la notion paradoxale de « servitude volontaire ».',
+        'Thèses centrales : le tyran tire son pouvoir du peuple ; la libération ne demande qu\'une décision intérieure.',
+        'Texte récupéré par les protestants pendant les guerres de Religion — portée politique brûlante.'
+      ]},
+      { titre: 'Le parcours associé : « Défendre et entretenir la liberté »', items: [
+        'Étude de la littérature engagée du XVIe au XVIIIe siècle.',
+        'Lectures cursives possibles : Montaigne, Pascal, Voltaire, Rousseau, Diderot.',
+        'Comment l\'écriture devient-elle un outil de critique politique et de défense de la liberté ?',
+        'Procédés à maîtriser : apostrophe, ironie, registre polémique, raisonnement par analogie.'
+      ]},
+    ]
+  }
+};
+
+// ─── QUIZZES PAR OBJET ──────────────────────────────────────────────────────
+
+const QUIZ_OBJETS = {
+  theatre: [
+    { q:'Dans Pour un oui ou pour un non, pourquoi les personnages sont-ils appelés H1 et H2 ?', o:['Pour concentrer l\'attention sur la parole plutôt que sur l\'identité','Pour signaler qu\'ils sont historiens','Parce que Sarraute ne connaissait pas leurs noms','Pour imiter le théâtre classique'], r:0 },
+    { q:'Qu\'est-ce qu\'un tropisme selon Sarraute ?', o:['Une figure de style fondée sur la comparaison','Un mouvement intérieur inconscient qui affleure sous la conversation ordinaire','Un genre théâtral du XXe siècle','Une technique de mise en scène'], r:1 },
+    { q:'La « sous-conversation » chez Sarraute désigne…', o:['Le texte des didascalies','Ce qui se dit vraiment sous les mots de la conversation apparente, le flux intérieur inavoué','Les répliques non prononcées sur scène','Le résumé du texte en exergue'], r:1 },
+    { q:'Dans « C\'est bien, ça », qu\'est-ce qui constitue le véritable motif de la rupture ?', o:['Une dette non remboursée','Un regard méprisant lors d\'un dîner','Une intonation légèrement condescendante dans « C\'est bien… ça »','Un oubli d\'anniversaire'], r:2 },
+    { q:'La double énonciation au théâtre désigne le fait que…', o:['Deux acteurs parlent en même temps','Le personnage s\'adresse à un autre personnage mais aussi implicitement au public','La pièce est écrite pour être lue et jouée','Le metteur en scène intervient dans le texte'], r:1 },
+    { q:'Dans Clôture de l\'amour, quelle figure Audrey utilise-t-elle en répétant « une fiction » en fin de groupe ?', o:['Anaphore','Épiphore','Épizeuxe','Chiasme'], r:1 },
+    { q:'Les stichomythies sont…', o:['Des apartés entre deux acteurs hors scène','Des répliques très courtes qui s\'enchaînent rapidement entre deux personnages','Des monologues de plus de vingt répliques','Des didascalies indiquant les déplacements'], r:1 },
+    { q:'Dans le dénouement de Sarraute, les exclamations finales « Oui. » / « Non ! » relancent le duel. À quel courant cela rattache-t-il la pièce ?', o:['Au classicisme','Au surréalisme','Au théâtre de l\'Absurde (Beckett, Ionesco)','Au romantisme'], r:2 },
+    { q:'Dans Clôture de l\'amour, Audrey dit « tu as raison » avant de décrire un avenir sombre. Quelle stratégie rhétorique emploie-t-elle ?', o:['La concession apparente, pour mieux retourner l\'argument','L\'aveu sincère de sa défaite','La captatio benevolentiae','L\'ironie romantique'], r:0 },
+    { q:'Quel mouvement littéraire relie les deux textes de Sarraute au programme ?', o:['Le surréalisme','Le Nouveau Roman / Théâtre de la parole','L\'existentialisme','Le naturalisme'], r:1 },
+  ],
+  poesie: [
+    { q:'Dans L\'Isolement de Lamartine, que signifie « Le soleil des vivants n\'échauffe plus les morts » (v. 20) ?', o:['Lamartine critique la société qui oublie ses morts','Le poète, en deuil, se perçoit lui-même comme mort','C\'est une métaphore du coucher du soleil','C\'est une allusion à l\'enfer de Dante'], r:1 },
+    { q:'Le poème « L\'Isolement » est issu de quel recueil ?', o:['Les Contemplations','Les Méditations poétiques','Les Fleurs du Mal','Alcools'], r:1 },
+    { q:'Dans « Mes forêts sont un champ silencieux », quelle est la portée du déterminant possessif « Mes » ?', o:['Dorion possède légalement ces forêts','Il s\'agit d\'une appropriation affective et intellectuelle des forêts','C\'est une erreur typographique','Il désigne les forêts du Québec en général'], r:1 },
+    { q:'Dans « Il souffle mille voix de vent », quelle est la tonalité dominante des dernières strophes ?', o:['Lyrique et mélancolique','Polémique et accusatrice','Épique et héroïque','Comique et satirique'], r:1 },
+    { q:'Dans « La nuit s\'approfondit », Dorion convoque plusieurs poètes (Rilke, Dante, Thoreau, Zanzotto, Hopkins, Zambrano). Que représente cette traversée ?', o:['Une critique de la littérature européenne','Une promenade littéraire à travers ses inspirations, comme une généalogie poétique','Une démonstration d\'érudition gratuite','Un hommage funèbre'], r:1 },
+    { q:'Dans « Mes forêts », le champ lexical de l\'écriture (« craie, lettres, mots ») suggère que…', o:['Dorion critique le manque d\'écoles en forêt','La forêt est une source de la poésie : elle contient les éléments du langage','La forêt est un espace d\'apprentissage pour les enfants','Il n\'y a aucun lien, c\'est une métaphore arbitraire'], r:1 },
+    { q:'Dans L\'Isolement, le vers « Un seul être vous manque, et tout est dépeuplé » fonctionne comme…', o:['Une question rhétorique','Un présent de narration','Un présent de vérité générale, formulé comme une sentence universelle','Un imparfait à valeur de commentaire'], r:2 },
+    { q:'L\'élégie est un registre…', o:['Comique et léger','Plaintif et mélancolique','Héroïque et solennel','Polémique et agressif'], r:1 },
+    { q:'Dans « Il souffle mille voix de vent », l\'humanité est accusée de…', o:['Trop aimer la nature','Être passive et complice de la destruction écologique','Polluer involontairement','Manquer de connaissances scientifiques'], r:1 },
+    { q:'Qu\'est-ce qu\'un enjambement en poésie ?', o:['Le passage d\'un vers à l\'autre sans pause syntaxique','La répétition d\'un son en fin de vers','L\'inversion sujet-verbe','Le saut d\'une strophe à l\'autre'], r:0 },
+    { q:'L\'élégie est un registre…', o:['Comique et léger','Plaintif et mélancolique, exprimant souvent un deuil','Héroïque et solennel','Polémique et agressif'], r:1 },
+  ],
+  roman: [
+    { q:'Dans Pleins phares (Haenel), quel point de vue narratif est adopté ?', o:['Focalisation externe — on n\'a accès qu\'aux comportements','Focalisation interne — on est dans la conscience du meurtrier','Focalisation zéro — narrateur omniscient et neutre','Narration à la première personne'], r:1 },
+    { q:'Dans Pleins phares, quel procédé caractérise le passage de « il » à « tu » dans la dernière partie du texte ?', o:['Un changement de focalisation : on entre plus profondément dans la pensée du meurtrier','Une erreur de l\'autrice','Une adresse au lecteur classique dans le roman policier','Un monologue intérieur de la victime'], r:0 },
+    { q:'Le discours indirect libre se caractérise par…', o:['L\'absence de guillemets et l\'absence de verbe introducteur, fusionnant la voix du narrateur et celle du personnage','La présence obligatoire de guillemets','Un verbe introducteur explicite suivi de "que"','Une narration à la deuxième personne'], r:0 },
+    { q:'Dans l\'épisode du Prince Italien (Manon Lescaut), pourquoi Manon coiffe-t-elle des Grieux avec un soin inhabituellement grand ?', o:['Elle veut lui faire un cadeau avant son départ','Elle prépare des Grieux comme accessoire de sa mise en scène avec le Prince','Elle n\'a pas dormi et s\'occupe pour passer le temps','C\'est une habitude anodine du couple'], r:1 },
+    { q:'Dans le passage sur Manon, la litote « un spectacle qui ne dut pas lui causer peu d\'étonnement » signifie…', o:['L\'étranger fut peu étonné','L\'étranger fut très étonné, et le narrateur adopte un ton ironique','L\'étranger fut indifférent','L\'étranger ne fut pas du tout étonné'], r:1 },
+    { q:'Qui est le narrateur de Manon Lescaut ?', o:['Manon Lescaut elle-même','Un narrateur omniscient extérieur à l\'histoire','Le chevalier des Grieux, qui raconte son histoire rétrospectivement','L\'Abbé Prévost en tant que personnage'], r:2 },
+    { q:'Manon Lescaut paraît pour la première fois en quelle année ?', o:['1683','1731','1789','1830'], r:1 },
+    { q:'Quel est le registre dominant du récit de des Grieux ?', o:['Comique','Tragique et pathétique','Épique','Didactique'], r:1 },
+    { q:'Dans Pleins phares, l\'utilisation du pronom « ça » pour désigner Karine produit quel effet ?', o:['Aucun effet particulier, c\'est familier','Une déshumanisation totale de la victime, révélant la psychologie froide du meurtrier','Un effet poétique','Une marque d\'affection'], r:1 },
+    { q:'Le terme « libertin » au XVIIIe siècle désigne…', o:['Quelqu\'un qui aime la liberté politique','Quelqu\'un qui s\'affranchit des règles morales et religieuses, notamment dans les mœurs','Un homme libre, non esclave','Un voyageur'], r:1 },
+  ],
+  idees: [
+    { q:'Le parcours associé à La Boétie s\'intitule…', o:['Théâtre et dispute','Le langage et ses dessous','Défendre et entretenir la liberté','Individu, morale et société'], r:2 },
+    { q:'Dans « Pauvres gens misérables », pourquoi La Boétie passe-t-il du pluriel « des ennemis » au singulier « de l\'ennemi » ?', o:['C\'est une faute de style','Pour désigner un ennemi particulier jamais nommé','Pour montrer que la véritable cause est unique : le tyran créé par le peuple lui-même','Pour alléger la phrase'], r:2 },
+    { q:'Le verbe « dresser » appliqué au tyran dans « Cinq ou six » renvoie à quel champ lexical ?', o:['La musique','L\'architecture','Le dressage des animaux','Le droit'], r:2 },
+    { q:'Dans « Pauvres gens misérables », la comparaison avec les bêtes (« que les bêtes elles-mêmes ne supporteraient pas ») sert à…', o:['Amuser le lecteur par une image comique','Humilier le peuple en le plaçant au-dessous de l\'animal','Rappeler que La Boétie aimait les animaux','Illustrer une métaphore scientifique'], r:1 },
+    { q:'Dans « Cinq ou six », l\'emploi du conditionnel « plairait » (vs. présent « profite ») dans la phrase finale produit quel effet ?', o:['Aucun effet particulier','Il oppose le réel (ceux qui profitent vraiment) au virtuel (ceux qui ne font que désirer la liberté)','Il indique que la liberté est possible dans le futur','Il marque la politesse de l\'auteur'], r:1 },
+    { q:'Qu\'est-ce que La Boétie nomme la « servitude volontaire » ?', o:['Une servitude imposée par la force','Le fait que le peuple se soumet volontairement à son oppresseur, qui tire son pouvoir de ce consentement','Une forme de méditation religieuse','Le service militaire obligatoire'], r:1 },
+    { q:'Le Discours de la servitude volontaire est aussi connu sous le nom de…', o:['Le Prince','Le Contr\'un','L\'Esprit des lois','Le Léviathan'], r:1 },
+    { q:'Quelle est la maxime la plus célèbre du Discours ?', o:['« Je pense, donc je suis »','« Soyez résolus à ne plus servir, et vous voilà libres »','« L\'homme est un loup pour l\'homme »','« L\'homme est né libre, et partout il est dans les fers »'], r:1 },
+    { q:'L\'apostrophe est une figure qui consiste à…', o:['Adresser brusquement la parole à quelqu\'un (réel, absent ou imaginaire)','Interrompre une phrase','Répéter un mot pour insister','Inverser deux termes symétriquement'], r:0 },
+    { q:'Le Discours de la servitude volontaire a été récupéré pendant les guerres de Religion par…', o:['Les catholiques','Les protestants, qui y voient une critique de la monarchie','Les jésuites','Les athées'], r:1 },
+  ],
+};
+
 // ─── COMPOSANTS ──────────────────────────────────────────────────────────────
 
-function Fiches() {
-  const [objet, setObjet] = useState('theatre');
-  const [sel, setSel] = useState(1);
-  const [gramOpen, setGramOpen] = useState(false);
-  const [repOpen, setRepOpen] = useState(false);
-
-  const textes = TEXTES.filter(t => t.objet === objet);
-  const t = TEXTES.find(x => x.id === sel) || textes[0];
-  const oc = OBJETS.find(o => o.id === objet);
-
-  const select = id => { setSel(id); setGramOpen(false); setRepOpen(false); };
-  const changeObjet = id => { setObjet(id); const ts = TEXTES.filter(t=>t.objet===id); if(ts.length) select(ts[0].id); };
+function ObjetModule({ objet, onBack }) {
+  const [tab, setTab] = useState('cours');
+  const info = OBJETS_INFO[objet.id];
+  const TABS = [['cours','📖 Cours'],['el','📝 Explications linéaires'],['quiz','🎯 Quiz']];
 
   return (
     <div>
-      <div style={{display:'flex', gap:8, marginBottom:12, flexWrap:'wrap'}}>
-        {OBJETS.map(o => <button key={o.id} onClick={()=>changeObjet(o.id)} style={s.objBtn(objet===o.id, o.c)}>{o.label}</button>)}
+      <button onClick={onBack} style={{...s.btn, marginBottom:'1rem', fontSize:12}}>← Retour aux objets d'étude</button>
+      <div style={{padding:'1rem 1.25rem', background:objet.c+'15', borderLeft:`3px solid ${objet.c}`, borderRadius:8, marginBottom:'1rem'}}>
+        <p style={{fontSize:11, textTransform:'uppercase', letterSpacing:'0.08em', color:objet.c, fontWeight:600}}>{objet.label}</p>
+        <h2 style={{fontSize:18, fontWeight:500, margin:'4px 0'}}>{info.auteur}, <em>{info.oeuvre}</em> ({info.date})</h2>
+        <p style={{fontSize:13, color:'#666'}}>Parcours : {info.parcours}</p>
       </div>
+      <div style={{display:'flex', gap:6, marginBottom:'1.25rem', flexWrap:'wrap'}}>
+        {TABS.map(([k,l]) => <button key={k} style={s.tabBtn(tab===k)} onClick={()=>setTab(k)}>{l}</button>)}
+      </div>
+      {tab==='cours' && <CoursObjet info={info} c={objet.c} />}
+      {tab==='el' && <ELObjet objetId={objet.id} c={objet.c} />}
+      {tab==='quiz' && <QuizObjet objetId={objet.id} c={objet.c} label={objet.label} />}
+    </div>
+  );
+}
+
+function CoursObjet({ info, c }) {
+  const [open, setOpen] = useState(0);
+  return (
+    <div style={{display:'flex', flexDirection:'column', gap:8}}>
+      {info.cours.map((bloc,i) => (
+        <div key={i} style={{...s.card, padding:0, overflow:'hidden'}}>
+          <button onClick={()=>setOpen(open===i?-1:i)} style={{width:'100%', textAlign:'left', padding:'1rem 1.25rem', background:'none', border:'none', cursor:'pointer', display:'flex', justifyContent:'space-between', alignItems:'center'}}>
+            <span style={{fontSize:14, fontWeight:500}}>{bloc.titre}</span>
+            <span style={{color:'#888'}}>{open===i?'▲':'▼'}</span>
+          </button>
+          {open===i && (
+            <div style={{padding:'0 1.25rem 1.25rem', borderTop:'0.5px solid #eee'}}>
+              <ul style={{margin:'0.75rem 0 0 16px', fontSize:13, lineHeight:1.85, color:'#444'}}>
+                {bloc.items.map((it,k) => <li key={k}>{it}</li>)}
+              </ul>
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function ELObjet({ objetId, c }) {
+  const textes = TEXTES.filter(t => t.objet === objetId);
+  const [sel, setSel] = useState(textes[0]?.id);
+  const [gramOpen, setGramOpen] = useState(false);
+  const [repOpen, setRepOpen] = useState(false);
+  const t = textes.find(x => x.id === sel) || textes[0];
+
+  const select = id => { setSel(id); setGramOpen(false); setRepOpen(false); };
+
+  return (
+    <div>
       <div style={{display:'flex', gap:8, marginBottom:'1rem', flexWrap:'wrap'}}>
-        {textes.map(tx => <button key={tx.id} onClick={()=>select(tx.id)} style={{...s.btn, fontWeight:sel===tx.id?600:400, background:sel===tx.id?'#fff':'#f5f4f0'}}>{tx.numero}</button>)}
+        {textes.map(tx => <button key={tx.id} onClick={()=>select(tx.id)} style={{...s.btn, fontWeight:sel===tx.id?600:400, background:sel===tx.id?'#fff':'#f5f4f0'}}>{tx.numero} — {tx.auteur.split(' ').slice(-1)[0]}</button>)}
       </div>
       {t && (
         <div style={s.card}>
           <div style={{marginBottom:'0.75rem'}}>
-            <span style={{fontSize:11, textTransform:'uppercase', letterSpacing:'0.08em', color: oc?.c||'#888'}}>{t.mouvement} · {t.date} · {t.numero}</span>
+            <span style={{fontSize:11, textTransform:'uppercase', letterSpacing:'0.08em', color:c}}>{t.mouvement} · {t.date} · {t.numero}</span>
             <h2 style={{fontSize:16, fontWeight:500, margin:'4px 0 2px'}}>{t.auteur}, <em>{t.titre}</em></h2>
-            <p style={{fontSize:13, color:'#888'}}>Parcours : {t.parcours}</p>
           </div>
           <div style={{background:'#f5f4f0', borderRadius:8, padding:'0.75rem 1rem', marginBottom:'1rem', fontSize:13, lineHeight:1.8, fontStyle:'italic', whiteSpace:'pre-wrap', maxHeight:200, overflowY:'auto'}}>{t.extrait}</div>
           <div style={{marginBottom:'1rem'}}>
             <span style={s.label}>Problématique</span>
-            <p style={{fontSize:14, lineHeight:1.6, borderLeft:`2px solid ${oc?.c||'#ccc'}`, paddingLeft:12}}>{t.problematique}</p>
+            <p style={{fontSize:14, lineHeight:1.6, borderLeft:`2px solid ${c}`, paddingLeft:12}}>{t.problematique}</p>
           </div>
           <span style={s.label}>Étapes du parcours linéaire</span>
           <div style={{display:'flex', flexDirection:'column', gap:10, marginTop:8, marginBottom:'1rem'}}>
@@ -452,60 +647,57 @@ function Fiches() {
   );
 }
 
-function Quiz() {
-  const [niv, setNiv] = useState(1);
+function Quiz() { return null; } // Remplacé par QuizObjet dans chaque module
+
+function QuizObjet({ objetId, c, label }) {
+  const questions = QUIZ_OBJETS[objetId] || [];
   const [qi, setQi] = useState(0);
   const [score, setScore] = useState(0);
   const [ans, setAns] = useState(null);
   const [done, setDone] = useState(false);
+  const q = questions[qi];
 
-  const n = QUIZ[niv];
-  const q = n.questions[qi];
-
-  const changeNiv = v => { setNiv(v); setQi(0); setScore(0); setAns(null); setDone(false); };
   const handleAns = i => {
     if(ans!==null) return;
     setAns(i);
     if(i===q.r) setScore(s=>s+1);
   };
   const next = () => {
-    if(qi+1>=n.questions.length){ setDone(true); return; }
+    if(qi+1>=questions.length){ setDone(true); return; }
     setQi(q=>q+1); setAns(null);
   };
   const reset = () => { setQi(0); setScore(0); setAns(null); setDone(false); };
 
+  if(!questions.length) return <div style={s.card}><p style={{fontSize:13,color:'#888'}}>Quiz à venir pour cet objet d'étude.</p></div>;
+
   return (
-    <div>
-      <div style={{display:'flex', gap:8, marginBottom:'1rem', flexWrap:'wrap'}}>
-        {[1,2,3].map(v => <button key={v} onClick={()=>changeNiv(v)} style={s.lvlBtn(niv===v, QUIZ[v].c)}>{QUIZ[v].label}</button>)}
-      </div>
-      <div style={s.card}>
-        {!done ? (
-          <>
-            <div style={{display:'flex', justifyContent:'space-between', marginBottom:'0.75rem'}}>
-              <span style={{fontSize:12, color:'#888'}}>Question {qi+1} / {n.questions.length}</span>
-              <span style={{fontSize:12, color:'#888'}}>Score : {score}</span>
-            </div>
-            <div style={{background:'#f5f4f0', borderRadius:8, padding:'0.75rem 1rem', marginBottom:'1rem'}}>
-              <p style={{fontSize:15, fontWeight:500, lineHeight:1.5}}>{q.q}</p>
-            </div>
-            <div style={{display:'flex', flexDirection:'column', gap:8}}>
-              {q.o.map((opt,i) => {
-                let bg='#fff', bc='#ddd', col='#1a1a18';
-                if(ans!==null){ if(i===q.r){bg='#eafaf1';bc='#27ae60';col='#1a6b3a';} else if(i===ans){bg='#fdf0ef';bc='#e74c3c';col='#a93226';} }
-                return <button key={i} onClick={()=>handleAns(i)} style={{textAlign:'left', padding:'10px 14px', fontSize:14, borderRadius:8, border:`0.5px solid ${bc}`, background:bg, color:col, cursor:ans===null?'pointer':'default', lineHeight:1.5}}>{opt}</button>;
-              })}
-            </div>
-            {ans!==null && <button onClick={next} style={{...s.btn, marginTop:'1rem'}}>{qi+1>=n.questions.length?'Voir le résultat':'Question suivante →'}</button>}
-          </>
-        ) : (
-          <div style={{textAlign:'center', padding:'1.5rem 0'}}>
-            <p style={{fontSize:36, fontWeight:500, marginBottom:8}}>{score} / {n.questions.length}</p>
-            <p style={{fontSize:14, color:'#888', marginBottom:'1.5rem'}}>{score>=n.questions.length*0.8?'Excellent travail !':score>=n.questions.length*0.6?'Bon début, continue à réviser.':'Reprends tes fiches avant de réessayer.'}</p>
-            <button onClick={reset} style={s.btn}>Recommencer</button>
+    <div style={s.card}>
+      <p style={{fontSize:11, textTransform:'uppercase', letterSpacing:'0.08em', color:c, fontWeight:600, marginBottom:'0.75rem'}}>Quiz {label}</p>
+      {!done ? (
+        <>
+          <div style={{display:'flex', justifyContent:'space-between', marginBottom:'0.75rem'}}>
+            <span style={{fontSize:12, color:'#888'}}>Question {qi+1} / {questions.length}</span>
+            <span style={{fontSize:12, color:'#888'}}>Score : {score}</span>
           </div>
-        )}
-      </div>
+          <div style={{background:'#f5f4f0', borderRadius:8, padding:'0.75rem 1rem', marginBottom:'1rem'}}>
+            <p style={{fontSize:15, fontWeight:500, lineHeight:1.5}}>{q.q}</p>
+          </div>
+          <div style={{display:'flex', flexDirection:'column', gap:8}}>
+            {q.o.map((opt,i) => {
+              let bg='#fff', bc='#ddd', col='#1a1a18';
+              if(ans!==null){ if(i===q.r){bg='#eafaf1';bc='#27ae60';col='#1a6b3a';} else if(i===ans){bg='#fdf0ef';bc='#e74c3c';col='#a93226';} }
+              return <button key={i} onClick={()=>handleAns(i)} style={{textAlign:'left', padding:'10px 14px', fontSize:14, borderRadius:8, border:`0.5px solid ${bc}`, background:bg, color:col, cursor:ans===null?'pointer':'default', lineHeight:1.5}}>{opt}</button>;
+            })}
+          </div>
+          {ans!==null && <button onClick={next} style={{...s.btn, marginTop:'1rem'}}>{qi+1>=questions.length?'Voir le résultat':'Question suivante →'}</button>}
+        </>
+      ) : (
+        <div style={{textAlign:'center', padding:'1.5rem 0'}}>
+          <p style={{fontSize:36, fontWeight:500, marginBottom:8}}>{score} / {questions.length}</p>
+          <p style={{fontSize:14, color:'#888', marginBottom:'1.5rem'}}>{score>=questions.length*0.8?'Excellent travail !':score>=questions.length*0.6?'Bon début, continue à réviser.':'Reprends tes fiches avant de réessayer.'}</p>
+          <button onClick={reset} style={s.btn}>Recommencer</button>
+        </div>
+      )}
     </div>
   );
 }
@@ -612,20 +804,58 @@ function Simulation() {
 
 // ─── APP ─────────────────────────────────────────────────────────────────────
 export default function App() {
-  const [tab, setTab] = useState('fiches');
-  const TABS = [['fiches','Fiches'],['quiz','Quiz'],['methode','Méthode'],['grammaire','Grammaire'],['sim','Simulation d\'oral']];
+  const [view, setView] = useState('home'); // 'home' | 'objet' | 'methode' | 'grammaire' | 'sim'
+  const [currentObjet, setCurrentObjet] = useState(null);
+
+  const openObjet = (o) => { setCurrentObjet(o); setView('objet'); };
+  const home = () => { setView('home'); setCurrentObjet(null); };
+
   return (
     <div style={{maxWidth:740, margin:'0 auto', padding:'2rem 1rem'}}>
-      <h1 style={{fontSize:20, fontWeight:500, marginBottom:4}}>Révision oral de bac — Français</h1>
-      <p style={{fontSize:13, color:'#888', marginBottom:'1.5rem'}}>Lycée Jean Prévost · 1ères G · Mme Berger</p>
-      <div style={{display:'flex', gap:6, marginBottom:'1.5rem', flexWrap:'wrap'}}>
-        {TABS.map(([k,l])=><button key={k} style={s.tabBtn(tab===k)} onClick={()=>setTab(k)}>{l}</button>)}
+      <div style={{cursor:'pointer'}} onClick={home}>
+        <h1 style={{fontSize:20, fontWeight:500, marginBottom:4}}>Révision oral de bac — Français</h1>
+        <p style={{fontSize:13, color:'#888', marginBottom:'1.5rem'}}>Lycée Jean Prévost · 1ères G · Mme Berger</p>
       </div>
-      {tab==='fiches'    && <Fiches />}
-      {tab==='quiz'      && <Quiz />}
-      {tab==='methode'   && <Methode />}
-      {tab==='grammaire' && <Grammaire />}
-      {tab==='sim'       && <Simulation />}
+
+      {view === 'home' && (
+        <div>
+          <p style={{fontSize:13, color:'#666', marginBottom:'1.25rem', lineHeight:1.6}}>Choisis un objet d'étude pour accéder au cours, aux explications linéaires et aux quiz.</p>
+          <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:12, marginBottom:'1.5rem'}}>
+            {OBJETS.map(o => {
+              const info = OBJETS_INFO[o.id];
+              return (
+                <div key={o.id} onClick={()=>openObjet(o)} style={{cursor:'pointer', padding:'1.25rem 1rem', borderRadius:12, border:`1px solid ${o.c}40`, background:o.c+'10', transition:'all 0.15s'}}
+                     onMouseEnter={e=>{e.currentTarget.style.background=o.c+'20'; e.currentTarget.style.transform='translateY(-2px)';}}
+                     onMouseLeave={e=>{e.currentTarget.style.background=o.c+'10'; e.currentTarget.style.transform='translateY(0)';}}>
+                  <p style={{fontSize:11, textTransform:'uppercase', letterSpacing:'0.08em', color:o.c, fontWeight:600, marginBottom:6}}>{o.label}</p>
+                  <p style={{fontSize:14, fontWeight:500, marginBottom:2}}>{info.auteur}</p>
+                  <p style={{fontSize:13, fontStyle:'italic', color:'#444', marginBottom:6}}>{info.oeuvre}</p>
+                  <p style={{fontSize:11, color:'#888'}}>Parcours : {info.parcours}</p>
+                </div>
+              );
+            })}
+          </div>
+          <div style={{borderTop:'0.5px solid #eee', paddingTop:'1.25rem'}}>
+            <p style={{fontSize:11, textTransform:'uppercase', letterSpacing:'0.08em', color:'#888', fontWeight:600, marginBottom:10}}>Outils transversaux</p>
+            <div style={{display:'flex', gap:8, flexWrap:'wrap'}}>
+              <button onClick={()=>setView('methode')} style={s.btn}>📐 Méthode de l'oral</button>
+              <button onClick={()=>setView('grammaire')} style={s.btn}>📌 Fiches de grammaire</button>
+              <button onClick={()=>setView('sim')} style={s.btn}>🤖 Simulation d'oral IA</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {view === 'objet' && currentObjet && <ObjetModule objet={currentObjet} onBack={home} />}
+
+      {(view === 'methode' || view === 'grammaire' || view === 'sim') && (
+        <div>
+          <button onClick={home} style={{...s.btn, marginBottom:'1rem', fontSize:12}}>← Retour à l'accueil</button>
+          {view === 'methode' && <Methode />}
+          {view === 'grammaire' && <Grammaire />}
+          {view === 'sim' && <Simulation />}
+        </div>
+      )}
     </div>
   );
 }
