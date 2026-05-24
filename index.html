@@ -1,861 +1,602 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Révision oral de bac — Mme Berger</title>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#f5f4f0;color:#1a1a18;min-height:100vh}
+input,textarea,select,button{font-family:inherit;outline:none}
+input,textarea,select{background:#fff;border:.5px solid #ccc;border-radius:8px;padding:7px 10px;font-size:13px;width:100%;color:#1a1a18}
+button{cursor:pointer}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:#ccc;border-radius:3px}
+@media(prefers-color-scheme:dark){body{background:#1a1a18;color:#f0ede6}input,textarea,select{background:#2c2c2a;border-color:#444;color:#f0ede6}}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
 const { useState } = React;
 
-// ─── DONNÉES ─────────────────────────────────────────────────────────────────
-
 const OBJETS = [
-  { id:'theatre', label:'Théâtre', c:'#8e44ad' },
-  { id:'poesie',  label:'Poésie',  c:'#27ae60' },
-  { id:'roman',   label:'Roman',   c:'#e67e22' },
-  { id:'idees',   label:'Littérature d\'idées', c:'#2980b9' },
+  {id:'theatre',label:'Théâtre',c:'#8e44ad'},
+  {id:'poesie',label:'Poésie',c:'#27ae60'},
+  {id:'roman',label:'Roman et récit',c:'#e67e22'},
+  {id:'idees',label:"Littérature d'idées",c:'#2980b9'},
 ];
-
-const TEXTES = [
-  // ── THÉÂTRE ──
-  { id:1, objet:'theatre', numero:'EL 1', titre:'Clôture de l\'amour', auteur:'Pascal Rambert', date:'2011',
-    parcours:'Théâtre et dispute', mouvement:'Théâtre contemporain',
-    extrait:`AUDREY\nje t'aime comme jamais une fiction je veux un enfant une fiction je veux encore un enfant et aussi je veux encore encore un enfant une fiction un mausolée une prison une vie épouvantable ?\nça c'est une vie épouvantable, Stan ?\nlève la tête\nlève la tête et regarde-moi une fiction détestable ?\nça c'était notre vie ?\npauvre connard\ncomme je te plains\ncomme tu n'as rien compris rien\nmais d'accord d'accord tu as parlé tu as tellement parlé et rien de ce que tu auras dit ici n'est rédimable non rien ne sera rédimable tu as raison ce qui suit va être pauvre violent petit et laid car tes mots le furent ici\nle nouvel ADN oui va produire des monstres des échanges d'enfants sur des aires d'autoroute des week-ends sur le mode rat crevé de chagrin des semaines où l'horizon est mort […]\noui on va faire des étincelles dans le registre malheur chagrin désespoir on va tous se mettre à la décroissance ça va être génial on va tous se mettre à la décroissance de la joie de l'entrain des perspectives enchantées.`,
-    problematique:'Comment le personnage d\'Audrey réfute-t-il l\'argumentation de Stan ?',
-    etapes:[
-      { label:'L. 1–13', titre:'La reprise des paroles de Stan', procedes:['Épiphore « une fiction » — reprend les mots de Stan pour les retourner contre lui','Absence de ponctuation — urgence, colère, souffle haletant','Didascalie interne + impératifs « lève la tête » — renversement du rapport de force','Question rhétorique « ça c\'était notre vie ? » — solitude du monologue','Insulte « pauvre connard » — violence après la longue tirade de Stan','Épanorthose « tu as parlé tu as tellement parlé »','Épizeuxe « d\'accord d\'accord » — exaspération'] },
-      { label:'L. 14–fin', titre:'La projection dans un avenir sombre', procedes:['Futur de prédiction « va produire des monstres » — dystopie annoncée','Métaphore « rat crevé de chagrin »','Subordonnée relative poétique « des semaines où l\'horizon est mort »','Concession « tu as raison » — ironie rhétorique','Antiphrase : « bravo », « jolie », « super », « on va s\'éclater »','Rythme ternaire « malheur chagrin désespoir »','Ironie finale sur « la décroissance » — détournement d\'un concept politique'] }
-    ],
-    grammaire:{ enonce:'Dans « rien de ce que tu auras dit ici n\'est rédimable », analysez le temps et la valeur de « tu auras dit ».', reponse:'Futur antérieur de l\'indicatif. Il exprime une action qui sera accomplie avant un repère futur. Ici il place les paroles de Stan dans un passé définitif vu depuis l\'avenir, renforçant l\'idée d\'irréversibilité et d\'anéantissement total de son discours.' }
-  },
-  { id:2, objet:'theatre', numero:'EL 2', titre:'Scène d\'exposition', auteur:'Nathalie Sarraute', date:'1981',
-    parcours:'Le langage et ses dessous', mouvement:'Nouveau Roman / Théâtre de la parole',
-    extrait:`H.1. – Écoute, je voulais te demander… C'est un peu pour ça que je suis venu… je voudrais savoir… que s'est-il passé ? Qu'est-ce que tu as contre moi ?\nH.2. – Mais rien… Pourquoi ?\nH.1. – Oh, je ne sais pas… Il me semble que tu t'éloignes… tu ne fais plus jamais signe… il faut toujours que ce soit moi…\nH.2. – Tu sais bien : je prends rarement l'initiative, j'ai peur de déranger.\nH. 1. – Mais pas avec moi ? Tu sais que je te le dirais… Nous n'en sommes tout de même pas là… Non, je sens qu'il y a quelque chose…\nH.2. – Mais que veux-tu qu'il y ait ?\nH.1. – […] il n'y a jamais rien eu entre nous… rien dont je me souvienne…\nH.2. – Moi, par contre, il y a des choses que je n'oublie pas. […]\nH.1. – […] tu étais à l'autre bout du monde… ça me fait de la peine, tu sais…\nH.2. – Non… vraiment rien… Rien qu'on puisse dire…`,
-    problematique:'Comment cette scène d\'exposition joue-t-elle sur l\'incertitude des répliques pour annoncer un des thèmes centraux de la pièce ?',
-    etapes:[
-      { label:'L. 1–11', titre:'L\'énigme de l\'éloignement posée', procedes:['Dénomination H1/H2 — suppression du personnage traditionnel, centrage sur la parole','Points de suspension et aposiopèse (tout le texte) — parole qui se cherche','Modalisateur « un peu » — objet flou dès l\'ouverture','Conditionnel poli « je voudrais savoir » — début de la recherche sur le langage','Négation « tu ne fais plus jamais signe » — déséquilibre dans la relation','Antithèse « quelque chose » / « rien » — opposition structurante'] },
-      { label:'L. 12–fin', titre:'L\'analyse de l\'amitié', procedes:['Antithèse jamais / toujours — fossé entre les deux','Tournure emphatique « il y a des choses que je n\'oublie pas » — sonne comme une menace','Prosopopée de la mère + registre pathétique','Didascalie « hausse les épaules » — exaspération de H2','Champ lexical de l\'éloignement : « distance », « l\'autre bout du monde »','Pronoms sans référent (« ça », « quelque chose ») — impuissance du langage'] }
-    ],
-    grammaire:{ enonce:'Dans « Rien qu\'on puisse dire » (fin), analysez la nature et la valeur du mode du verbe « puisse ».', reponse:'Subjonctif présent dans une proposition subordonnée relative introduite par « que » après « rien ». Le subjonctif après une négation absolue exprime la virtualité : il n\'existe aucune parole qui serait possible. Cela dit l\'indicible total, thème central de la pièce.' }
-  },
-  { id:3, objet:'theatre', numero:'EL 3', titre:'« C\'est bien, ça »', auteur:'Nathalie Sarraute', date:'1981',
-    parcours:'Le langage et ses dessous', mouvement:'Nouveau Roman / Théâtre de la parole',
-    extrait:`H. 1 : Allons, vas-y…\nH. 2 : Eh bien, c'est juste des mots…\nH. 1 : Des mots ? Entre nous ? Ne me dis pas qu'on a eu des mots... ce n'est pas possible...\nH. 2 : Non, pas des mots comme ça... d'autres mots... pas ceux dont on dit qu'on les a « eus »... Des mots qu'on n'a pas « eus », justement... On ne sait pas comment ils vous viennent…\n[…]\nH. 2 : Eh bien... tu m'as dit il y a quelque temps... tu m'as dit... […] tu m'as dit : « C'est bien... ça... »\nH. 1 : Répète-le, je t'en prie... j'ai dû mal entendre.\nH. 2 : Tu m'as dit : « C'est bien... ça... » Juste avec ce suspens... cet accent…\nH. 1 : Ce n'est pas vrai. Ça ne peut pas être ça...\n[…]\nH. 2 : Pas tout à fait ainsi... il y avait entre « C'est bien » et « ça » un intervalle plus grand : « C'est biiien…… ça... » Un étirement : « biiien... » et un suspens avant que « ça » arrive... ce n'est pas sans importance.\nH. 1 : Et ça... ce « ça » précédé d'un suspens t'a poussé à rompre...`,
-    problematique:'Comment le dévoilement du motif de la dispute, d\'apparence dérisoire, permet-il de réfléchir sur ce qui se cache derrière le langage quotidien ?',
-    etapes:[
-      { label:'L. 1–17', titre:'La montée du suspens', procedes:['Double impératif « Allons, vas-y » — pression maximale de H1','Adverbe « juste » — ironie pour le public (double énonciation)','Jeu sur l\'expression figée « avoir des mots » + guillemets','Négation « On ne sait pas comment ils vous viennent » — parole pré-consciente','Subordonnée de condition tronquée « Mais si je te les dis… » — poids des mots','Reprise « rien » / « ce rien » avec déterminant — le rien est bien quelque chose','Didascalie « soupire » répétée — agancement, renoncement'] },
-      { label:'L. 17–fin', titre:'La révélation', procedes:['Répétition triple « tu m\'as dit » — difficulté à avouer, suspens','Chute comique : « C\'est bien… ça… » — dérisoire au regard de l\'attente','Suite de négations — incompréhension totale de H1','Précision phonique : « C\'est biiien…… ça... » — le sens réside dans la voix','Question rhétorique « à quoi bon ? » — H2 se pose en victime','Double interrogation de H1 — agancement, ironie'] }
-    ],
-    grammaire:{ enonce:'Dans « Des mots qu\'on n\'a pas eus, justement » (l. 4), analysez la nature et la fonction du pronom relatif « que » et sa valeur grammaticale dans la phrase.', reponse:'« que » est un pronom relatif (et non une conjonction de subordination), car il reprend l\'antécédent « des mots ». Sa fonction dans la subordonnée relative est COD du verbe « avons eu » (« on n\'a pas eu ces mots »). Sa présence crée ici une double énonciation : les mots dont on parle, on ne peut même pas les nommer sans les avoir.' }
-  },
-  { id:4, objet:'theatre', numero:'EL 4', titre:'Le dénouement', auteur:'Nathalie Sarraute', date:'1981',
-    parcours:'Le langage et ses dessous', mouvement:'Nouveau Roman / Théâtre de la parole',
-    extrait:`H. 2 : Et moi... eh bien, puisque nous en sommes là... c'est comme de la claustrophobie... je suis dans un édifice fermé de tous côtés... partout des compartiments, des cloisons, des étages… j'ai envie de m'échapper...\n[…] Du mal à reprendre vie... parfois encore le lendemain je me sens comme un peu inerte... il faut du temps pour que ça revienne, cette pulsation, un pouls qui se remet à battre… alors tu vois…\nH. 1 : Oui. Je vois. Un silence. A quoi bon s'acharner ?\nH. 2 : Ce serait tellement plus sain…\nH. 1 : Pour chacun de nous... plus salutaire…\nH. 2 : La meilleure solution…\nH. 1 : Mais tu sais bien comment nous sommes. […]\nH. 2 : Non... à quoi bon ? Je peux tout te dire d'avance… [procès imaginaire…]\nH. 1 : C'est vrai.\nH. 2 : « Et ils demandent à rompre… quelle honte… »\nH. 1 : Oui, aucun doute possible : déboutés tous les deux.\nH. 2 : « ils peuvent rompre pour un oui ou pour un non »\nH. 1 : Pour un oui... ou pour un non ? Un silence.\nH. 2 : Oui ou non ?…\nH. 1 : Ce n'est pourtant pas la même chose…\nH. 2 : En effet : Oui. Ou non.\nH. 1 : Oui.\nH. 2 : Non !`,
-    problematique:'En quoi le dénouement de Pour un oui ou pour un non se présente-t-il comme une résolution ambiguë ?',
-    etapes:[
-      { label:'L. 1–12', titre:'Le consentement à la rupture (agree to disagree)', procedes:['Subordonnée causale « puisque nous en sommes là » — écho de la scène d\'exposition','Comparaison « comme de la claustrophobie » — image de l\'enfermement kafkaïen','Champ lexical de la mort (« inerte », « reprendre vie ») vs. champ lexical de la vie (« pouls », « battre »)','Anadiplose « Oui. Je vois. » — accord rare, moment de compréhension mutuelle','Didascalie « Un silence » — décision de rupture actée dans le silence','Suite de stichomythies « plus sain / plus salutaire / la meilleure solution » — accord de concert'] },
-      { label:'L. 13–fin', titre:'Le dénouement ravi : la société juge', procedes:['Guillemets — frontière entre la société (juge) et les personnages','Vocabulaire administratif et judiciaire : « dossiers », « déboutés »','Prosopopées — la société imaginée par H2 rejette leur rupture','Délexicalisation de l\'expression figée « pour un oui ou pour un non »','Exclamations finales « Oui. » / « Non ! » — duel ultime qui relance la pièce','Registre cyclique — dénouement sans résolution, propre au théâtre de l\'Absurde'] }
-    ],
-    grammaire:{ enonce:'Dans « puisque nous en sommes là » (l. 1), analysez la nature et la valeur de cette proposition subordonnée.', reponse:'Proposition subordonnée conjonctive circonstancielle de cause, introduite par la conjonction de subordination « puisque ». « Puisque » (différent de « parce que ») introduit une cause présentée comme connue des deux interlocuteurs. Ici, H2 part d\'une évidence partagée — la rupture inéluctable — ce qui révèle que les deux personnages sont enfin d\'accord sur un point.' }
-  },
-  // ── POÉSIE ──
-  { id:5, objet:'poesie', numero:'EL 5', titre:'« L\'Isolement »', auteur:'Alphonse de Lamartine', date:'1820',
-    parcours:'Lyrisme et quête d\'identité', mouvement:'Romantisme',
-    extrait:`Souvent sur la montagne, à l'ombre du vieux chêne,\nAu coucher du soleil, tristement je m'assieds ;\nJe promène au hasard mes regards sur la plaine,\nDont le tableau changeant se déroule à mes pieds.\n[…]\nMais à ces doux tableaux mon âme indifférente\nN'éprouve devant eux ni charme ni transports,\nJe contemple la terre ainsi qu'une ombre errante :\nLe soleil des vivants n'échauffe plus les morts.\n[…]\nQue me font ces vallons, ces palais, ces chaumières,\nVains objets dont pour moi le charme est envolé ?\nFleuves, rochers, forêts, solitudes si chères,\nUn seul être vous manque, et tout est dépeuplé.`,
-    problematique:'Comment le poème crée-t-il un lien entre le paysage (extérieur) et la personnalité (intérieure) du poète ?',
-    etapes:[
-      { label:'Strophes 1–4', titre:'La description du paysage au crépuscule', procedes:['Suite de CC de lieu + temps au v. 1–2 — décor romantique (écho du tableau de Friedrich)','Adverbe « tristement » — coloration émotionnelle dès l\'ouverture','Présence du « je » lyrique — le moi au centre','Métaphore « le tableau changeant » — lien avec la peinture','Antithèse « écumantes » / « dormantes » — clair-obscur','Périphrase « la reine des ombres » (la lune) — style encore néoclassique','Champ lexical de la religion + esthétique médiévale'] },
-      { label:'Strophes 5–7', titre:'L\'indifférence du poète au paysage', procedes:['Conjonction « Mais » — rupture, tournant du texte','Antithèse « doux tableaux » / « âme indifférente »','Double négation « n\'éprouve… ni charme ni transports »','Comparaison « ainsi qu\'une ombre errante » — métamorphose en fantôme','Antithèse « vivants / morts » — le poète dans le royaume des morts','Énumération « vallons, palais, chaumières, fleuves, rochers, forêts »','Vers célèbre « Un seul être vous manque, et tout est dépeuplé » — présent de vérité générale'] }
-    ],
-    grammaire:{ enonce:'Dans « je contemple la terre ainsi qu\'une ombre errante » (v. 19), analysez la nature et la valeur de la proposition « ainsi qu\'une ombre errante ».', reponse:'Il s\'agit d\'une proposition comparative introduite par « ainsi que » (locution conjonctive de comparaison). Elle exprime la manière dont le poète contemple la terre : comme un fantôme, un être déjà mort. Le CC de manière construit une image de dépersonnalisation et de distance radicale par rapport au monde des vivants.' }
-  },
-  { id:6, objet:'poesie', numero:'EL 6', titre:'« Mes forêts sont un champ silencieux »', auteur:'Hélène Dorion', date:'2021',
-    parcours:'La poésie, la nature, l\'intime', mouvement:'Poésie contemporaine québécoise',
-    extrait:`Mes forêts sont un champ silencieux\nde naissance et de morts\nla mémoire de saisons\nqui se lèvent et retombent\nmes forêts sont du temps qui s'immisce\nà travers tronc branche racine\nelles traversent le feuillage du jour\ncapturent l'ombre capturent l'éclat\nelles sont la solitude disséminée\ncomme poussière de notre passage\nune poignée de roches\nqui savent les âges mes forêts\nsont des traits de craie noire\nles lettres désarticulées de mots\ninconnus d'un matin qui hésite à venir\nelles sont des ossements\nque lèche l'invisible\nune géométrie de souffles\net de pas qui se perdent\nmes forêts sont lièvres et renards\njungle d'insectes qui scintillent\nun soir d'été quand c'est l'hiver\nelles dorment nues mes forêts\nattendent le vent\nqui les fera tanguer\nsi peu me fait vivre\nquand c'est plein d'étoiles\net que s'avance le poème.`,
-    problematique:'Comment le poème présente-t-il l\'espace poétique de la forêt ?',
-    etapes:[
-      { label:'Strophes 1–3', titre:'Le temps qui passe au cœur des forêts', procedes:['Anaphore « Mes forêts sont » — déterminant possessif, appropriation affective','Présent de vérité générale — définition universelle','Antithèses « naissance / morts », « se lèvent et retombent »','Verbes d\'action « s\'immisce », « traversent », « capturent » — forêt énergie active','Antithèse « capturent l\'ombre / capturent l\'éclat »','Référence biblique « comme poussière de notre passage »','Champ lexical de l\'écriture : « craie », « lettres », « mots »'] },
-      { label:'Strophes 4–7', titre:'L\'ambiguïté vie/mort et le lien avec le poème', procedes:['« ossements » — memento mori','« souffles » et « pas » — champ lexical du mouvement, énergie tellurique','Antithèse « soir d\'été / l\'hiver » — toutes les saisons en un vers','Énumération réaliste des animaux (lièvres, renards, coyotes…) — célébration du vivant','Personnification « elles dorment nues mes forêts »','Vers bref « si peu me fait vivre » — humilité de la poétesse','Pronom réfléchi « s\'avance le poème » — le poème s\'alimente de lui-même'] }
-    ],
-    grammaire:{ enonce:'Dans « qui savent les âges mes forêts » (v. 12), analysez la nature et la fonction de la proposition « qui savent les âges ».', reponse:'Proposition subordonnée relative, introduite par le pronom relatif « qui » (sujet dans la relative), qui complète l\'antécédent « une poignée de roches ». C\'est une relative adjective épithète (déterminative). Elle personnifie les roches en leur attribuant une mémoire, ce qui inscrit la forêt dans une temporalité qui dépasse l\'humain.' }
-  },
-  { id:7, objet:'poesie', numero:'EL 7', titre:'« Il souffle mille voix de vent »', auteur:'Hélène Dorion', date:'2021',
-    parcours:'La poésie, la nature, l\'intime', mouvement:'Poésie contemporaine québécoise',
-    extrait:`Il souffle mille voix de vent\nsur la montagne que traversent\ndes marées tant d'aubes\nun silence de fin de jour\nquand s'amorce la descente\nvers soi\nau-dessus du vide\nflotte un ciel\nqui n'ignore pas sa fragilité\nmurs d'incertitudes et miroir\ndéformé de nos rêves\n[…]\nle désordre des existences\noù l'on piétine la vie\n[…]\noù aller\nquand il n'y a pas de commencement\nquand la terre et nos corps\nplus chancelants que la terre\nne reconnaissent plus\nla mémoire d'un arbre\non appelle des catastrophes\npour les couvrir du tissu\nde nos indifférences\nnos regards étouffent\nsous les poignées de cris\njetées dans les fosses\nil se fait tard\npour la nuit humaine\non ne pourra pas toujours\nne pas recommencer on ne pourra\npas toujours fuir\nau bout des hivers`,
-    problematique:'Comment le poème devient-il un plaidoyer écologique ?',
-    etapes:[
-      { label:'Strophes 1–3', titre:'La fragilité du monde', procedes:['Hyperbole « mille voix » — univers animiste, chaos','Allitérations en f et v — harmonie imitative du vent','CC de lieu « vers soi » — catabase, descente vers l\'intérieur','Négation « qui n\'ignore pas sa fragilité » — le ciel conscient de sa fragilité','Champ lexical de l\'incertitude'] },
-      { label:'Strophes 4–6', titre:'La destruction du monde', procedes:['« désir d\'orage » — métaphore, l\'humain veut sa propre perte','Préfixe « re- » (« revient ») — cycle inévitable','Champ lexical de la violence : « remous », « désordre », « piétine »','Deux négations « ne va plus » — destruction en cours','Question rhétorique « où aller » — perte de repères'] },
-      { label:'Strophes 7–9', titre:'L\'indifférence humaine et la fatalité', procedes:['Pronom indéfini « on » + possessif « nos » — toute l\'humanité accusée','Synesthésie « regards étouffent », « poignées de cris »','Métaphore « nuit humaine » — fin des temps, responsabilité humaine','Double négation finale « on ne pourra pas toujours ne pas recommencer »','Adverbe « toujours » — répétition des failles humaines'] }
-    ],
-    grammaire:{ enonce:'Dans « on appelle des catastrophes / pour les couvrir du tissu / de nos indifférences », analysez la nature et la valeur de la proposition introduite par « pour ».', reponse:'Proposition subordonnée conjonctive circonstancielle de but, introduite par la préposition « pour » suivie de l\'infinitif « couvrir » (ici, on n\'a pas de verbe conjugué mais une infinitive à valeur circonstancielle de but). Elle révèle l\'intentionnalité accusée : l\'humain appelle les catastrophes exprès pour pouvoir les dissimuler sous son indifférence. La poétesse dénonce ainsi une complicité consciente.' }
-  },
-  { id:8, objet:'poesie', numero:'EL 8', titre:'« La nuit s\'approfondit »', auteur:'Hélène Dorion', date:'2021',
-    parcours:'La poésie, la nature, l\'intime', mouvement:'Poésie contemporaine québécoise',
-    extrait:`La nuit s'approfondit\net l'on se met à rêver\ndu haut des falaises de Rilke\ndans la forêt de Dante\non voit le passé\ndéjà on lit le futur\non aperçoit l'aigle et la corneille\nqui déchirent le rideau de l'histoire\npour rejoindre nos pas\non traverse le bois de Walden\nla mémoire des saisons de Zanzotto\nles paysages intérieurs\nd'Hopkins les clairières de Zambrano\nvers la connaissance de soi\non a marché on s'est plongé\ndans le long travail de l'amour\non a trébuché\nrebondi puis chuté de nouveau\nle temps jamais ne s'arrête\nnous dit l'arbre\n nous dit la forêt\net sur la branche du présent\nun poème murmure\nun chemin vaste et lumineux\nqui donne sens\nà ce qu'on appelle humanité`,
-    problematique:'Comment Hélène Dorion transforme-t-elle la fin de son recueil en art poétique ?',
-    etapes:[
-      { label:'v. 1–13', titre:'Traversée initiatique par les « forêts » littéraires', procedes:['Métaphore « La nuit s\'approfondit » — propice à la rêverie et à la réflexion','Pronom impersonnel « l\'on » — universalité de l\'expérience','CC de lieu « du haut des falaises de Rilke » — références littéraires devenues lieux géographiques','Parallélisme « on voit le passé / déjà on lit le futur » — poésie comme voyance','Symbolique de l\'aigle et de la corneille (fable d\'Ésope)','Références: Walden (Thoreau), Zanzotto, Hopkins, Zambrano'] },
-      { label:'v. 14–21', titre:'L\'épreuve du temps', procedes:['Changement de temps : passé composé « on a marché » — bilan rétrospectif','Verbes successifs « a marché », « s\'est plongé », « a trébuché », « rebondi », « chuté » — chemin non linéaire','Typographie imitative : enjambements qui miment la chute','Parallélisme « nous dit l\'arbre / nous dit la forêt » — prosopopée','Discours direct sans guillemets — voix de la nature'] },
-      { label:'v. 22–fin', titre:'Le rôle salvateur de la poésie', procedes:['Métaphore « sur la branche du présent » — instant précaire et éphémère','Monostiche « un poème murmure » — humilité, contraste avec le duel du début','Déterminant indéfini « un » — universalité du poème','COD inattendu « un chemin vaste et lumineux » — le poème devient chemin','Subordonnée relative « qui donne sens » — fonction de la poésie selon Dorion','Expression mise à distance « ce qu\'on appelle humanité »'] }
-    ],
-    grammaire:{ enonce:'Dans « le temps jamais ne s\'arrête / nous dit l\'arbre » (v. 19–20), analysez la structure de la phrase et la nature de « nous dit l\'arbre ».', reponse:'« nous dit l\'arbre » est une proposition incise (ou incidente), qui coupe la phrase principale pour indiquer l\'auteur des paroles. Il s\'agit d\'un procédé de discours direct sans guillemets — caractéristique du style de Dorion. La prosopopée (l\'arbre qui parle) est renforcée par l\'incise qui valide ce discours direct, comme si l\'arbre était un locuteur ordinaire. L\'antéposition « jamais » accentue la valeur de vérité générale de l\'affirmation.' }
-  },
-  // ── ROMAN ──
-  { id:9, objet:'roman', numero:'EL 9', titre:'Pleins phares', auteur:'Clémentine Haenel', date:'2023',
-    parcours:'Les territoires de l\'intime', mouvement:'Roman contemporain',
-    extrait:`Elle était revenue dans le salon un sourire timide aux lèvres. Mahdi l'avait su tout de suite, il n'allait pas tarder à la casser. Rien n'allait chez cette femme, il fallait abréger ses souffrances. Les yeux bleus translucides allaient gicler, les pommettes craquer, les fausses dents tomber. Enfin le grand soir. Mahdi s'était senti immédiatement revigoré. Bam, mieux que trois rails de coke. Il allait pouvoir supporter le plateau de surimi, la montagne d'Apéricube, les morceaux de gruyère plantés de cure-dents et le faux saumon dégueulasse roulé autour du Boursin contrefait. […]\nMahdi avait tué Karine Coutelle avec application. Il avait voulu expérimenter, prendre son temps. Ne pas bâcler était sans doute sa façon de rendre hommage. […] C'est vrai qu'il n'avait pas bien saisi le moment de la mort de Karine Coutelle. Ça survit, ça survit, ça agonise, ça crache du sang, le cerveau coule par le nez, tu comprends pas forcément et puis tu t'exaltes, tu fais ton truc, si t'as un minimum de concentration, tu ne notes pas nécessairement l'instant où ça trépasse.`,
-    problematique:'Comment le récit tente-t-il de reconstituer le point de vue du meurtrier ?',
-    etapes:[
-      { label:'L. 1–7', titre:'L\'annonce du meurtre à venir', procedes:['Plus-que-parfait + futur proche dans le passé — imminence du crime','Discours indirect libre — on entre dans les pensées de Mahdi','Accumulation de verbes violents : « gicler, craquer, tomber »','Tournure emphatique « Enfin le grand soir » — excitation du meurtrier','Registre familier et oralisante : « Bam, mieux que trois rails de coke »','Énumération ironique des mets médiocres — mépris affiché pour la victime'] },
-      { label:'L. 8–21', titre:'La préparation ritualisée puis le récit du meurtre', procedes:['Verbes mélio. relatifs à Mahdi vs. champ lexical de la mort pour Karine','Phrase injonctive « Il fallait abréger ses souffrances » — euphémisme glaçant','Ironie grinçante du texte : scène d\'horreur présentée comme une routine','Futur proche dans le passé « allait pouvoir » — point de vue interne','Changement de pronom : passage du « il » au « tu » — interpellation du lecteur','Asyndète finale — rythme haletant imitant l\'agitation du meurtrier'] }
-    ],
-    grammaire:{ enonce:'Dans « Ça survit, ça survit, ça agonise, ça crache du sang… » (M3), analysez la valeur et l\'effet stylistique du pronom « ça ».', reponse:'« ça » est un pronom personnel de la 3e personne du singulier à valeur neutre/indéfinie (substitut de « il/elle »). Ici son emploi répété à la place du prénom « Karine » produit une déshumanisation totale de la victime : elle est réduite à un objet sans identité. C\'est un procédé de distanciation qui révèle la psychologie froide du meurtrier, lequel ne perçoit pas un être humain mais un « ça ». C\'est aussi caractéristique du discours indirect libre.' }
-  },
-  { id:12, objet:'roman', numero:'EL 12', titre:'L\'épisode du Prince Italien', auteur:'Abbé Prévost', date:'1753',
-    parcours:'Individu, morale et société', mouvement:'Roman du XVIIIe siècle',
-    extrait:`À mon réveil, Manon me déclara que, pour passer le jour dans notre appartement, elle ne prétendait pas que j'en eusse l'air plus négligé, et qu'elle voulait que mes cheveux fussent accommodés de ses propres mains. […] Ce badinage nous occupa jusqu'à l'heure du dîner. Le goût qu'elle y avait pris m'avait paru si naturel, et sa gaieté sentait si peu l'artifice […]\n– Quoi donc ? m'écriai-je en la repoussant. Qui ? Quel prince ?\nElle ne répondit point à mes questions.\n– Faites-le monter, dit-elle froidement au valet ; et se tournant vers moi :\n– Cher amant, toi que j'adore, reprit-elle d'un ton enchanteur, je te demande un moment de complaisance, un moment, un seul moment.\n[…] elle empoigna d'une main mes cheveux, qui étaient flottants sur mes épaules, elle prit de l'autre son miroir de toilette ; elle employa toute sa force pour me traîner dans cet état jusqu'à la porte du cabinet, et l'ouvrant du genou, elle offrit à l'étranger […] un spectacle qui ne dut pas lui causer peu d'étonnement. […] Elle lui présenta son miroir :\n– Voyez, monsieur, lui dit-elle, regardez-vous bien, et rendez-moi justice. Vous me demandez de l'amour. Voici l'homme que j'aime, et que j'ai juré d'aimer toute ma vie. Faites la comparaison vous-même.`,
-    problematique:'Comment Prévost fait-il de cette scène intime une véritable mise en scène théâtrale où Manon s\'affirme comme maîtresse du jeu ?',
-    etapes:[
-      { label:'L. 1–11', titre:'Le jeu de Manon et l\'aveuglement de des Grieux', procedes:['Subjonctif de volonté « elle voulait que mes cheveux fussent » — Manon contrôle','Terme « amusement » — registre ludique qui endort la vigilance','Comparatif de supériorité « plus de soins que je ne lui en avais vu » — indice de préméditation','CC de manière « au hasard » — regard qui se promène (métonymie)','Adverbes « si naturel / si peu l\'artifice » — conviction du narrateur qui se trompe','Antithèse naturel/artifice — aveuglement de des Grieux'] },
-      { label:'L. 12–19', titre:'L\'affrontement verbal', procedes:['Phrases exclamatives brèves « Quoi ? Qui ? Quel prince ? » — stupéfaction, colère','Silence de Manon « ne répondit point » — stratégie, contrôle absolu','Adverbe « froidement » — sang-froid contrastant avec l\'émotion de des Grieux','Registre amoureux précieux : « Cher amant, toi que j\'adore »','Épanorthose « un moment, un seul moment » — minimisation rhétorique','Métaphore du feu « m\'échauffa jusqu\'au transport » — écho de la scène de rencontre'] },
-      { label:'L. 20–fin', titre:'Le coup de théâtre : Manon triomphante', procedes:['Verbe violent « empoigna » — action physique, les cheveux deviennent accessoire de scène','Détail comique « l\'ouvrant du genou » — registre de la farce','Terme « spectacle » — dimension théâtrale assumée, Manon metteuse en scène','Litote « ne dut pas lui causer peu d\'étonnement »','Impératifs cinglants « Voyez / regardez-vous / Faites la comparaison »','Miroir — accessoire qui passe de coquetterie à instrument de mise en scène'] }
-    ],
-    grammaire:{ enonce:'Dans « elle voulait que mes cheveux fussent accommodés de ses propres mains » (l. 2–3), analysez la nature et la valeur du mode du verbe « fussent accommodés ».', reponse:'Subjonctif imparfait passif (de l\'auxiliaire être « fussent » + participe passé « accommodés »). Il est ici dans une proposition subordonnée conjonctive complétive (COD du verbe de volonté « voulait »). Le subjonctif après un verbe exprimant la volonté est obligatoire. L\'imparfait du subjonctif marque la concordance des temps (récit au passé). On peut noter que c\'est également un exemple de subjonctif dans une complétive sujet différent.' }
-  },
-  // ── LITTÉRATURE D'IDÉES ──
-  { id:14, objet:'idees', numero:'EL 14', titre:'« Pauvres gens misérables »', auteur:'Étienne de La Boétie', date:'1576',
-    parcours:'Défendre et entretenir la liberté', mouvement:'Humanisme / Renaissance',
-    extrait:`Pauvres gens misérables, peuples insensés, nations opiniâtres à votre mal et aveugles à votre bien ! Vous vous laissez enlever sous vos yeux le plus beau et le plus clair de votre revenu, vous laissez piller vos champs, voler et dépouiller vos maisons des vieux meubles de vos ancêtres ! […] Et tous ces dégâts, ces malheurs, cette ruine, ne vous viennent pas des ennemis, mais certes bien de l'ennemi, de celui-là même que vous avez fait ce qu'il est […] Ce maître n'a pourtant que deux yeux, deux mains, un corps, et rien de plus que n'a le dernier des habitants. […] D'où tire-t-il tous ces yeux qui vous épient, si ce n'est de vous ? […] Les pieds dont il foule vos cités ne sont-ils pas aussi les vôtres ? A-t-il pouvoir sur vous, qui ne soit de vous-mêmes ? […] Vous semez vos champs pour qu'il les dévaste, vous meublez et remplissez vos maisons pour fournir ses pilleries, vous élevez vos filles afin qu'il puisse assouvir sa luxure, vous nourrissez vos enfants pour qu'il en fasse des soldats […] Soyez résolus à ne plus servir, et vous voilà libres. Je ne vous demande pas de le pousser, de l'ébranler, mais seulement de ne plus le soutenir, et vous le verrez, tel un grand colosse dont on a brisé la base, fondre sous son poids et se rompre.`,
-    problematique:'Comment La Boétie dénonce-t-il la responsabilité du peuple dans sa propre servitude ?',
-    etapes:[
-      { label:'L. 1–5', titre:'Le constat des dépossessions', procedes:['Apostrophe + gradation ternaire : « gens, peuples, nations »','Antithèse « mal / bien » — aveuglement pathologique','Anaphore « vous laissez » — la passivité comme responsabilité','Énumération des verbes de dépossession : « enlever, piller, voler, dépouiller »','Champ lexical de l\'héritage « vieux meubles de vos ancêtres »'] },
-      { label:'L. 6–14', titre:'Le responsable : le maître créé par le peuple lui-même', procedes:['Antithèse « des ennemis » (pluriel) / « de l\'ennemi » (singulier défini) — jeu sur l\'article','Proposition relative « celui-là même que vous avez fait ce qu\'il est » — thèse centrale','Négation restrictive « n\'a que deux yeux, deux mains » — désacralisation du tyran','Série de questions rhétoriques — imposition d\'une évidence','Métonymies « yeux, mains, pieds » — instruments de l\'oppression = le peuple lui-même'] },
-      { label:'L. 15–fin', titre:'La solution : maxime finale', procedes:['Anaphore « Vous semez / vous meublez / vous élevez / vous nourrissez » — accusation du peuple complice','Subordonnées de but (« pour que », « afin que ») — actes présentés comme intentionnels','Antithèse « vous vous usez » / « il se mignarde »','Comparaison avec les bêtes — humiliation maximale','Maxime « Soyez résolus à ne plus servir, et vous voilà libres »','Comparaison finale « tel un grand colosse » — allusion biblique'] }
-    ],
-    grammaire:{ enonce:'Dans « Vous semez vos champs pour qu\'il les dévaste » (l. 15), analysez la nature et la valeur de la proposition « pour qu\'il les dévaste ».', reponse:'Proposition subordonnée conjonctive circonstancielle de but, introduite par la locution conjonctive « pour que ». Le verbe est au subjonctif (« dévaste »), mode obligatoire dans les subordonnées de but. La valeur de but est ici particulièrement percutante : La Boétie présente comme une finalité volontaire ce qui n\'est en réalité que le résultat de la passivité du peuple, ce qui renforce l\'accusation de complicité.' }
-  },
-  { id:15, objet:'idees', numero:'EL 15', titre:'« Cinq ou six »', auteur:'Étienne de La Boétie', date:'1576',
-    parcours:'Défendre et entretenir la liberté', mouvement:'Humanisme / Renaissance',
-    extrait:`J'en arrive maintenant à un point qui est, selon moi, le ressort et le secret de la domination, le soutien et le fondement de toute tyrannie. […] Ce ne sont pas les bandes de gens à cheval, les compagnies de fantassins, ce ne sont pas les armes qui défendent un tyran, mais toujours (on aura peine à le croire d'abord, quoique ce soit l'exacte vérité) quatre ou cinq hommes qui le soutiennent. Il en a toujours été ainsi : cinq ou six ont eu l'oreille du tyran et s'en sont approchés d'eux-mêmes […] Ces six en ont sous eux six cents, qu'ils corrompent autant qu'ils ont corrompu le tyran. Ces six cents en tiennent sous leur dépendance six mille, qu'ils élèvent en dignité. […] Grande est la série de ceux qui les suivent. Et qui voudra en dévider le fil verra que, non pas six mille, mais cent mille et des millions tiennent au tyran par cette chaîne ininterrompue […] En somme, par les gains et les faveurs qu'on reçoit des tyrans, on en arrive à ce point qu'ils se trouvent presque aussi nombreux, ceux auxquels la tyrannie profite, que ceux auxquels la liberté plairait.`,
-    problematique:'Comment La Boétie dévoile-t-il les mécanismes concrets de la tyrannie et montre-t-il qu\'elle repose sur une corruption organisée en cascade ?',
-    etapes:[
-      { label:'L. 1–10', titre:'La formulation de la thèse', procedes:['Annonce solennelle « le ressort et le secret » — révélation attendue','Réfutation de l\'opinion commune : les armées ne protègent pas le tyran','Image de l\'«épouvantail» — parade illusoire','Exemple historique des empereurs romains — preuve factuelle','Antithèse numérique : armées / « quatre ou cinq hommes »','Parenthèse « on aura peine à le croire » — anticipation de l\'incrédulité du lecteur'] },
-      { label:'L. 11–25', titre:'La pyramide de la corruption', procedes:['Adverbe « toujours » — loi universelle','Expression idiomatique « avoir l\'oreille du tyran »','Champ lexical du vice : « cruautés, plaisirs, voluptés, rapines »','Verbe « dresser » (dressage animalier) — les six éduquent le tyran','Progression géométrique : 6 → 600 → 6000 — mathématique de la corruption','Métaphore de la chaîne — solidarité et servitude','Référence à Homère (Jupiter et la chaîne d\'or)'] },
-      { label:'L. 25–fin', titre:'La conclusion amère', procedes:['Connecteur conclusif « en somme »','Champ lexical économique : « gains, faveurs »','Comparaison d\'égalité « aussi nombreux que » — quasi-égalité tyrannie/liberté','Conditionnel « plairait » vs. présent « profite » — réel vs. désir','Phrase finale désenchantée — la servitude est devenue un intérêt partagé'] }
-    ],
-    grammaire:{ enonce:'Dans « Ces six cents en tiennent sous leur dépendance six mille, qu\'ils élèvent en dignité » (l. 15), analysez la nature et la fonction de la proposition introduite par « qu\' ».', reponse:'Proposition subordonnée relative, introduite par le pronom relatif « que » (COD dans la relative : « ils élèvent ces six mille »). L\'antécédent est « six mille ». C\'est une relative adjective épithète (déterminative). La structure syntaxique est significative : la relative vient compléter et préciser comment les six cents tiennent les six mille — non par la force, mais par la faveur (« élèvent en dignité »). La corruption passe ici par la subordination hiérarchique.' }
-  },
-];
-
-// ─── QUIZ ─────────────────────────────────────────────────────────────────────
-const QUIZ = {
-  1: { label:'Niveau 1 — Notions fondamentales', c:'#27ae60', questions:[
-    { q:'Qu\'est-ce qu\'une anaphore ?', o:['Répétition d\'un mot ou groupe en début de phrases successives','Figure qui atténue une réalité désagréable','Opposition de deux termes dans une même phrase','Substitution d\'un mot par une périphrase'], r:0 },
-    { q:'La litote consiste à…', o:['Exagérer une réalité pour créer un effet','Dire moins pour suggérer davantage','Comparer deux éléments avec un outil comparatif','Répéter la même idée en des termes différents'], r:1 },
-    { q:'L\'hyperbole est une figure d\'…', o:['Atténuation','Analogie','Exagération','Substitution'], r:2 },
-    { q:'Qu\'appelle-t-on « focalisation interne » ?', o:['Le narrateur sait tout sur tous les personnages','Le récit est perçu depuis le point de vue d\'un personnage','Le narrateur est extérieur et neutre','Le lecteur en sait plus que le personnage'], r:1 },
-    { q:'Le chiasme est une figure qui…', o:['Répète un son vocalique','Inverse l\'ordre des termes dans deux propositions parallèles','Substitue un terme abstrait à un terme concret','Associe deux mots contradictoires'], r:1 },
-    { q:'Une métaphore se distingue d\'une comparaison parce qu\'elle…', o:['Compare deux réalités très éloignées','N\'utilise pas d\'outil comparatif','Porte toujours sur des éléments naturels','Est nécessairement filée sur plusieurs phrases'], r:1 },
-    { q:'Qu\'est-ce qu\'une aposiopèse ?', o:['Une figure d\'exagération','Une phrase interrompue, laissée en suspens','Une répétition en fin de vers','Un retour en arrière narratif'], r:1 },
-    { q:'Le registre pathétique vise à…', o:['Faire rire le lecteur','Susciter la pitié ou l\'émotion chez le lecteur','Convaincre par des arguments logiques','Évoquer la grandeur des héros'], r:1 },
-    { q:'La double énonciation au théâtre désigne le fait que…', o:['Deux acteurs parlent en même temps','Le personnage s\'adresse à un autre personnage mais aussi implicitement au public','La pièce est écrite pour être lue et jouée','Le metteur en scène intervient dans le texte'], r:1 },
-    { q:'Un oxymore est…', o:['Une répétition à des fins expressives','Une association de deux termes de sens contraire dans un même groupe','Une atténuation d\'une réalité violente','Une comparaison sans outil comparatif'], r:1 },
-    { q:'L\'épiphore est une répétition…', o:['En début de phrase ou de vers','En fin de phrase ou de vers','Au milieu d\'un groupe syntaxique','D\'un son vocalique'], r:1 },
-    { q:'Les stichomythies sont…', o:['Des apartés entre deux acteurs hors scène','Des répliques très courtes qui s\'enchaînent rapidement entre deux personnages','Des monologues de plus de vingt répliques','Des didascalies indiquant les déplacements'], r:1 },
-  ]},
-  2: { label:'Niveau 2 — Application aux textes', c:'#e67e22', questions:[
-    { q:'Dans Clôture de l\'amour, quelle figure Audrey utilise-t-elle en répétant « une fiction » en fin de groupe ?', o:['Anaphore','Épiphore','Épizeuxe','Chiasme'], r:1 },
-    { q:'Dans Pour un oui ou pour un non, pourquoi les personnages sont-ils appelés H1 et H2 ?', o:['Pour concentrer l\'attention sur la parole plutôt que sur l\'identité','Pour signaler qu\'ils sont historiens','Parce que Sarraute ne connaissait pas leurs noms','Pour imiter le théâtre classique'], r:0 },
-    { q:'Dans « C\'est bien, ça », qu\'est-ce qui constitue le véritable motif de la rupture ?', o:['Une dette non remboursée','Un regard méprisant lors d\'un dîner','Une intonation légèrement condescendante dans « C\'est bien… ça »','Un oubli d\'anniversaire'], r:2 },
-    { q:'Qu\'est-ce qu\'un tropisme selon Sarraute ?', o:['Une figure de style fondée sur la comparaison','Un mouvement intérieur inconscient qui affleure sous la conversation ordinaire','Un genre théâtral du XXe siècle','Une technique de mise en scène'], r:1 },
-    { q:'Dans L\'Isolement de Lamartine, que signifie « Le soleil des vivants n\'échauffe plus les morts » (v. 20) ?', o:['Lamartine critique la société qui oublie ses morts','Le poète, en deuil, se perçoit lui-même comme mort','C\'est une métaphore du coucher du soleil','C\'est une allusion à l\'enfer de Dante'], r:1 },
-    { q:'Dans « Mes forêts sont un champ silencieux », quel est le sens du titre Mes Forêts par rapport à « la solitude » ?', o:['Les forêts appartiennent à Dorion légalement','Dorion préfère le mot forêt à solitude pour des raisons sonores','L\'isolement est présenté comme douloureux, différent d\'une solitude choisie','Il n\'y a pas de différence entre solitude et isolement'], r:2 },
-    { q:'Dans « Il souffle mille voix de vent », quelle est la tonalité dominante des strophes 7–9 ?', o:['Lyrique et mélancolique','Polémique et accusatrice','Épique et héroïque','Comique et satirique'], r:1 },
-    { q:'Le parcours associé à La Boétie s\'intitule…', o:['Théâtre et dispute','Le langage et ses dessous','Défendre et entretenir la liberté','Individu, morale et société'], r:2 },
-    { q:'Dans « Pauvres gens misérables », pourquoi La Boétie passe-t-il du pluriel « des ennemis » au singulier « de l\'ennemi » ?', o:['C\'est une faute de style','Pour désigner un ennemi particulier jamais nommé','Pour montrer que la véritable cause est unique : le tyran créé par le peuple lui-même','Pour alléger la phrase'], r:2 },
-    { q:'Dans l\'épisode du Prince Italien, pourquoi Manon coiffe-t-elle des Grieux avec un soin inhabituellement grand ?', o:['Elle veut lui faire un cadeau avant son départ','Elle prépare des Grieux comme accessoire de sa mise en scène avec le Prince','Elle n\'a pas dormi et s\'occupe pour passer le temps','C\'est une habitude anodine du couple'], r:1 },
-    { q:'Le verbe « dresser » appliqué au tyran dans « Cinq ou six » (La Boétie) renvoie à quel champ lexical ?', o:['La musique','L\'architecture','Le dressage des animaux','Le droit'], r:2 },
-    { q:'Dans Pleins phares (Haenel), quel procédé caractérise le passage de « il » à « tu » dans la dernière partie du texte ?', o:['Un changement de focalisation : on entre encore plus profondément dans la pensée du meurtrier','Une erreur de l\'autrice','Une adresse au lecteur classique dans le roman policier','Un monologue intérieur de la victime'], r:0 },
-  ]},
-  3: { label:'Niveau 3 — Approfondissement', c:'#8e44ad', questions:[
-    { q:'L\'épanorthose est une figure par laquelle on…', o:['Répète un mot de façon intensive','Se corrige ou se reprend pour renforcer ou nuancer ce qu\'on vient de dire','Interrompt brusquement une phrase','Associe deux réalités opposées'], r:1 },
-    { q:'Dans Clôture de l\'amour, Audrey dit « tu as raison » avant de décrire un avenir sombre. Quelle stratégie rhétorique emploie-t-elle ?', o:['La concession apparente, pour mieux retourner l\'argument de Stan','L\'aveu sincère de sa défaite','La captatio benevolentiae','L\'ironie romantique'], r:0 },
-    { q:'Dans « La nuit s\'approfondit », Dorion écrit « on voit le passé / déjà on lit le futur ». Quel rapport entre « voir » et « lire » est ici suggéré ?', o:['Voir est plus difficile que lire','La lecture est une forme de voyance : le poète lit le futur comme un texte','Voir et lire sont deux activités opposées','Il s\'agit d\'une simple figure de style sans signification profonde'], r:1 },
-    { q:'Dans le dénouement de Sarraute, les exclamations finales « Oui. » / « Non ! » relancent le duel au lieu de le clore. À quel courant cela rattache-t-il la pièce ?', o:['Au classicisme','Au surréalisme','Au théâtre de l\'Absurde (Beckett, Ionesco)','Au romantisme'], r:2 },
-    { q:'Dans « Pauvres gens misérables », la comparaison avec les bêtes (« que les bêtes elles-mêmes ne supporteraient pas ») sert à…', o:['Amuser le lecteur par une image comique','Humilier le peuple en le plaçant au-dessous de l\'animal, accentuant l\'absurdité de sa situation','Rappeler que La Boétie aimait les animaux','Illustrer une métaphore scientifique'], r:1 },
-    { q:'La « sous-conversation » chez Sarraute désigne…', o:['Le texte des didascalies','Ce qui se dit vraiment sous les mots de la conversation apparente, le flux intérieur inavoué','Les répliques non prononcées sur scène','Le résumé du texte en exergue'], r:1 },
-    { q:'Dans « Cinq ou six », l\'emploi du conditionnel « plairait » (vs. présent « profite ») dans la phrase finale produit quel effet ?', o:['Aucun effet particulier, c\'est une règle grammaticale automatique','Il oppose le réel (ceux qui profitent vraiment de la tyrannie) au virtuel (ceux qui ne font que désirer la liberté)','Il indique que la liberté est possible dans le futur','Il marque la politesse de La Boétie envers le lecteur'], r:1 },
-    { q:'Dans le passage sur Manon (Prévost), la litote « un spectacle qui ne dut pas lui causer peu d\'étonnement » signifie…', o:['L\'étranger fut peu étonné','L\'étranger fut très étonné, et le narrateur adopte un ton ironique et distancié','L\'étranger fut indifférent','Il s\'agit d\'une négation totale : l\'étranger ne fut pas étonné'], r:1 },
-    { q:'Dans « Mes forêts », le champ lexical de l\'écriture (« craie noire, lettres désarticulées, mots ») suggère que…', o:['Dorion critique le manque d\'écoles en forêt','La forêt est une source de la poésie : elle contient déjà les éléments du langage','La forêt est un espace d\'apprentissage pour les enfants','Il n\'y a aucun lien, c\'est une métaphore arbitraire'], r:1 },
-    { q:'Dans L\'Isolement, le vers « Un seul être vous manque, et tout est dépeuplé » fonctionne comme…', o:['Une question rhétorique','Un présent de narration','Un présent de vérité générale, formulé comme une sentence universelle','Un imparfait à valeur de commentaire'], r:2 },
-  ]},
-};
-
-// ─── MÉTHODE ─────────────────────────────────────────────────────────────────
-const METHODE = [
-  { titre:'Structure de l\'oral (30 minutes)', icon:'⏱',
-    contenu:[
-      { sous:'Explication linéaire + question de grammaire (≈ 20 min)', items:['Présentation du texte (auteur, œuvre, date, situation dans l\'œuvre, lecture à voix haute) : 2 min','Annonce de la problématique et du plan (les mouvements) : 1 min','Explication linéaire suivant l\'ordre du texte, procédés + effets reliés à la problématique : 10–12 min','Conclusion partielle avant l\'entretien'] },
-      { sous:'Entretien (≈ 10 min)', items:['Présentation de l\'œuvre choisie : 2–3 min','Questions du jury sur l\'EL, le parcours, la grammaire : ≈ 8 min'] },
-    ]
-  },
-  { titre:'La présentation de l\'œuvre (2–3 min)', icon:'📖',
-    contenu:[
-      { sous:'Ce que ce n\'est PAS ❌', items:['La récitation d\'une fiche de lecture impersonnelle','La récitation d\'un cours'] },
-      { sous:'Ce que ça DOIT ÊTRE ✅', items:['Une présentation personnelle de l\'œuvre, justifiée par des références précises et variées','Caractéristiques principales (auteur, titre, genre, époque, sujet)','Intérêt et particularités de l\'œuvre','Avis argumenté sur le livre (Un choix personnel + argumenté + étayé par des références)'] },
-      { sous:'Adjectifs utiles pour qualifier une œuvre', items:['comique · réaliste · vivant · poétique · critique · ironique · parodique · pathétique · lyrique · engagé · dépaysant · universel · ambigu · bouleversant'] },
-    ]
-  },
-  { titre:'Ce qu\'évalue l\'examinateur', icon:'📋',
-    table: [
-      { cat:'Compétences orales', items:['Gestion du temps','Capacité à échanger et prendre en compte les relances','Maîtrise des techniques de prise de parole (posture, articulation, débit, regard)','Expression correcte'] },
-      { cat:'Implication personnelle', items:['Recherches personnelles, relectures, visionnage de mises en scène','Réflexions personnelles sur l\'œuvre (pas de récitation de cours)'] },
-      { cat:'Manifestation d\'un parcours littéraire et artistique', items:['Bonne compréhension et connaissance de l\'œuvre','Capacité à la citer, à en résumer des passages précisément','Implication dans la lecture (activités complémentaires)'] },
-      { cat:'Mobilisation de connaissances culturelles et artistiques', items:['Connaissances artistiques, culturelles, lexicales acquises','Capacité à les mobiliser pour étayer/développer le propos'] },
-    ]
-  },
-  { titre:'Exemples de questions d\'entretien', icon:'💬',
-    contenu:[
-      { sous:'Questions sur le ressenti et l\'interprétation', items:['Qu\'avez-vous ressenti en lisant cette œuvre ? Pourquoi ?','A-t-elle eu un impact sur vous ? Lequel ?','Vous a-t-elle fait réfléchir ? En quoi ?','Quel passage vous a le plus ému ? Pourquoi ?'] },
-      { sous:'Questions sur la structure de l\'œuvre', items:['Qu\'avez-vous pensé de la fin du livre ? Vous a-t-elle plu, déçu, ou laissé indifférent ?','Qu\'avez-vous pensé du début du livre ? Vous a-t-il plu ?','Que pensez-vous du titre choisi par l\'auteur(e) ? Vous semble-t-il judicieux ?','Pourriez-vous imaginer un autre titre ? Lequel et pourquoi ?'] },
-      { sous:'Questions sur les personnages', items:['Quel personnage trouvez-vous le plus attachant / intéressant / détestable ? Pourquoi ?','Certains personnages vous ont-ils laissé indifférent ? Pourquoi ?'] },
-      { sous:'Questions de mise en perspective', items:['Êtes-vous d\'accord avec les idées défendues par l\'auteur ? Pourquoi ?','À quelle musique / image / objet associeriez-vous l\'œuvre ? Pourquoi ?','Pensez-vous que cette œuvre peut encore nous intéresser aujourd\'hui ? En quoi ?','La recommanderiez-vous ? Pourquoi ?','Si vous deviez ne conserver qu\'une seule page de l\'œuvre, laquelle choisiriez-vous ? Pourquoi ?','De quels détails ou éléments du livre pensez-vous vous souvenir dans plusieurs années ?'] },
-    ]
-  },
-  { titre:'Analyser un procédé : la méthode P.E.E.', icon:'🔍',
-    contenu:[
-      { sous:'La méthode en trois étapes', items:['P — Procédé : nommer et citer avec précision (entre guillemets, avec la ligne).','E — Effet : analyser ce que produit ce procédé sur le lecteur ou sur le sens du texte.','E — Enjeu : relier l\'effet à la problématique ou à la portée générale du texte.'] },
-      { sous:'Exemple rédigé', items:['« L\'épiphore « une fiction » (l. 1–3) reprend les mots de Stan pour les retourner contre lui [P], produisant un effet de réfutation cinglante [E], qui installe Audrey en position de force et illustre la thèse de la pièce selon laquelle le langage est une arme [E]. »'] },
-      { sous:'Les erreurs à éviter ❌', items:['Paraphraser le texte sans analyser','Nommer un procédé sans en analyser l\'effet','Sortir de l\'ordre du texte dans l\'explication linéaire','Plaquer une problématique générique sans la vérifier ligne à ligne','Négliger la conclusion et l\'ouverture'] },
-    ]
-  },
-  { titre:'Les procédés littéraires à connaître', icon:'📚',
-    contenu:[
-      { sous:'Figures de répétition', items:['Anaphore — répétition en début de groupe','Épiphore — répétition en fin de groupe','Épizeuxe — répétition immédiate du même mot','Anadiplose — reprise du mot final au début du suivant','Épanorthose — auto-correction ou reprise renforçante'] },
-      { sous:'Figures d\'analogie', items:['Métaphore — comparaison sans outil comparatif','Comparaison — avec outil (comme, tel, ainsi que…)','Personnification — attribut humain donné à un non-humain','Allégorie — personnification filée'] },
-      { sous:'Figures d\'opposition', items:['Antithèse — opposition de deux termes dans la même phrase','Oxymore — deux termes contraires dans le même groupe','Chiasme — inversion symétrique des termes','Paradoxe — affirmation contraire à l\'opinion commune'] },
-      { sous:'Figures d\'intensité / d\'atténuation', items:['Hyperbole — exagération','Litote — dire moins pour suggérer plus','Euphémisme — atténuation sans intention implicite','Gradation — progression ascendante ou descendante'] },
-      { sous:'Procédés grammaticaux et textuels', items:['Registres : lyrique, épique, tragique, comique, ironique, pathétique, polémique','Temps verbaux et leurs valeurs (présent de vérité générale, futur de certitude…)','Types de phrases : interrogative, exclamative, injonctive, nominale','Discours rapportés : direct, indirect, indirect libre','Ponctuation expressive','Procédés rythmiques : rythme binaire, ternaire ; anaphore, assonance, allitération'] },
-      { sous:'Procédés spécifiques au théâtre', items:['Didascalies — indications scéniques','Tirade / monologue / stichomythie / aparté','Double énonciation — le personnage parle à un autre personnage ET au public','Quiproquo'] },
-      { sous:'Procédés spécifiques à la poésie', items:['Type de vers : alexandrin (12 syllabes), décasyllabe (10), octosyllabe (8)','Rimes : riches/suffisantes/pauvres ; croisées/embrassées/plates','Enjambement / rejet / contre-rejet','Vers libre — absence de contrainte métrique'] },
-    ]
-  },
-  { titre:'La question de grammaire', icon:'📐',
-    contenu:[
-      { sous:'Ce que l\'examinateur peut demander', items:['Identifier la nature et la fonction d\'un mot ou groupe de mots','Analyser la valeur d\'un temps ou d\'un mode verbal','Identifier et analyser une proposition subordonnée (relative, circonstancielle, complétive)','Analyser un type de phrase (interrogative directe/indirecte, négative, exclamative)','Commenter la valeur stylistique d\'un choix grammatical'] },
-      { sous:'Méthode', items:['1. Identifier la nature (subordonnée relative, temps de l\'indicatif, négation…)','2. Nommer précisément (subjonctif présent, proposition subordonnée circonstancielle de but, interrogation indirecte partielle…)','3. Analyser la valeur dans le texte : relier le fait grammatical à l\'interprétation'] },
-      { sous:'Exemple (EL 3 — Sarraute)', items:['« Analysez le mode de "puisse" dans "Rien qu\'on puisse dire" »','→ Subjonctif présent dans une relative après négation absolue. Valeur de virtualité : rien de ce qu\'on pourrait dire ne peut exister. Cela dit l\'indicible comme thème central de la pièce.'] },
-    ]
-  },
-];
-
-// ─── GRAMMAIRE ───────────────────────────────────────────────────────────────
-const GRAM_NOTIONS = [
-  { titre:'Les classes grammaticales', items:[
-    'Nom (propre / commun) — varie en genre et en nombre',
-    'Déterminant — se place devant le nom : articles définis (le, la, les), indéfinis (un, une, des), partitifs (du, de la), possessifs (mon, ton…), démonstratifs (ce, cette…)',
-    'Adjectif — précise le sens d\'un nom ; varie en genre et en nombre',
-    'Pronom — remplace un nom : personnel, possessif, démonstratif, indéfini, interrogatif, relatif',
-    'Verbe — varie en personne, nombre, temps, mode, voix',
-    'Adverbe (invariable) — précise un verbe, un adjectif, un autre adverbe : vite, vraiment, très…',
-    'Préposition (invariable) — introduit un GN, pronom, infinitif : à, de, par, pour, sans…',
-    'Conjonction de coordination — relie deux éléments de même niveau : mais, ou, et, donc, or, ni, car',
-    'Conjonction de subordination — introduit une subordonnée : que, quand, si, parce que…',
-  ]},
-  { titre:'Les valeurs des temps de l\'indicatif', items:[
-    'Présent : d\'actualité · de vérité générale · d\'habitude (itératif) · de narration (vivacité) · futur proche · à valeur d\'ordre',
-    'Passé simple : action de premier plan, achevée, délimitée dans le temps',
-    'Imparfait : second plan, description, action inachevée · valeurs modales : politesse, hypothèse, regret',
-    'Plus-que-parfait : action antérieure à un repère passé · valeur modale : irréel du passé (condition non réalisée)',
-    'Futur simple : action à venir · certitude · ordre · vérité générale',
-    'Futur antérieur : action accomplie avant un repère futur · supposition',
-    'Conditionnel présent : fait dépendant d\'une condition · demande polie · hypothèse non avérée',
-    'Conditionnel passé : possibilité non réalisée · atténuation · irréel du passé',
-  ]},
-  { titre:'Le subjonctif et l\'impératif', items:[
-    'Subjonctif — mode du possible, de la virtualité',
-    'En proposition indépendante : ordre (« Qu\'elle vienne ! »), souhait, indignation, supposition',
-    'En subordonnée complétive : après verbes de volonté (vouloir, désirer…), de sentiment (craindre, regretter…)',
-    'En subordonnée circonstancielle : temps (avant que), but (pour que, afin que), concession (bien que), condition (pour peu que)',
-    'En subordonnée relative : après superlatif, après négation, avec intention',
-    'Impératif — mode de la volonté : ordre · défense · demande polie · conseil',
-    'Impératif présent : action future proche ou lointaine',
-    'Impératif passé : action achevée à un moment futur (« Sois rentrée avant minuit »)',
-  ]},
-  { titre:'Les propositions subordonnées relatives', items:[
-    'Introduite par un pronom relatif : qui, que, quoi, dont, où (simples) ; lequel, auquel, duquel… (composés)',
-    'ATTENTION : « que » n\'est un pronom relatif que s\'il remplace un nom (antécédent)',
-    'Relative avec antécédent = relative adjective (épithète ou apposée)',
-    '→ Épithète (déterminative) : ne peut être supprimée sans modifier le sens',
-    '→ Apposée (explicative) : peut être supprimée ; entre virgules',
-    'Relative sans antécédent = relative substantive (équivalente à un GN)',
-    'Fonction du pronom relatif dans la relative : sujet, COD, COI, CC de lieu, complément du nom…',
-  ]},
-  { titre:'Les propositions subordonnées circonstancielles', items:[
-    'Introduites par une conjonction ou locution conjonctive de subordination',
-    'Cause : parce que, puisque, dès lors que…',
-    'Conséquence : si bien que, de sorte que… (indicatif)',
-    'But : pour que, afin que, de peur que… (subjonctif)',
-    'Temps : quand, lorsque, après que, avant que…',
-    'Condition/hypothèse : si + présent → futur (éventuel) · si + imparfait → conditionnel (potentiel ou irréel du présent) · si + plus-que-parfait → conditionnel passé (irréel du passé)',
-    'Concession : bien que, quoique, encore que… (subjonctif)',
-    'Opposition : tandis que, alors que… (indicatif)',
-    'Comparaison : comme, ainsi que… · Comparaison hypothétique : comme si',
-  ]},
-  { titre:'L\'interrogation', items:[
-    'Interrogative directe totale (porte sur toute la phrase, réponse oui/non) : inversion ou « est-ce que »',
-    'Interrogative directe partielle (porte sur un élément, appelle réponse précise) : adverbe interrogatif (comment, pourquoi, quand…) ou pronom interrogatif (qui, que, lequel…)',
-    'Interrogative indirecte : subordonnée dépendant d\'un verbe d\'interrogation ou d\'incertitude',
-    '→ Totale : introduite par « si » · pas d\'inversion · pas de point d\'interrogation',
-    '→ Partielle : mêmes mots interrogatifs qu\'en direct · pas d\'inversion · pas de ?',
-    'Nature des mots interrogatifs : déterminant (quel), pronom (qui, que, lequel), adverbe (combien, comment, pourquoi, où)',
-  ]},
-  { titre:'La négation', items:[
-    'Négation grammaticale : porte sur la phrase — système corrélatif NE + pas, point, plus, jamais, rien, personne, aucun, ni…ni',
-    'Négation totale : porte sur toute la proposition (ne…pas, ne…point, ne…nullement)',
-    'Négation partielle : nie un aspect (ne…plus, ne…jamais, ne…guère, ne…rien)',
-    'Négation exceptive : équivaut à « seulement » (ne…que)',
-    'Double négation : peut équivaloir à une affirmation (« Il n\'est rien qui n\'ait sa mélancolie » = tout a sa mélancolie)',
-    'Ne explétif : sans valeur négative réelle (« je crains qu\'il ne vienne » = « je crains qu\'il vienne »)',
-    'Négation lexicale : préfixes privatifs (im-, il-, dys-), prépositions (sans), antonymes',
-    'Niveau de langue : l\'absence du NE relève du registre familier oral',
-  ]},
-  { titre:'La phrase complexe', items:[
-    'Phrase simple : un seul verbe conjugué à un mode personnel',
-    'Phrase complexe : plusieurs propositions',
-    'Propositions juxtaposées : séparées par virgule, point-virgule ou deux points — lien implicite',
-    'Propositions coordonnées : reliées par une conjonction de coordination (mais, ou, et, donc, or, ni, car)',
-    'Propositions indépendantes : peuvent fonctionner seules',
-    'Propositions subordonnées : dépendent d\'une principale, ne peuvent fonctionner seules',
-    '→ Conjonctive complétive : introduite par « que », COD du verbe principal',
-    '→ Conjonctive circonstancielle : déplaçable, supprimable, exprime une circonstance',
-    '→ Relative : introduite par pronom relatif, complète un antécédent',
-    '→ Participiale : sujet différent du sujet principal, valeur de cause ou de temps',
-    '→ Interrogative indirecte : subordonnée à un verbe d\'interrogation ou d\'ignorance',
-  ]},
-];
-
-// ─── PROMPT ORAL ─────────────────────────────────────────────────────────────
-const buildPrompt = t => `Tu es un examinateur du baccalauréat français pour l'épreuve orale de Français (Première générale). Tu vas conduire l'entretien qui suit la présentation de l'élève, d'une durée d'environ 10 minutes.
-
-TEXTE AU PROGRAMME :
-${t.numero} — ${t.auteur} (${t.date})
-Titre : ${t.titre}
-Parcours associé : ${t.parcours}
-Mouvement littéraire : ${t.mouvement}
-
-Extrait :
-« ${t.extrait.substring(0,600)}… »
-
-Problématique de l'élève : ${t.problematique}
-
-Plan de l'élève :
-${t.etapes.map((e,i)=>`Mouvement ${i+1} (${e.label}) : ${e.titre}`).join('\n')}
-
-TES QUESTIONS DOIVENT COUVRIR CES DOMAINES (dans l'ordre naturel des échanges) :
-
-1. APPROFONDISSEMENT D'UN PROCÉDÉ : Revenir sur un procédé mentionné et demander d'approfondir l'effet ou de le relier à la problématique.
-
-2. PROCÉDÉ NON MENTIONNÉ : Signaler un procédé important non commenté et demander de l'analyser.
-
-3. QUESTION DE GRAMMAIRE (OBLIGATOIRE) : Choisir une phrase ou un groupe du texte et poser une question grammaticale précise. Exemples possibles pour ce texte : ${t.grammaire.enonce}
-
-4. PARCOURS ASSOCIÉ : Demander d'expliquer en quoi ce texte s'inscrit dans le parcours « ${t.parcours} » et de citer un autre texte ou œuvre du parcours.
-
-5. CONTEXTE HISTORIQUE ET LITTÉRAIRE : Poser une question sur le mouvement (${t.mouvement}), ses caractéristiques, sa place dans l'histoire littéraire.
-
-6. INTERPRÉTATION PERSONNELLE : Demander à l'élève ce qu'il pense lui-même de l'effet du texte ou quelle image il retient.
-
-7. GENRE / MISE EN SCÈNE (si applicable) : Comment imagines-tu la mise en scène de ce passage ? Quel rôle jouent les didascalies ?
-
-8. COMPARAISON : Rapprocher ce texte d'un autre texte du programme ou d'une lecture personnelle.
-
-RÈGLES :
-- Commence par accueillir l'élève et lui demander d'entamer sa présentation.
-- Après la présentation, conduis l'entretien naturellement en rebondissant sur les réponses.
-- 2 à 4 phrases max par prise de parole. Ton bienveillant mais exigeant.
-- Si l'élève bloque, guide-le par une question plus simple.
-- Après 8 à 10 échanges, fais un bilan court et encourageant.
-- Réponds toujours en français.`;
-
-// ─── STYLES ──────────────────────────────────────────────────────────────────
-const s = {
-  card: { background:'#fff', border:'0.5px solid #ddd', borderRadius:12, padding:'1.25rem' },
-  label: { fontSize:11, textTransform:'uppercase', letterSpacing:'0.08em', color:'#888', display:'block', marginBottom:4 },
-  btn: { padding:'7px 16px', fontSize:13, fontWeight:500, borderRadius:8, border:'0.5px solid #ccc', background:'#f5f4f0', cursor:'pointer' },
-  tabBtn: a => ({ padding:'7px 13px', fontSize:13, fontWeight:a?500:400, borderRadius:8, border:a?'0.5px solid #aaa':'0.5px solid transparent', background:a?'#fff':'transparent', color:a?'#1a1a18':'#888', cursor:'pointer' }),
-  lvlBtn: (a,c) => ({ padding:'6px 14px', fontSize:12, fontWeight:a?600:400, borderRadius:20, border:`1px solid ${a?c:'#ddd'}`, background:a?c:'#f5f4f0', color:a?'#fff':'#888', cursor:'pointer' }),
-  objBtn: (a,c) => ({ padding:'6px 14px', fontSize:12, fontWeight:a?600:400, borderRadius:20, border:`1px solid ${a?c:'#ddd'}`, background:a?c+'22':'#f5f4f0', color:a?c:'#888', cursor:'pointer' }),
-};
-
-// ─── DONNÉES OBJETS D'ÉTUDE ─────────────────────────────────────────────────
 
 const OBJETS_INFO = {
-  theatre: {
-    oeuvre: 'Pour un oui ou pour un non',
-    auteur: 'Nathalie Sarraute',
-    date: '1982',
-    parcours: 'Théâtre et dispute',
-    cours: [
-      { titre: 'L\'autrice : Nathalie Sarraute (1900–1999)', items: [
-        'Romancière, dramaturge et essayiste, figure majeure du Nouveau Roman.',
-        'Premier essai majeur : Tropismes (1939), qui théorise les « mouvements intérieurs » inavoués.',
-        'Œuvres clés : Le Planétarium (1959), Les Fruits d\'or (1963), Enfance (1983).',
-        'Pour un oui ou pour un non est à l\'origine une pièce radiophonique (1981), publiée en 1982.'
-      ]},
-      { titre: 'L\'œuvre : Pour un oui ou pour un non', items: [
-        'Pièce courte centrée sur le langage : deux amis (H1 et H2) confrontent leurs sous-conversations.',
-        'Personnages désignés par des initiales : suppression du personnage traditionnel.',
-        'Le motif de la dispute : une intonation, un suspens dans la phrase « C\'est bien… ça… ».',
-        'Pas de dénouement classique : la pièce se referme sur un duel verbal « Oui. » / « Non ! »',
-        'Thèmes : l\'incommunicabilité, le poids des non-dits, la violence latente du langage quotidien.'
-      ]},
-      { titre: 'Le parcours associé : « Théâtre et dispute »', items: [
-        'Étude de la dispute comme moteur dramatique : conflit verbal qui structure l\'action.',
-        'Lectures cursives possibles : Molière, Marivaux (Le Jeu de l\'amour et du hasard), Rambert (Clôture de l\'amour).',
-        'Question clé : comment la dispute révèle-t-elle les enjeux profonds des personnages et de la société ?',
-        'Procédés à maîtriser : stichomythies, didascalies, registres polémique et ironique, double énonciation.'
-      ]},
+  theatre:{oeuvre:"Pour un oui ou pour un non",auteur:"Nathalie Sarraute",date:"1982",parcours:"Théâtre et dispute",
+    cours:[
+      {titre:"L'autrice : Nathalie Sarraute (1900–1999)",items:["Romancière, dramaturge et essayiste, figure majeure du Nouveau Roman.","Premier essai majeur : Tropismes (1939), qui théorise les « mouvements intérieurs » inavoués.","Œuvres clés : Le Planétarium (1959), Les Fruits d'or (1963), Enfance (1983).","Pour un oui ou pour un non est à l'origine une pièce radiophonique (1981), publiée en 1982."]},
+      {titre:"L'œuvre : Pour un oui ou pour un non",items:["Pièce courte centrée sur le langage : deux amis (H1 et H2) confrontent leurs sous-conversations.","Personnages désignés par des initiales : suppression du personnage traditionnel.","Le motif de la dispute : une intonation, un suspens dans la phrase « C'est bien… ça… ».","Pas de dénouement classique : la pièce se referme sur un duel verbal « Oui. » / « Non ! »","Thèmes : l'incommunicabilité, le poids des non-dits, la violence latente du langage quotidien."]},
+      {titre:"Le parcours associé : « Théâtre et dispute »",items:["Étude de la dispute comme moteur dramatique : conflit verbal qui structure l'action.","Lectures cursives possibles : Molière, Marivaux, Rambert (Clôture de l'amour).","Question clé : comment la dispute révèle-t-elle les enjeux profonds des personnages ?","Procédés à maîtriser : stichomythies, didascalies, double énonciation, registres polémique et ironique."]},
     ]
   },
-  poesie: {
-    oeuvre: 'Mes Forêts',
-    auteur: 'Hélène Dorion',
-    date: '2021',
-    parcours: 'La poésie, la nature, l\'intime',
-    cours: [
-      { titre: 'L\'autrice : Hélène Dorion (née en 1958)', items: [
-        'Poétesse québécoise, autrice d\'une vingtaine d\'ouvrages.',
-        'Chevalière de l\'Ordre National du Québec, élue à l\'Académie des Lettres.',
-        'Écriture marquée par une dimension philosophique et écologique.',
-        'Mes Forêts (2021) : recueil majeur, structuré en plusieurs sections sur l\'arbre, le temps, la nature.'
-      ]},
-      { titre: 'Le recueil : Mes Forêts', items: [
-        'Recueil de poésie contemporaine, vers libres, absence de ponctuation.',
-        'Le motif central : la forêt comme espace total — vie, mort, mémoire, écriture.',
-        'Structure en sections : « L\'écorce incertaine », « L\'onde du chaos », « Le bruissement du temps »...',
-        'Plaidoyer écologique : dénonciation de la destruction de la nature et de l\'indifférence humaine.',
-        'Dimension d\'art poétique : la forêt comme source du poème, espace de la quête de soi.'
-      ]},
-      { titre: 'Le parcours associé : « La poésie, la nature, l\'intime »', items: [
-        'Articulation entre paysage extérieur et paysage intérieur du poète.',
-        'Lectures cursives possibles : Lamartine (Méditations poétiques), Hugo, Ponge, Bonnefoy.',
-        'Tradition romantique : le paysage sentimental, le moi qui se projette dans la nature.',
-        'Tradition contemporaine : la poésie comme acte écologique, comme témoignage.'
-      ]},
+  poesie:{oeuvre:"Mes Forêts",auteur:"Hélène Dorion",date:"2021",parcours:"La poésie, la nature, l'intime",
+    cours:[
+      {titre:"L'autrice : Hélène Dorion (née en 1958)",items:["Poétesse québécoise, autrice d'une vingtaine d'ouvrages.","Chevalière de l'Ordre National du Québec, élue à l'Académie des Lettres.","Écriture marquée par une dimension philosophique et écologique.","Mes Forêts (2021) : recueil majeur, structuré en plusieurs sections sur l'arbre, le temps, la nature."]},
+      {titre:"Le recueil : Mes Forêts",items:["Recueil de poésie contemporaine, vers libres, absence de ponctuation.","Le motif central : la forêt comme espace total — vie, mort, mémoire, écriture.","Structure en sections : « L'écorce incertaine », « L'onde du chaos », « Le bruissement du temps »...","Plaidoyer écologique : dénonciation de la destruction de la nature et de l'indifférence humaine.","Dimension d'art poétique : la forêt comme source du poème, espace de la quête de soi."]},
+      {titre:"Le parcours associé : « La poésie, la nature, l'intime »",items:["Articulation entre paysage extérieur et paysage intérieur du poète.","Lectures cursives possibles : Lamartine, Hugo, Ponge, Bonnefoy.","Tradition romantique : le paysage sentimental, le moi qui se projette dans la nature.","Tradition contemporaine : la poésie comme acte écologique, comme témoignage."]},
     ]
   },
-  roman: {
-    oeuvre: 'Manon Lescaut',
-    auteur: 'Abbé Prévost',
-    date: '1731',
-    parcours: 'Personnages en marge, plaisirs du romanesque',
-    cours: [
-      { titre: 'L\'auteur : l\'Abbé Prévost (1697–1763)', items: [
-        '[À enrichir avec votre cours]'
-      ]},
-      { titre: 'L\'œuvre : Manon Lescaut', items: [
-        '[À enrichir avec votre cours sur l\'œuvre — intrigue, personnages, structure narrative, etc.]'
-      ]},
-      { titre: 'Le parcours : « Personnages en marge, plaisirs du romanesque »', items: [
-        '[À enrichir avec votre cours sur le parcours]'
-      ]},
+  roman:{oeuvre:"Manon Lescaut",auteur:"Abbé Prévost",date:"1731",parcours:"Personnages en marge, plaisirs du romanesque",
+    cours:[
+      {titre:"L'auteur : l'Abbé Prévost (1697–1763)",items:["[À enrichir avec votre cours]"]},
+      {titre:"L'œuvre : Manon Lescaut",items:["[À enrichir avec votre cours]"]},
+      {titre:"Le parcours : « Personnages en marge, plaisirs du romanesque »",items:["[À enrichir avec votre cours]"]},
     ]
   },
-  idees: {
-    oeuvre: 'Discours de la servitude volontaire',
-    auteur: 'Étienne de La Boétie',
-    date: '1576',
-    parcours: 'Défendre et entretenir la liberté',
-    cours: [
-      { titre: 'L\'auteur : Étienne de La Boétie (1530–1563)', items: [
-        'Humaniste, magistrat et écrivain français de la Renaissance, né à Sarlat en Périgord.',
-        'Ami intime de Montaigne, mort à seulement 32 ans.',
-        'Œuvre brève mais brillante : poèmes, traductions, et surtout le Discours de la servitude volontaire.',
-        'Composé sans doute dès ses années étudiantes (1548–1553), publié posthume en 1576.'
-      ]},
-      { titre: 'L\'œuvre : Discours de la servitude volontaire', items: [
-        'Aussi appelé Le Contr\'un, en raison de sa portée anti-monarchique.',
-        'Retourne la question classique de la tyrannie : pourquoi les peuples se laissent-ils opprimer ?',
-        'Forge la notion paradoxale de « servitude volontaire ».',
-        'Thèses centrales : le tyran tire son pouvoir du peuple ; la libération ne demande qu\'une décision intérieure.',
-        'Texte récupéré par les protestants pendant les guerres de Religion — portée politique brûlante.'
-      ]},
-      { titre: 'Le parcours associé : « Défendre et entretenir la liberté »', items: [
-        'Étude de la littérature engagée du XVIe au XVIIIe siècle.',
-        'Lectures cursives possibles : Montaigne, Pascal, Voltaire, Rousseau, Diderot.',
-        'Comment l\'écriture devient-elle un outil de critique politique et de défense de la liberté ?',
-        'Procédés à maîtriser : apostrophe, ironie, registre polémique, raisonnement par analogie.'
-      ]},
+  idees:{oeuvre:"Discours de la servitude volontaire",auteur:"Étienne de La Boétie",date:"1576",parcours:"Défendre et entretenir la liberté",
+    cours:[
+      {titre:"L'auteur : Étienne de La Boétie (1530–1563)",items:["Humaniste, magistrat et écrivain français de la Renaissance, né à Sarlat en Périgord.","Ami intime de Montaigne, mort à seulement 32 ans.","Œuvre brève mais brillante : poèmes, traductions, et surtout le Discours de la servitude volontaire.","Composé sans doute dès ses années étudiantes (1548–1553), publié posthume en 1576."]},
+      {titre:"L'œuvre : Discours de la servitude volontaire",items:["Aussi appelé Le Contr'un, en raison de sa portée anti-monarchique.","Retourne la question classique de la tyrannie : pourquoi les peuples se laissent-ils opprimer ?","Forge la notion paradoxale de « servitude volontaire ».","La maxime la plus célèbre : « Soyez résolus à ne plus servir, et vous voilà libres. »","Texte récupéré par les protestants pendant les guerres de Religion — portée politique brûlante."]},
+      {titre:"Le parcours : « Défendre et entretenir la liberté »",items:["Étude de la littérature engagée du XVIe au XVIIIe siècle.","Lectures cursives possibles : Montaigne, Pascal, Voltaire, Rousseau, Diderot.","Comment l'écriture devient-elle un outil de critique politique et de défense de la liberté ?","Procédés à maîtriser : apostrophe, ironie, registre polémique, raisonnement par analogie."]},
     ]
   }
 };
 
-// ─── QUIZZES PAR OBJET ──────────────────────────────────────────────────────
+const TEXTES = [
+  {id:1,objet:'theatre',numero:'EL 1',titre:"Clôture de l'amour",auteur:'Pascal Rambert',date:'2011',parcours:'Théâtre et dispute',mouvement:'Théâtre contemporain',
+    extrait:"AUDREY\nje t'aime comme jamais une fiction je veux un enfant une fiction je veux encore un enfant et aussi je veux encore encore un enfant une fiction un mausolée une prison une vie épouvantable ?\nça c'est une vie épouvantable, Stan ?\nlève la tête\nlève la tête et regarde-moi une fiction détestable ?\nça c'était notre vie ?\npauvre connard\ncomme je te plains\ncomme tu n'as rien compris rien\nmais d'accord d'accord tu as parlé tu as tellement parlé et rien de ce que tu auras dit ici n'est rédimable non rien ne sera rédimable tu as raison ce qui suit va être pauvre violent petit et laid car tes mots le furent ici\n[…] on va faire des étincelles dans le registre malheur chagrin désespoir on va tous se mettre à la décroissance ça va être génial on va tous se mettre à la décroissance de la joie de l'entrain des perspectives enchantées.",
+    problematique:"Comment le personnage d'Audrey réfute-t-il l'argumentation de Stan ?",
+    etapes:[
+      {label:'L. 1–13',titre:'La reprise des paroles de Stan',procedes:["Épiphore « une fiction » — reprend les mots de Stan pour les retourner contre lui","Absence de ponctuation — urgence, colère, souffle haletant","Didascalie interne + impératifs « lève la tête » — renversement du rapport de force","Question rhétorique « ça c'était notre vie ? » — solitude du monologue","Insulte « pauvre connard » — violence après la longue tirade de Stan","Épanorthose « tu as parlé tu as tellement parlé »","Épizeuxe « d'accord d'accord » — exaspération"]},
+      {label:'L. 14–fin',titre:'La projection dans un avenir sombre',procedes:["Futur de prédiction « va produire des monstres » — dystopie annoncée","Métaphore « rat crevé de chagrin »","Subordonnée relative poétique « des semaines où l'horizon est mort »","Concession « tu as raison » — ironie rhétorique","Antiphrase : « bravo », « jolie », « super », « on va s'éclater »","Rythme ternaire « malheur chagrin désespoir »","Ironie finale sur « la décroissance » — détournement d'un concept politique"]}
+    ],
+    grammaire:{enonce:"Dans « rien de ce que tu auras dit ici n'est rédimable », analysez le temps et la valeur de « tu auras dit ».",reponse:"Futur antérieur de l'indicatif. Il exprime une action qui sera accomplie avant un repère futur. Ici il place les paroles de Stan dans un passé définitif vu depuis l'avenir, renforçant l'idée d'irréversibilité et d'anéantissement total de son discours."}
+  },
+  {id:2,objet:'theatre',numero:'EL 2',titre:"Scène d'exposition",auteur:'Nathalie Sarraute',date:'1981',parcours:'Le langage et ses dessous',mouvement:'Nouveau Roman / Théâtre de la parole',
+    extrait:"H.1. – Écoute, je voulais te demander… C'est un peu pour ça que je suis venu… que s'est-il passé ? Qu'est-ce que tu as contre moi ?\nH.2. – Mais rien… Pourquoi ?\nH.1. – Oh, je ne sais pas… Il me semble que tu t'éloignes… tu ne fais plus jamais signe…\nH.2. – Tu sais bien : je prends rarement l'initiative, j'ai peur de déranger.\nH.1. – Nous n'en sommes tout de même pas là… Non, je sens qu'il y a quelque chose…\nH.2. – Mais que veux-tu qu'il y ait ?\nH.1. – il n'y a jamais rien eu entre nous… rien dont je me souvienne…\nH.2. – Moi, par contre, il y a des choses que je n'oublie pas. […]\nH.1. – tu étais à l'autre bout du monde… ça me fait de la peine, tu sais…\nH.2. – Non… vraiment rien… Rien qu'on puisse dire…",
+    problematique:"Comment cette scène d'exposition joue-t-elle sur l'incertitude des répliques pour annoncer un des thèmes centraux de la pièce ?",
+    etapes:[
+      {label:'L. 1–11',titre:"L'énigme de l'éloignement posée",procedes:["Dénomination H1/H2 — suppression du personnage traditionnel","Points de suspension et aposiopèse — parole qui se cherche","Modalisateur « un peu » — objet flou dès l'ouverture","Négation « tu ne fais plus jamais signe » — déséquilibre dans la relation","Antithèse « quelque chose » / « rien » — opposition structurante"]},
+      {label:'L. 12–fin',titre:"L'analyse de l'amitié",procedes:["Antithèse jamais / toujours — fossé entre les deux","Tournure emphatique « il y a des choses que je n'oublie pas » — sonne comme une menace","Prosopopée de la mère + registre pathétique","Didascalie « hausse les épaules » — exaspération de H2","Pronoms sans référent (« ça », « quelque chose ») — impuissance du langage"]}
+    ],
+    grammaire:{enonce:"Dans « Rien qu'on puisse dire » (fin), analysez la nature et la valeur du mode du verbe « puisse ».",reponse:"Subjonctif présent dans une proposition subordonnée relative introduite par « que » après « rien ». Le subjonctif après une négation absolue exprime la virtualité : il n'existe aucune parole qui serait possible. Cela dit l'indicible total, thème central de la pièce."}
+  },
+  {id:3,objet:'theatre',numero:'EL 3',titre:"« C'est bien, ça »",auteur:'Nathalie Sarraute',date:'1981',parcours:'Le langage et ses dessous',mouvement:'Nouveau Roman / Théâtre de la parole',
+    extrait:"H. 1 : Allons, vas-y…\nH. 2 : Eh bien, c'est juste des mots…\nH. 1 : Des mots ? Entre nous ? Ne me dis pas qu'on a eu des mots...\nH. 2 : Non, pas des mots comme ça... Des mots qu'on n'a pas « eus », justement...\nH. 1 : Lesquels ? Tu me fais languir...\n[…]\nH. 2 : tu m'as dit : « C'est bien... ça... » Juste avec ce suspens... cet accent…\nH. 1 : Ce n'est pas vrai. Ça ne peut pas être ça...\nH. 2 : Pas tout à fait ainsi... « C'est biiien…… ça... » Un étirement et un suspens avant que « ça » arrive... ce n'est pas sans importance.\nH. 1 : Et ça... ce « ça » précédé d'un suspens t'a poussé à rompre...",
+    problematique:"Comment le dévoilement du motif de la dispute, d'apparence dérisoire, permet-il de réfléchir sur ce qui se cache derrière le langage quotidien ?",
+    etapes:[
+      {label:'L. 1–17',titre:'La montée du suspens',procedes:["Double impératif « Allons, vas-y » — pression maximale de H1","Adverbe « juste » — ironie pour le public (double énonciation)","Jeu sur l'expression figée « avoir des mots » + guillemets","Négation « On ne sait pas comment ils vous viennent » — parole pré-consciente","Reprise « rien » / « ce rien » avec déterminant — le rien est bien quelque chose","Didascalie « soupire » répétée — agacement, renoncement"]},
+      {label:'L. 17–fin',titre:'La révélation',procedes:["Répétition triple « tu m'as dit » — difficulté à avouer, suspens","Chute comique : « C'est bien… ça… » — dérisoire au regard de l'attente","Suite de négations — incompréhension totale de H1","Précision phonique : « C'est biiien…… ça... » — le sens réside dans la voix","Question rhétorique « à quoi bon ? » — H2 se pose en victime"]}
+    ],
+    grammaire:{enonce:"Dans « Des mots qu'on n'a pas eus, justement », analysez la nature et la fonction du pronom relatif « que ».",reponse:"« que » est un pronom relatif (et non une conjonction), car il reprend l'antécédent « des mots ». Sa fonction dans la relative est COD du verbe « avons eu ». Sa présence crée une double énonciation : les mots dont on parle, on ne peut même pas les nommer sans les avoir eus."}
+  },
+  {id:4,objet:'theatre',numero:'EL 4',titre:'Le dénouement',auteur:'Nathalie Sarraute',date:'1981',parcours:'Le langage et ses dessous',mouvement:'Nouveau Roman / Théâtre de la parole',
+    extrait:"H. 2 : Et moi... eh bien, puisque nous en sommes là... c'est comme de la claustrophobie... je suis dans un édifice fermé de tous côtés... partout des compartiments, des cloisons, des étages…\n[…] Du mal à reprendre vie... parfois encore le lendemain je me sens comme un peu inerte... il faut du temps pour que ça revienne, cette pulsation, un pouls qui se remet à battre…\nH. 1 : Oui. Je vois. Un silence. A quoi bon s'acharner ?\nH. 2 : Ce serait tellement plus sain…\nH. 1 : Pour chacun de nous... plus salutaire…\nH. 2 : La meilleure solution…\nH. 1 : Mais tu sais bien comment nous sommes. […]\nH. 1 : Pour un oui... ou pour un non ? Un silence.\nH. 2 : Oui ou non ?…\nH. 1 : Ce n'est pourtant pas la même chose…\nH. 2 : En effet : Oui. Ou non.\nH. 1 : Oui.\nH. 2 : Non !",
+    problematique:"En quoi le dénouement de Pour un oui ou pour un non se présente-t-il comme une résolution ambiguë ?",
+    etapes:[
+      {label:'L. 1–12',titre:'Le consentement à la rupture',procedes:["Subordonnée causale « puisque nous en sommes là » — écho de la scène d'exposition","Comparaison « comme de la claustrophobie » — image de l'enfermement kafkaïen","Antithèse mort/vie (« inerte » / « pouls qui se remet à battre »)","Anadiplose « Oui. Je vois. » — moment de compréhension mutuelle","Suite de stichomythies — accord de concert","Didascalie « Un silence » — décision de rupture actée"]},
+      {label:'L. 13–fin',titre:'Le dénouement ravi : la société juge',procedes:["Guillemets — frontière entre la société (juge) et les personnages","Vocabulaire administratif et judiciaire : « dossiers », « déboutés »","Prosopopées — la société imaginée rejette leur rupture","Délexicalisation de l'expression figée « pour un oui ou pour un non »","Exclamations finales « Oui. » / « Non ! » — duel ultime qui relance la pièce","Registre cyclique — propre au théâtre de l'Absurde"]}
+    ],
+    grammaire:{enonce:"Dans « puisque nous en sommes là » (l. 1), analysez la nature et la valeur de cette proposition subordonnée.",reponse:"Proposition subordonnée conjonctive circonstancielle de cause, introduite par la conjonction « puisque ». « Puisque » introduit une cause présentée comme connue des deux interlocuteurs. Ici, H2 part d'une évidence partagée — la rupture inéluctable — révélant que les deux personnages sont enfin d'accord sur un point."}
+  },
+  {id:5,objet:'poesie',numero:'EL 5',titre:"« L'Isolement »",auteur:'Alphonse de Lamartine',date:'1820',parcours:"Lyrisme et quête d'identité",mouvement:'Romantisme',
+    extrait:"Souvent sur la montagne, à l'ombre du vieux chêne,\nAu coucher du soleil, tristement je m'assieds ;\nJe promène au hasard mes regards sur la plaine,\nDont le tableau changeant se déroule à mes pieds.\n[…]\nMais à ces doux tableaux mon âme indifférente\nN'éprouve devant eux ni charme ni transports,\nJe contemple la terre ainsi qu'une ombre errante :\nLe soleil des vivants n'échauffe plus les morts.\n[…]\nQue me font ces vallons, ces palais, ces chaumières,\nVains objets dont pour moi le charme est envolé ?\nFleuves, rochers, forêts, solitudes si chères,\nUn seul être vous manque, et tout est dépeuplé.",
+    problematique:'Comment le poème crée-t-il un lien entre le paysage (extérieur) et la personnalité (intérieure) du poète ?',
+    etapes:[
+      {label:'Strophes 1–4',titre:'La description du paysage au crépuscule',procedes:["Suite de CC de lieu + temps — décor romantique","Adverbe « tristement » — coloration émotionnelle dès l'ouverture","Présence du « je » lyrique — le moi au centre","Métaphore « le tableau changeant » — lien avec la peinture","Antithèse « écumantes » / « dormantes » — clair-obscur","Périphrase « la reine des ombres » (la lune) — style néoclassique"]},
+      {label:'Strophes 5–7',titre:"L'indifférence du poète au paysage",procedes:["Conjonction « Mais » — rupture, tournant du texte","Antithèse « doux tableaux » / « âme indifférente »","Double négation « n'éprouve… ni charme ni transports »","Comparaison « ainsi qu'une ombre errante » — métamorphose en fantôme","Antithèse « vivants / morts » — le poète dans le royaume des morts","Vers célèbre « Un seul être vous manque » — présent de vérité générale"]}
+    ],
+    grammaire:{enonce:"Dans « je contemple la terre ainsi qu'une ombre errante » (v. 19), analysez la nature et la valeur de « ainsi qu'une ombre errante ».",reponse:"Proposition comparative introduite par « ainsi que ». Elle exprime la manière dont le poète contemple la terre : comme un fantôme, un être déjà mort. Ce CC de manière construit une image de dépersonnalisation et de distance radicale par rapport au monde des vivants."}
+  },
+  {id:6,objet:'poesie',numero:'EL 6',titre:"« Mes forêts sont un champ silencieux »",auteur:'Hélène Dorion',date:'2021',parcours:"La poésie, la nature, l'intime",mouvement:'Poésie contemporaine québécoise',
+    extrait:"Mes forêts sont un champ silencieux\nde naissance et de morts\nla mémoire de saisons\nqui se lèvent et retombent\nmes forêts sont du temps qui s'immisce\nà travers tronc branche racine\nelles traversent le feuillage du jour\ncapturent l'ombre capturent l'éclat\nelles sont la solitude disséminée\ncomme poussière de notre passage\n[…]\nelles sont des ossements\nque lèche l'invisible\n[…]\nsi peu me fait vivre\nquand c'est plein d'étoiles\net que s'avance le poème.",
+    problematique:"Comment le poème présente-t-il l'espace poétique de la forêt ?",
+    etapes:[
+      {label:'Strophes 1–3',titre:'Le temps qui passe au cœur des forêts',procedes:["Anaphore « Mes forêts sont » — déterminant possessif, appropriation affective","Présent de vérité générale — définition universelle","Antithèses « naissance / morts », « se lèvent et retombent »","Verbes d'action « s'immisce », « traversent », « capturent » — forêt énergie active","Référence biblique « comme poussière de notre passage »","Champ lexical de l'écriture : « craie », « lettres », « mots »"]},
+      {label:'Strophes 4–7',titre:"L'ambiguïté vie/mort et le lien avec le poème",procedes:["« ossements » — memento mori","Personnification « elles dorment nues mes forêts »","Vers bref « si peu me fait vivre » — humilité de la poétesse","Pronom réfléchi « s'avance le poème » — le poème s'alimente de lui-même"]}
+    ],
+    grammaire:{enonce:"Dans « une poignée de roches / qui savent les âges mes forêts » (v. 11–12), analysez la nature et la fonction de la proposition « qui savent les âges ».",reponse:"Proposition subordonnée relative, introduite par le pronom relatif « qui » (sujet dans la relative), qui complète l'antécédent « une poignée de roches ». C'est une relative adjective épithète (déterminative). Elle personnifie les roches en leur attribuant une mémoire, ce qui inscrit la forêt dans une temporalité qui dépasse l'humain."}
+  },
+  {id:7,objet:'poesie',numero:'EL 7',titre:"« Il souffle mille voix de vent »",auteur:'Hélène Dorion',date:'2021',parcours:"La poésie, la nature, l'intime",mouvement:'Poésie contemporaine québécoise',
+    extrait:"Il souffle mille voix de vent\nsur la montagne que traversent\ndes marées tant d'aubes\nun silence de fin de jour\nquand s'amorce la descente\nvers soi\n[…]\non entend que revient\nun désir d'orage\ndans le jardin chargé de remous\nle désordre des existences\noù l'on piétine la vie\n[…]\non appelle des catastrophes\npour les couvrir du tissu\nde nos indifférences\nil se fait tard\npour la nuit humaine\non ne pourra pas toujours\nne pas recommencer on ne pourra\npas toujours fuir",
+    problematique:"Comment le poème devient-il un plaidoyer écologique ?",
+    etapes:[
+      {label:'Strophes 1–3',titre:'La fragilité du monde',procedes:["Hyperbole « mille voix » — univers animiste, chaos","Allitérations en f et v — harmonie imitative du vent","CC de lieu « vers soi » — catabase, descente vers l'intérieur","Négation « qui n'ignore pas sa fragilité »"]},
+      {label:'Strophes 4–6',titre:'La destruction du monde',procedes:["« désir d'orage » — métaphore, l'humain veut sa propre perte","Champ lexical de la violence : « remous », « désordre », « piétine »","Deux négations « ne va plus » — destruction en cours","Question rhétorique « où aller » — perte de repères"]},
+      {label:'Strophes 7–9',titre:"L'indifférence humaine et la fatalité",procedes:["Pronom indéfini « on » + possessif « nos » — toute l'humanité accusée","Synesthésie « regards étouffent », « poignées de cris »","Métaphore « nuit humaine » — responsabilité humaine","Double négation finale — répétition des failles humaines"]}
+    ],
+    grammaire:{enonce:"Dans « on appelle des catastrophes / pour les couvrir du tissu / de nos indifférences », analysez la nature et la valeur de la proposition introduite par « pour ».",reponse:"Proposition infinitive à valeur circonstancielle de but, introduite par la préposition « pour » suivie de l'infinitif « couvrir ». Elle révèle l'intentionnalité accusée : l'humain appelle les catastrophes exprès pour les dissimuler sous son indifférence. La poétesse dénonce ainsi une complicité consciente."}
+  },
+  {id:8,objet:'poesie',numero:'EL 8',titre:"« La nuit s'approfondit »",auteur:'Hélène Dorion',date:'2021',parcours:"La poésie, la nature, l'intime",mouvement:'Poésie contemporaine québécoise',
+    extrait:"La nuit s'approfondit\net l'on se met à rêver\ndu haut des falaises de Rilke\ndans la forêt de Dante\non voit le passé\ndéjà on lit le futur\n[…]\non traverse le bois de Walden\nla mémoire des saisons de Zanzotto\nles paysages intérieurs\nd'Hopkins les clairières de Zambrano\nvers la connaissance de soi\non a marché on s'est plongé\ndans le long travail de l'amour\non a trébuché\nrebondi puis chuté de nouveau\nle temps jamais ne s'arrête\nnous dit l'arbre\n nous dit la forêt\net sur la branche du présent\nun poème murmure\nun chemin vaste et lumineux\nqui donne sens\nà ce qu'on appelle humanité",
+    problematique:"Comment Hélène Dorion transforme-t-elle la fin de son recueil en art poétique ?",
+    etapes:[
+      {label:'v. 1–13',titre:"Traversée initiatique par les « forêts » littéraires",procedes:["Métaphore « La nuit s'approfondit » — propice à la rêverie","Pronom impersonnel « l'on » — universalité de l'expérience","CC de lieu « du haut des falaises de Rilke » — références littéraires devenues lieux géographiques","Parallélisme « on voit le passé / déjà on lit le futur » — poésie comme voyance","Références: Walden (Thoreau), Zanzotto, Hopkins, Zambrano"]},
+      {label:'v. 14–21',titre:"L'épreuve du temps",procedes:["Passé composé « on a marché » — bilan rétrospectif","Verbes successifs : trébuché, rebondi, chuté — chemin non linéaire","Typographie imitative : enjambements qui miment la chute","Parallélisme « nous dit l'arbre / nous dit la forêt » — prosopopée"]},
+      {label:'v. 22–fin',titre:"Le rôle salvateur de la poésie",procedes:["Métaphore « sur la branche du présent » — instant précaire","Monostiche « un poème murmure » — humilité","COD inattendu « un chemin vaste et lumineux » — le poème devient chemin","Subordonnée relative « qui donne sens » — fonction de la poésie selon Dorion"]}
+    ],
+    grammaire:{enonce:"Dans « le temps jamais ne s'arrête / nous dit l'arbre » (v. 19–20), analysez la structure de la phrase et identifiez la figure de style principale.",reponse:"« nous dit l'arbre » est une proposition incise (ou incidente), indiquant l'auteur des paroles. Il s'agit d'un discours direct sans guillemets — caractéristique du style de Dorion. La prosopopée (l'arbre qui parle) est renforcée par l'incise qui valide ce discours comme celui d'un locuteur ordinaire. L'antéposition « jamais » accentue la valeur de vérité générale."}
+  },
+  {id:12,objet:'roman',numero:'EL 12',titre:"L'épisode du Prince Italien",auteur:'Abbé Prévost',date:'1753',parcours:'Personnages en marge, plaisirs du romanesque',mouvement:'Roman du XVIIIe siècle',
+    extrait:"À mon réveil, Manon me déclara que, pour passer le jour dans notre appartement, elle ne prétendait pas que j'en eusse l'air plus négligé, et qu'elle voulait que mes cheveux fussent accommodés de ses propres mains. […] Ce badinage nous occupa jusqu'à l'heure du dîner. Le goût qu'elle y avait pris m'avait paru si naturel, et sa gaieté sentait si peu l'artifice […]\n– Quoi donc ? m'écriai-je. Qui ? Quel prince ?\nElle ne répondit point à mes questions.\n– Faites-le monter, dit-elle froidement au valet ; et se tournant vers moi :\n– Cher amant, toi que j'adore, reprit-elle d'un ton enchanteur, je te demande un moment de complaisance, un moment, un seul moment.\n[…] elle empoigna d'une main mes cheveux, prit de l'autre son miroir de toilette ; l'ouvrant du genou, elle offrit à l'étranger un spectacle qui ne dut pas lui causer peu d'étonnement. […]\n– Voyez, monsieur, regardez-vous bien, et rendez-moi justice. Voici l'homme que j'aime, et que j'ai juré d'aimer toute ma vie. Faites la comparaison vous-même.",
+    problematique:"Comment Prévost fait-il de cette scène intime une véritable mise en scène théâtrale où Manon s'affirme comme maîtresse du jeu ?",
+    etapes:[
+      {label:'L. 1–11',titre:"Le jeu de Manon et l'aveuglement de des Grieux",procedes:["Subjonctif de volonté « elle voulait que mes cheveux fussent » — Manon contrôle","Terme « amusement » — registre ludique qui endort la vigilance","Comparatif de supériorité « plus de soins que je ne lui en avais vu » — indice de préméditation","Adverbes « si naturel / si peu l'artifice » — aveuglement de des Grieux","Antithèse naturel/artifice — thème central du roman"]},
+      {label:'L. 12–19',titre:"L'affrontement verbal",procedes:["Phrases exclamatives brèves « Quoi ? Qui ? Quel prince ? » — stupéfaction, colère","Silence de Manon « ne répondit point » — stratégie, contrôle absolu","Adverbe « froidement » — sang-froid contrastant avec l'émotion de des Grieux","Registre amoureux précieux : « Cher amant, toi que j'adore »","Épanorthose « un moment, un seul moment » — minimisation rhétorique"]},
+      {label:'L. 20–fin',titre:'Le coup de théâtre : Manon triomphante',procedes:["Verbe violent « empoigna » — les cheveux deviennent accessoire de scène","Détail comique « l'ouvrant du genou » — registre de la farce","Terme « spectacle » — dimension théâtrale, Manon metteuse en scène","Litote « ne dut pas lui causer peu d'étonnement »","Impératifs cinglants « Voyez / regardez-vous / Faites la comparaison »","Miroir — accessoire qui passe de coquetterie à instrument de mise en scène"]}
+    ],
+    grammaire:{enonce:"Dans « elle voulait que mes cheveux fussent accommodés de ses propres mains » (l. 2–3), analysez le mode et la valeur de « fussent accommodés ».",reponse:"Subjonctif imparfait passif (auxiliaire être « fussent » + participe passé « accommodés »). Il est dans une proposition subordonnée conjonctive complétive (COD du verbe de volonté « voulait »). Le subjonctif après un verbe de volonté est obligatoire. L'imparfait marque la concordance des temps (récit au passé). Cela donne à la volonté de Manon une coloration autoritaire et préméditation."}
+  },
+  {id:14,objet:'idees',numero:'EL 14',titre:"« Pauvres gens misérables »",auteur:'Étienne de La Boétie',date:'1576',parcours:'Défendre et entretenir la liberté',mouvement:'Humanisme / Renaissance',
+    extrait:"Pauvres gens misérables, peuples insensés, nations opiniâtres à votre mal et aveugles à votre bien ! Vous vous laissez enlever sous vos yeux le plus beau et le plus clair de votre revenu, vous laissez piller vos champs, voler et dépouiller vos maisons […] Et tous ces dégâts, ces malheurs, cette ruine, ne vous viennent pas des ennemis, mais certes bien de l'ennemi, de celui-là même que vous avez fait ce qu'il est […] Ce maître n'a pourtant que deux yeux, deux mains, un corps, et rien de plus que n'a le dernier des habitants. […] D'où tire-t-il tous ces yeux qui vous épient, si ce n'est de vous ? Comment a-t-il tant de mains pour vous frapper, s'il ne vous les emprunte ? […] Vous semez vos champs pour qu'il les dévaste, vous meublez vos maisons pour fournir ses pilleries, vous élevez vos filles afin qu'il puisse assouvir sa luxure […] Soyez résolus à ne plus servir, et vous voilà libres. […] vous le verrez, tel un grand colosse dont on a brisé la base, fondre sous son poids et se rompre.",
+    problematique:"Comment La Boétie dénonce-t-il la responsabilité du peuple dans sa propre servitude ?",
+    etapes:[
+      {label:'L. 1–5',titre:'Le constat des dépossessions',procedes:["Apostrophe + gradation ternaire : « gens, peuples, nations »","Antithèse « mal / bien » — aveuglement pathologique","Anaphore « vous laissez » — la passivité comme responsabilité","Énumération des verbes de dépossession : « enlever, piller, voler, dépouiller »"]},
+      {label:'L. 6–14',titre:'Le responsable : le maître créé par le peuple lui-même',procedes:["Antithèse « des ennemis » (pluriel) / « de l'ennemi » (singulier défini)","Proposition relative « celui-là même que vous avez fait ce qu'il est » — thèse centrale","Négation restrictive « n'a que deux yeux, deux mains » — désacralisation du tyran","Série de questions rhétoriques — imposition d'une évidence","Métonymies « yeux, mains, pieds » — le peuple fournit ses propres instruments d'oppression"]},
+      {label:'L. 15–fin',titre:'La solution : maxime finale',procedes:["Anaphore « Vous semez / vous meublez / vous élevez / vous nourrissez »","Subordonnées de but (« pour que », « afin que ») — actes présentés comme intentionnels","Maxime « Soyez résolus à ne plus servir, et vous voilà libres »","Comparaison finale « tel un grand colosse » — allusion biblique"]}
+    ],
+    grammaire:{enonce:"Dans « Vous semez vos champs pour qu'il les dévaste » (l. 15), analysez la nature et la valeur de la proposition « pour qu'il les dévaste ».",reponse:"Proposition subordonnée conjonctive circonstancielle de but, introduite par la locution conjonctive « pour que ». Le verbe est au subjonctif (mode obligatoire dans les subordonnées de but). La Boétie présente comme une finalité volontaire ce qui n'est que le résultat de la passivité du peuple, ce qui renforce l'accusation de complicité."}
+  },
+  {id:15,objet:'idees',numero:'EL 15',titre:"« Cinq ou six »",auteur:'Étienne de La Boétie',date:'1576',parcours:'Défendre et entretenir la liberté',mouvement:'Humanisme / Renaissance',
+    extrait:"J'en arrive maintenant à un point qui est, selon moi, le ressort et le secret de la domination […] Ce ne sont pas les bandes de gens à cheval, les compagnies de fantassins, ce ne sont pas les armes qui défendent un tyran, mais toujours quatre ou cinq hommes qui le soutiennent. Il en a toujours été ainsi : cinq ou six ont eu l'oreille du tyran […] Ces six en ont sous eux six cents, qu'ils corrompent autant qu'ils ont corrompu le tyran. Ces six cents en tiennent sous leur dépendance six mille, qu'ils élèvent en dignité. […] non pas six mille, mais cent mille et des millions tiennent au tyran par cette chaîne ininterrompue […] En somme, par les gains et les faveurs qu'on reçoit des tyrans, on en arrive à ce point qu'ils se trouvent presque aussi nombreux, ceux auxquels la tyrannie profite, que ceux auxquels la liberté plairait.",
+    problematique:"Comment La Boétie dévoile-t-il les mécanismes concrets de la tyrannie et montre-t-il qu'elle repose sur une corruption organisée en cascade ?",
+    etapes:[
+      {label:'L. 1–10',titre:'La formulation de la thèse',procedes:["Annonce solennelle « le ressort et le secret » — révélation attendue","Réfutation de l'opinion commune : les armées ne protègent pas le tyran","Image de l'« épouvantail » — parade illusoire","Exemple historique des empereurs romains","Antithèse numérique : armées / « quatre ou cinq hommes »"]},
+      {label:'L. 11–25',titre:'La pyramide de la corruption',procedes:["Adverbe « toujours » — loi universelle","Champ lexical du vice : « cruautés, plaisirs, voluptés, rapines »","Verbe « dresser » (dressage animalier) — les six éduquent le tyran","Progression géométrique : 6 → 600 → 6000 — mathématique de la corruption","Métaphore de la chaîne — solidarité et servitude"]},
+      {label:'L. 25–fin',titre:'La conclusion amère',procedes:["Connecteur conclusif « en somme »","Comparaison d'égalité « aussi nombreux que »","Conditionnel « plairait » vs. présent « profite » — réel vs. désir","Phrase finale désenchantée — la servitude est devenue un intérêt partagé"]}
+    ],
+    grammaire:{enonce:"Dans « Ces six cents en tiennent sous leur dépendance six mille, qu'ils élèvent en dignité » (l. 15), analysez la nature et la fonction de la proposition introduite par « qu' ».",reponse:"Proposition subordonnée relative, introduite par le pronom relatif « que » (COD dans la relative : « ils élèvent ces six mille »). L'antécédent est « six mille ». C'est une relative adjective épithète déterminative. La corruption passe ici par la faveur (« élèvent en dignité ») et non la force : la subordination hiérarchique devient le moteur du système."}
+  },
+];
 
 const QUIZ_OBJETS = {
-  theatre: [
-    { q:'Dans Pour un oui ou pour un non, pourquoi les personnages sont-ils appelés H1 et H2 ?', o:['Pour concentrer l\'attention sur la parole plutôt que sur l\'identité','Pour signaler qu\'ils sont historiens','Parce que Sarraute ne connaissait pas leurs noms','Pour imiter le théâtre classique'], r:0 },
-    { q:'Qu\'est-ce qu\'un tropisme selon Sarraute ?', o:['Une figure de style fondée sur la comparaison','Un mouvement intérieur inconscient qui affleure sous la conversation ordinaire','Un genre théâtral du XXe siècle','Une technique de mise en scène'], r:1 },
-    { q:'La « sous-conversation » chez Sarraute désigne…', o:['Le texte des didascalies','Ce qui se dit vraiment sous les mots de la conversation apparente, le flux intérieur inavoué','Les répliques non prononcées sur scène','Le résumé du texte en exergue'], r:1 },
-    { q:'Dans « C\'est bien, ça », qu\'est-ce qui constitue le véritable motif de la rupture ?', o:['Une dette non remboursée','Un regard méprisant lors d\'un dîner','Une intonation légèrement condescendante dans « C\'est bien… ça »','Un oubli d\'anniversaire'], r:2 },
-    { q:'La double énonciation au théâtre désigne le fait que…', o:['Deux acteurs parlent en même temps','Le personnage s\'adresse à un autre personnage mais aussi implicitement au public','La pièce est écrite pour être lue et jouée','Le metteur en scène intervient dans le texte'], r:1 },
-    { q:'Dans Clôture de l\'amour, quelle figure Audrey utilise-t-elle en répétant « une fiction » en fin de groupe ?', o:['Anaphore','Épiphore','Épizeuxe','Chiasme'], r:1 },
-    { q:'Les stichomythies sont…', o:['Des apartés entre deux acteurs hors scène','Des répliques très courtes qui s\'enchaînent rapidement entre deux personnages','Des monologues de plus de vingt répliques','Des didascalies indiquant les déplacements'], r:1 },
-    { q:'Dans le dénouement de Sarraute, les exclamations finales « Oui. » / « Non ! » relancent le duel. À quel courant cela rattache-t-il la pièce ?', o:['Au classicisme','Au surréalisme','Au théâtre de l\'Absurde (Beckett, Ionesco)','Au romantisme'], r:2 },
-    { q:'Dans Clôture de l\'amour, Audrey dit « tu as raison » avant de décrire un avenir sombre. Quelle stratégie rhétorique emploie-t-elle ?', o:['La concession apparente, pour mieux retourner l\'argument','L\'aveu sincère de sa défaite','La captatio benevolentiae','L\'ironie romantique'], r:0 },
-    { q:'Quel mouvement littéraire relie les deux textes de Sarraute au programme ?', o:['Le surréalisme','Le Nouveau Roman / Théâtre de la parole','L\'existentialisme','Le naturalisme'], r:1 },
-  ],
-  poesie: [
-    { q:'Dans L\'Isolement de Lamartine, que signifie « Le soleil des vivants n\'échauffe plus les morts » (v. 20) ?', o:['Lamartine critique la société qui oublie ses morts','Le poète, en deuil, se perçoit lui-même comme mort','C\'est une métaphore du coucher du soleil','C\'est une allusion à l\'enfer de Dante'], r:1 },
-    { q:'Le poème « L\'Isolement » est issu de quel recueil ?', o:['Les Contemplations','Les Méditations poétiques','Les Fleurs du Mal','Alcools'], r:1 },
-    { q:'Dans « Mes forêts sont un champ silencieux », quelle est la portée du déterminant possessif « Mes » ?', o:['Dorion possède légalement ces forêts','Il s\'agit d\'une appropriation affective et intellectuelle des forêts','C\'est une erreur typographique','Il désigne les forêts du Québec en général'], r:1 },
-    { q:'Dans « Il souffle mille voix de vent », quelle est la tonalité dominante des dernières strophes ?', o:['Lyrique et mélancolique','Polémique et accusatrice','Épique et héroïque','Comique et satirique'], r:1 },
-    { q:'Dans « La nuit s\'approfondit », Dorion convoque plusieurs poètes (Rilke, Dante, Thoreau, Zanzotto, Hopkins, Zambrano). Que représente cette traversée ?', o:['Une critique de la littérature européenne','Une promenade littéraire à travers ses inspirations, comme une généalogie poétique','Une démonstration d\'érudition gratuite','Un hommage funèbre'], r:1 },
-    { q:'Dans « Mes forêts », le champ lexical de l\'écriture (« craie, lettres, mots ») suggère que…', o:['Dorion critique le manque d\'écoles en forêt','La forêt est une source de la poésie : elle contient les éléments du langage','La forêt est un espace d\'apprentissage pour les enfants','Il n\'y a aucun lien, c\'est une métaphore arbitraire'], r:1 },
-    { q:'Dans L\'Isolement, le vers « Un seul être vous manque, et tout est dépeuplé » fonctionne comme…', o:['Une question rhétorique','Un présent de narration','Un présent de vérité générale, formulé comme une sentence universelle','Un imparfait à valeur de commentaire'], r:2 },
-    { q:'L\'élégie est un registre…', o:['Comique et léger','Plaintif et mélancolique','Héroïque et solennel','Polémique et agressif'], r:1 },
-    { q:'Dans « Il souffle mille voix de vent », l\'humanité est accusée de…', o:['Trop aimer la nature','Être passive et complice de la destruction écologique','Polluer involontairement','Manquer de connaissances scientifiques'], r:1 },
-    { q:'Qu\'est-ce qu\'un enjambement en poésie ?', o:['Le passage d\'un vers à l\'autre sans pause syntaxique','La répétition d\'un son en fin de vers','L\'inversion sujet-verbe','Le saut d\'une strophe à l\'autre'], r:0 },
-    { q:'L\'élégie est un registre…', o:['Comique et léger','Plaintif et mélancolique, exprimant souvent un deuil','Héroïque et solennel','Polémique et agressif'], r:1 },
-  ],
-  roman: [
-    { q:'Dans Pleins phares (Haenel), quel point de vue narratif est adopté ?', o:['Focalisation externe — on n\'a accès qu\'aux comportements','Focalisation interne — on est dans la conscience du meurtrier','Focalisation zéro — narrateur omniscient et neutre','Narration à la première personne'], r:1 },
-    { q:'Dans Pleins phares, quel procédé caractérise le passage de « il » à « tu » dans la dernière partie du texte ?', o:['Un changement de focalisation : on entre plus profondément dans la pensée du meurtrier','Une erreur de l\'autrice','Une adresse au lecteur classique dans le roman policier','Un monologue intérieur de la victime'], r:0 },
-    { q:'Le discours indirect libre se caractérise par…', o:['L\'absence de guillemets et l\'absence de verbe introducteur, fusionnant la voix du narrateur et celle du personnage','La présence obligatoire de guillemets','Un verbe introducteur explicite suivi de "que"','Une narration à la deuxième personne'], r:0 },
-    { q:'Dans l\'épisode du Prince Italien (Manon Lescaut), pourquoi Manon coiffe-t-elle des Grieux avec un soin inhabituellement grand ?', o:['Elle veut lui faire un cadeau avant son départ','Elle prépare des Grieux comme accessoire de sa mise en scène avec le Prince','Elle n\'a pas dormi et s\'occupe pour passer le temps','C\'est une habitude anodine du couple'], r:1 },
-    { q:'Dans le passage sur Manon, la litote « un spectacle qui ne dut pas lui causer peu d\'étonnement » signifie…', o:['L\'étranger fut peu étonné','L\'étranger fut très étonné, et le narrateur adopte un ton ironique','L\'étranger fut indifférent','L\'étranger ne fut pas du tout étonné'], r:1 },
-    { q:'Qui est le narrateur de Manon Lescaut ?', o:['Manon Lescaut elle-même','Un narrateur omniscient extérieur à l\'histoire','Le chevalier des Grieux, qui raconte son histoire rétrospectivement','L\'Abbé Prévost en tant que personnage'], r:2 },
-    { q:'Manon Lescaut paraît pour la première fois en quelle année ?', o:['1683','1731','1789','1830'], r:1 },
-    { q:'Quel est le registre dominant du récit de des Grieux ?', o:['Comique','Tragique et pathétique','Épique','Didactique'], r:1 },
-    { q:'Dans Pleins phares, l\'utilisation du pronom « ça » pour désigner Karine produit quel effet ?', o:['Aucun effet particulier, c\'est familier','Une déshumanisation totale de la victime, révélant la psychologie froide du meurtrier','Un effet poétique','Une marque d\'affection'], r:1 },
-    { q:'Le terme « libertin » au XVIIIe siècle désigne…', o:['Quelqu\'un qui aime la liberté politique','Quelqu\'un qui s\'affranchit des règles morales et religieuses, notamment dans les mœurs','Un homme libre, non esclave','Un voyageur'], r:1 },
-  ],
-  idees: [
-    { q:'Le parcours associé à La Boétie s\'intitule…', o:['Théâtre et dispute','Le langage et ses dessous','Défendre et entretenir la liberté','Individu, morale et société'], r:2 },
-    { q:'Dans « Pauvres gens misérables », pourquoi La Boétie passe-t-il du pluriel « des ennemis » au singulier « de l\'ennemi » ?', o:['C\'est une faute de style','Pour désigner un ennemi particulier jamais nommé','Pour montrer que la véritable cause est unique : le tyran créé par le peuple lui-même','Pour alléger la phrase'], r:2 },
-    { q:'Le verbe « dresser » appliqué au tyran dans « Cinq ou six » renvoie à quel champ lexical ?', o:['La musique','L\'architecture','Le dressage des animaux','Le droit'], r:2 },
-    { q:'Dans « Pauvres gens misérables », la comparaison avec les bêtes (« que les bêtes elles-mêmes ne supporteraient pas ») sert à…', o:['Amuser le lecteur par une image comique','Humilier le peuple en le plaçant au-dessous de l\'animal','Rappeler que La Boétie aimait les animaux','Illustrer une métaphore scientifique'], r:1 },
-    { q:'Dans « Cinq ou six », l\'emploi du conditionnel « plairait » (vs. présent « profite ») dans la phrase finale produit quel effet ?', o:['Aucun effet particulier','Il oppose le réel (ceux qui profitent vraiment) au virtuel (ceux qui ne font que désirer la liberté)','Il indique que la liberté est possible dans le futur','Il marque la politesse de l\'auteur'], r:1 },
-    { q:'Qu\'est-ce que La Boétie nomme la « servitude volontaire » ?', o:['Une servitude imposée par la force','Le fait que le peuple se soumet volontairement à son oppresseur, qui tire son pouvoir de ce consentement','Une forme de méditation religieuse','Le service militaire obligatoire'], r:1 },
-    { q:'Le Discours de la servitude volontaire est aussi connu sous le nom de…', o:['Le Prince','Le Contr\'un','L\'Esprit des lois','Le Léviathan'], r:1 },
-    { q:'Quelle est la maxime la plus célèbre du Discours ?', o:['« Je pense, donc je suis »','« Soyez résolus à ne plus servir, et vous voilà libres »','« L\'homme est un loup pour l\'homme »','« L\'homme est né libre, et partout il est dans les fers »'], r:1 },
-    { q:'L\'apostrophe est une figure qui consiste à…', o:['Adresser brusquement la parole à quelqu\'un (réel, absent ou imaginaire)','Interrompre une phrase','Répéter un mot pour insister','Inverser deux termes symétriquement'], r:0 },
-    { q:'Le Discours de la servitude volontaire a été récupéré pendant les guerres de Religion par…', o:['Les catholiques','Les protestants, qui y voient une critique de la monarchie','Les jésuites','Les athées'], r:1 },
-  ],
+  theatre:{
+    n1:{label:'Niveau 1 — Notions théâtrales',c:'#27ae60',questions:[
+      {q:"Qu'est-ce qu'une didascalie ?",o:["Un monologue du personnage principal","Une indication scénique écrite par l'auteur (décor, jeu d'acteur, déplacements…)","Une réplique très courte","Une figure de style propre au théâtre"],r:1},
+      {q:"La double énonciation au théâtre désigne le fait que…",o:["Deux acteurs parlent en même temps","Le personnage s'adresse à un autre personnage mais aussi implicitement au public","La pièce est écrite pour être lue et jouée","Le metteur en scène intervient dans le texte"],r:1},
+      {q:"Les stichomythies sont…",o:["Des apartés entre deux acteurs hors scène","Des répliques très courtes qui s'enchaînent rapidement entre deux personnages","Des monologues de plus de vingt répliques","Des didascalies de déplacement"],r:1},
+      {q:"Qu'est-ce qu'un aparté au théâtre ?",o:["Une réplique adressée au public, non entendue par les autres personnages","Un monologue très long","Une didascalie indiquant une sortie de scène","Une stichomythie entre deux personnages"],r:0},
+      {q:"Qu'appelle-t-on tirade au théâtre ?",o:["Une courte réplique de deux ou trois mots","Une longue prise de parole d'un personnage","Un dialogue entre trois personnages","Une scène sans paroles"],r:1},
+    ]},
+    n2:{label:'Niveau 2 — Application aux textes',c:'#e67e22',questions:[
+      {q:"Dans Pour un oui ou pour un non, pourquoi les personnages sont-ils appelés H1 et H2 ?",o:["Pour concentrer l'attention sur la parole plutôt que sur l'identité","Pour signaler qu'ils sont historiens","Parce que Sarraute ne connaissait pas leurs noms","Pour imiter le théâtre classique"],r:0},
+      {q:"Dans « C'est bien, ça », qu'est-ce qui constitue le véritable motif de la rupture ?",o:["Une dette non remboursée","Un regard méprisant lors d'un dîner","Une intonation légèrement condescendante dans « C'est bien… ça »","Un oubli d'anniversaire"],r:2},
+      {q:"Dans Clôture de l'amour, quelle figure Audrey utilise-t-elle en répétant « une fiction » en fin de groupe ?",o:["Anaphore","Épiphore","Épizeuxe","Chiasme"],r:1},
+      {q:"Qu'est-ce qu'un tropisme selon Sarraute ?",o:["Une figure de style fondée sur la comparaison","Un mouvement intérieur inconscient qui affleure sous la conversation ordinaire","Un genre théâtral du XXe siècle","Une technique de mise en scène"],r:1},
+      {q:"Quel mouvement littéraire relie les deux textes de Sarraute au programme ?",o:["Le surréalisme","Le Nouveau Roman / Théâtre de la parole","L'existentialisme","Le naturalisme"],r:1},
+    ]},
+    n3:{label:'Niveau 3 — Approfondissement',c:'#8e44ad',questions:[
+      {q:"Dans le dénouement de Sarraute, les exclamations finales « Oui. » / « Non ! » relancent le duel. À quel courant cela rattache-t-il la pièce ?",o:["Au classicisme","Au surréalisme","Au théâtre de l'Absurde (Beckett, Ionesco)","Au romantisme"],r:2},
+      {q:"Dans Clôture de l'amour, Audrey dit « tu as raison » avant de décrire un avenir sombre. Quelle stratégie rhétorique emploie-t-elle ?",o:["La concession apparente, pour mieux retourner l'argument","L'aveu sincère de sa défaite","La captatio benevolentiae","L'ironie romantique"],r:0},
+      {q:"La « sous-conversation » chez Sarraute désigne…",o:["Le texte des didascalies","Ce qui se dit vraiment sous les mots de la conversation apparente, le flux intérieur inavoué","Les répliques non prononcées sur scène","Le résumé du texte en exergue"],r:1},
+      {q:"Dans la scène d'exposition (EL 2), que signifient les pronoms sans référent comme « ça » ou « quelque chose » ?",o:["Sarraute n'a pas fini d'écrire ses répliques","Ils signalent l'impuissance du langage à nommer les conflits intérieurs","Ils désignent des objets précis que le lecteur connaît","Ils créent un effet comique"],r:1},
+      {q:"Pourquoi l'absence de ponctuation dans la tirade d'Audrey (EL 1) est-elle significative ?",o:["C'est une erreur typographique de l'édition","Elle crée un souffle haletant qui traduit la colère et l'urgence émotionnelle","Elle indique que le texte est destiné à la lecture seule","Elle imite le théâtre antique"],r:1},
+    ]},
+  },
+  poesie:{
+    n1:{label:'Niveau 1 — Notions poétiques',c:'#27ae60',questions:[
+      {q:"Qu'est-ce qu'un alexandrin ?",o:["Un vers de 8 syllabes","Un vers de 10 syllabes","Un vers de 12 syllabes","Un vers de 14 syllabes"],r:2},
+      {q:"Un enjambement est…",o:["Une rime riche","Le passage d'un vers à l'autre sans pause syntaxique","Une allitération en fin de vers","L'inversion sujet-verbe dans un vers"],r:1},
+      {q:"L'élégie est un registre…",o:["Comique et léger","Plaintif et mélancolique, exprimant souvent un deuil","Héroïque et solennel","Polémique et agressif"],r:1},
+      {q:"Les vers libres se caractérisent par…",o:["L'absence de rime et de contrainte métrique fixe","L'obligation d'avoir des rimes embrassées","Un nombre de syllabes toujours pair","Des strophes de 4 vers obligatoirement"],r:0},
+      {q:"Une assonance est…",o:["La répétition d'un son consonantique","La répétition d'un son vocalique","Une rime riche","Un enjambement entre deux strophes"],r:1},
+    ]},
+    n2:{label:'Niveau 2 — Application aux textes',c:'#e67e22',questions:[
+      {q:"Dans L'Isolement de Lamartine, que signifie « Le soleil des vivants n'échauffe plus les morts » (v. 20) ?",o:["Lamartine critique la société qui oublie ses morts","Le poète, en deuil, se perçoit lui-même comme mort","C'est une métaphore du coucher du soleil","C'est une allusion à l'enfer de Dante"],r:1},
+      {q:"Dans « Mes forêts », quel est le sens du déterminant possessif « Mes » ?",o:["Dorion possède légalement ces forêts","Il s'agit d'une appropriation affective et intellectuelle des forêts","C'est une erreur typographique","Il désigne les forêts du Québec en général"],r:1},
+      {q:"Dans « Il souffle mille voix de vent », quelle est la tonalité dominante des dernières strophes ?",o:["Lyrique et mélancolique","Polémique et accusatrice","Épique et héroïque","Comique et satirique"],r:1},
+      {q:"Dans « La nuit s'approfondit », que représente la traversée des références littéraires (Rilke, Dante, Thoreau…) ?",o:["Une critique de la littérature européenne","Une généalogie poétique — la traversée de ses inspirations","Une démonstration d'érudition gratuite","Un hommage funèbre"],r:1},
+      {q:"Dans « Mes forêts », le champ lexical de l'écriture (« craie, lettres, mots ») suggère que…",o:["Dorion critique le manque d'écoles en forêt","La forêt est une source de la poésie","La forêt est un espace d'apprentissage","Il n'y a aucun lien, c'est arbitraire"],r:1},
+    ]},
+    n3:{label:'Niveau 3 — Approfondissement',c:'#8e44ad',questions:[
+      {q:"Dans L'Isolement, le vers « Un seul être vous manque, et tout est dépeuplé » fonctionne comme…",o:["Une question rhétorique","Un présent de narration","Un présent de vérité générale, formulé comme une sentence universelle","Un imparfait de commentaire"],r:2},
+      {q:"Dans « Il souffle mille voix de vent », la responsabilité humaine est exprimée notamment par le pronom « on » associé au déterminant « nos ». Quel est l'effet ?",o:["Aucun — c'est une figure banale","Il désigne toute l'humanité comme responsable collective de la destruction","Il exclut l'autrice de la responsabilité","Il s'adresse uniquement aux politiques"],r:1},
+      {q:"Dans « La nuit s'approfondit », le monostiche « un poème murmure » (un seul vers isolé) produit quel effet ?",o:["Il crée un effet comique","Il souligne l'humilité de la poétesse : la révélation est discrète, comme un murmure","Il signale la fin du poème","Il marque une erreur de composition"],r:1},
+      {q:"Dans L'Isolement, pourquoi le poète dit-il « contemple la terre ainsi qu'une ombre errante » ?",o:["Il fait de l'humour noir","En deuil, il se perçoit comme mort, fantôme errant parmi les vivants","Il décrit une randonnée nocturne","Il fait référence au poème de Victor Hugo"],r:1},
+      {q:"Dans « Mes forêts », la référence biblique « comme poussière de notre passage » rappelle…",o:["La beauté éphémère de la nature","Le caractère mortel de l'humain et l'humilité face à la forêt","L'attachement de Dorion à la religion","La destruction écologique"],r:1},
+    ]},
+  },
+  roman:{
+    n1:{label:'Niveau 1 — Notions narratologiques',c:'#27ae60',questions:[
+      {q:"Qu'appelle-t-on « focalisation interne » ?",o:["Le narrateur sait tout sur tous les personnages","Le récit est perçu depuis le point de vue d'un personnage","Le narrateur est extérieur et neutre","Le lecteur en sait plus que le personnage"],r:1},
+      {q:"Le discours indirect libre se caractérise par…",o:["La présence obligatoire de guillemets","L'absence de guillemets et l'absence de verbe introducteur, fusionnant voix du narrateur et du personnage","Un verbe introducteur explicite suivi de « que »","Une narration à la deuxième personne"],r:1},
+      {q:"Une analepse est…",o:["Un retour en arrière dans le récit","Une anticipation sur la suite","Un résumé très rapide d'une période","Un monologue intérieur"],r:0},
+      {q:"Qu'est-ce que le « pacte romanesque » ?",o:["Un contrat signé entre l'auteur et l'éditeur","L'accord implicite entre l'auteur et le lecteur : on accepte la fiction comme vraie pendant la lecture","Une loi sur les droits d'auteur","Une convention de mise en scène"],r:1},
+      {q:"Le registre pathétique vise à…",o:["Faire rire le lecteur","Susciter la pitié ou l'émotion chez le lecteur","Convaincre par des arguments logiques","Évoquer la grandeur des héros"],r:1},
+    ]},
+    n2:{label:'Niveau 2 — Application aux textes',c:'#e67e22',questions:[
+      {q:"Dans l'épisode du Prince Italien, pourquoi Manon coiffe-t-elle des Grieux avec un soin inhabituellement grand ?",o:["Elle veut lui faire un cadeau avant son départ","Elle prépare des Grieux comme accessoire de sa mise en scène avec le Prince","Elle s'occupe parce qu'elle est anxieuse","C'est une habitude anodine du couple"],r:1},
+      {q:"Dans le passage sur Manon, la litote « un spectacle qui ne dut pas lui causer peu d'étonnement » signifie…",o:["L'étranger fut peu étonné","L'étranger fut très étonné, et le narrateur adopte un ton ironique","L'étranger fut indifférent","L'étranger ne fut pas du tout étonné"],r:1},
+      {q:"Qui est le narrateur de Manon Lescaut ?",o:["Manon Lescaut elle-même","Un narrateur omniscient extérieur","Le chevalier des Grieux, qui raconte son histoire rétrospectivement","L'Abbé Prévost en tant que personnage"],r:2},
+      {q:"Dans l'épisode du Prince, pourquoi l'adverbe « froidement » associé à Manon est-il important ?",o:["Il montre qu'elle n'aime pas des Grieux","Il contraste violemment avec l'émotion de des Grieux et révèle sa maîtrise totale de la situation","Il signifie qu'elle a froid","Il décrit la température de la pièce"],r:1},
+      {q:"Dans l'épisode du Prince, quel objet change de fonction du début à la fin de la scène ?",o:["Les cheveux de des Grieux","La porte de l'appartement","Le miroir de toilette","Le plateau de surimi"],r:2},
+    ]},
+    n3:{label:'Niveau 3 — Approfondissement',c:'#8e44ad',questions:[
+      {q:"Dans l'épisode du Prince, le terme « spectacle » appliqué à des Grieux produit quel effet ?",o:["Il est anodin","Il révèle que Manon est la metteuse en scène et des Grieux son accessoire exhibé","Il montre que des Grieux est ridiculisé par le Prince","Il désigne le miroir"],r:1},
+      {q:"Manon est un personnage « en marge » au sens du parcours associé parce que…",o:["Elle vit à la campagne","Elle s'affranchit des normes morales et sociales de son époque","Elle est pauvre","Elle est étrangère à la France"],r:1},
+      {q:"Le chevalier des Grieux est un narrateur rétrospectif. Qu'est-ce que cela implique ?",o:["Il ne sait pas ce qui va se passer","Il raconte des événements passés, avec une distance temporelle qui crée de l'ironie — il sait ce qu'il n'a pas su lire sur le moment","Il ment au lecteur","Il invente les faits"],r:1},
+      {q:"L'épisode du Prince fait basculer la scène dans un registre proche de la farce. Quel détail le confirme surtout ?",o:["Les questions brèves de des Grieux","Le silence de Manon face au valet","Manon ouvrant la porte du genou, les deux mains occupées","La froideur de Manon"],r:2},
+      {q:"La dernière réplique de Manon au Prince (« Faites la comparaison vous-même ») emprunte au registre…",o:["Amoureux","Judiciaire : elle se pose en juge qui réclame un verdict","Comique","Pathétique"],r:1},
+    ]},
+  },
+  idees:{
+    n1:{label:"Niveau 1 — Notions d'argumentation",c:'#27ae60',questions:[
+      {q:"Qu'est-ce qu'une apostrophe en rhétorique ?",o:["Une figure qui atténue une réalité","Adresser brusquement la parole à quelqu'un (réel, absent ou imaginaire)","Une répétition en fin de phrase","Une comparaison sans outil"],r:1},
+      {q:"Le registre polémique vise à…",o:["Émouvoir le lecteur","Attaquer, dénoncer, convaincre en prenant parti avec force","Amuser par des procédés comiques","Décrire objectivement une réalité"],r:1},
+      {q:"La litote consiste à…",o:["Exagérer une réalité","Dire moins pour suggérer davantage","Comparer deux éléments avec un outil comparatif","Répéter la même idée"],r:1},
+      {q:"Qu'est-ce qu'un raisonnement par analogie ?",o:["Raisonner à partir de cas particuliers vers une loi générale","Comparer deux situations similaires pour en déduire une règle","Partir d'une vérité générale pour l'appliquer à un cas particulier","Accorder un point à l'adversaire avant de le réfuter"],r:1},
+      {q:"L'ironie est une figure qui consiste à…",o:["Exagérer pour mieux convaincre","Dire le contraire de ce qu'on pense, pour faire comprendre le sens réel","Répéter plusieurs fois le même argument","Comparer deux réalités éloignées"],r:1},
+    ]},
+    n2:{label:'Niveau 2 — Application aux textes',c:'#e67e22',questions:[
+      {q:"Qu'est-ce que La Boétie nomme la « servitude volontaire » ?",o:["Une servitude imposée par la force","Le fait que le peuple se soumet volontairement à son oppresseur, qui tire son pouvoir de ce consentement","Une forme de méditation religieuse","Le service militaire obligatoire"],r:1},
+      {q:"Dans « Pauvres gens misérables », pourquoi La Boétie passe-t-il du pluriel « des ennemis » au singulier « de l'ennemi » ?",o:["C'est une faute de style","Pour désigner un ennemi particulier jamais nommé","Pour montrer que la véritable cause est unique : le tyran créé par le peuple lui-même","Pour alléger la phrase"],r:2},
+      {q:"Quelle est la maxime la plus célèbre du Discours ?",o:["« Je pense, donc je suis »","« Soyez résolus à ne plus servir, et vous voilà libres »","« L'homme est un loup pour l'homme »","« L'homme est né libre, et partout il est dans les fers »"],r:1},
+      {q:"Dans « Cinq ou six », le verbe « dresser » appliqué aux complices du tyran renvoie à quel champ lexical ?",o:["La musique","L'architecture","Le dressage des animaux","Le droit"],r:2},
+      {q:"Dans « Pauvres gens misérables », l'anaphore « vous laissez » martèle quelle idée ?",o:["L'incapacité du peuple à résister","La passivité volontaire du peuple, qui choisit de laisser faire","La générosité du peuple","La résignation naturelle de l'être humain"],r:1},
+    ]},
+    n3:{label:'Niveau 3 — Approfondissement',c:'#8e44ad',questions:[
+      {q:"Dans « Cinq ou six », l'emploi du conditionnel « plairait » (vs. présent « profite ») dans la phrase finale produit quel effet ?",o:["Aucun effet particulier","Il oppose le réel (ceux qui profitent vraiment) au virtuel (ceux qui ne font que désirer la liberté)","Il indique que la liberté sera possible dans le futur","Il marque la politesse de l'auteur"],r:1},
+      {q:"Dans « Pauvres gens misérables », la comparaison avec les bêtes (« que les bêtes elles-mêmes ne supporteraient pas ») sert à…",o:["Amuser le lecteur","Humilier le peuple en le plaçant au-dessous de l'animal, accentuant l'absurdité de sa situation","Rappeler que La Boétie aimait les animaux","Illustrer une métaphore scientifique"],r:1},
+      {q:"La métaphore finale du « grand colosse dont on a brisé la base » fait allusion à…",o:["La statue de la Liberté","Le colosse de Rhodes","Le colosse aux pieds d'argile, figure biblique du songe de Nabuchodonosor","La tour de Babel"],r:2},
+      {q:"Dans « Cinq ou six », la progression géométrique 6 → 600 → 6000 → millions sert à…",o:["Impressionner par des chiffres","Montrer que la corruption se multiplie à chaque échelon de la hiérarchie, jusqu'à englober une immense partie de la société","Critiquer le système fiscal","Illustrer la croissance de la population"],r:1},
+      {q:"Pourquoi La Boétie dit-il que la libération ne demande pas « même de se délivrer, seulement de le vouloir » ?",o:["La libération nécessite une révolution violente","La tyrannie repose entièrement sur le consentement du peuple : il suffit de retirer ce consentement pour qu'elle s'effondre","La libération est impossible en pratique","Il plaisante"],r:1},
+    ]},
+  },
 };
 
-// ─── COMPOSANTS ──────────────────────────────────────────────────────────────
+const METHODE=[
+  {titre:"Structure de l'oral (30 minutes)",icon:"⏱",contenu:[
+    {sous:"Explication linéaire + question de grammaire (≈ 20 min)",items:["Présentation du texte (auteur, œuvre, date, situation dans l'œuvre, lecture à voix haute) : 2 min","Annonce de la problématique et du plan (les mouvements) : 1 min","Explication linéaire suivant l'ordre du texte, procédés + effets reliés à la problématique : 10–12 min","Conclusion partielle avant l'entretien"]},
+    {sous:"Entretien (≈ 10 min)",items:["Présentation de l'œuvre choisie : 2–3 min","Questions du jury sur l'EL, le parcours, la grammaire : ≈ 8 min"]},
+  ]},
+  {titre:"La présentation de l'œuvre (2–3 min)",icon:"📖",contenu:[
+    {sous:"Ce que ce n'est PAS ❌",items:["La récitation d'une fiche de lecture impersonnelle","La récitation d'un cours"]},
+    {sous:"Ce que ça DOIT ÊTRE ✅",items:["Une présentation personnelle de l'œuvre, justifiée par des références précises","Caractéristiques principales (auteur, titre, genre, époque, sujet)","Intérêt et particularités de l'œuvre","Avis argumenté (choix personnel + argumenté + étayé par des références)"]},
+    {sous:"Adjectifs utiles",items:["comique · réaliste · vivant · poétique · critique · ironique · parodique · pathétique · lyrique · engagé · universel · ambigu · bouleversant"]},
+  ]},
+  {titre:"Ce qu'évalue l'examinateur",icon:"📋",table:[
+    {cat:"Compétences orales",items:["Gestion du temps","Capacité à échanger et prendre en compte les relances","Maîtrise des techniques de prise de parole (posture, articulation, débit, regard)","Expression correcte"]},
+    {cat:"Implication personnelle",items:["Recherches personnelles, relectures, visionnage de mises en scène","Réflexions personnelles sur l'œuvre (pas de récitation de cours)"]},
+    {cat:"Manifestation d'un parcours littéraire et artistique",items:["Bonne compréhension et connaissance de l'œuvre","Capacité à la citer, à en résumer des passages précisément"]},
+    {cat:"Mobilisation de connaissances culturelles et artistiques",items:["Connaissances artistiques, culturelles, lexicales acquises","Capacité à les mobiliser pour étayer/développer le propos"]},
+  ]},
+  {titre:"Analyser un procédé : la méthode P.E.E.",icon:"🔍",contenu:[
+    {sous:"La méthode en trois étapes",items:["P — Procédé : nommer et citer avec précision (entre guillemets, avec la ligne).","E — Effet : analyser ce que produit ce procédé sur le lecteur ou sur le sens du texte.","E — Enjeu : relier l'effet à la problématique ou à la portée générale du texte."]},
+    {sous:"Exemple rédigé",items:["« L'épiphore « une fiction » (l. 1–3) reprend les mots de Stan pour les retourner contre lui [P], produisant un effet de réfutation cinglante [E], qui installe Audrey en position de force et illustre le thème de la parole comme arme [E]. »"]},
+    {sous:"Les erreurs à éviter ❌",items:["Paraphraser le texte sans analyser","Nommer un procédé sans en analyser l'effet","Sortir de l'ordre du texte dans l'explication linéaire","Négliger la conclusion et l'ouverture"]},
+  ]},
+  {titre:"Les procédés littéraires à connaître",icon:"📚",contenu:[
+    {sous:"Figures de répétition",items:["Anaphore — répétition en début de groupe","Épiphore — répétition en fin de groupe","Épizeuxe — répétition immédiate du même mot","Anadiplose — reprise du mot final au début du suivant","Épanorthose — auto-correction renforçante"]},
+    {sous:"Figures d'analogie",items:["Métaphore — comparaison sans outil comparatif","Comparaison — avec outil (comme, tel, ainsi que…)","Personnification — attribut humain donné à un non-humain","Allégorie — personnification filée"]},
+    {sous:"Figures d'opposition",items:["Antithèse — opposition de deux termes dans la même phrase","Oxymore — deux termes contraires dans le même groupe","Chiasme — inversion symétrique","Paradoxe — affirmation contraire à l'opinion commune"]},
+    {sous:"Registres",items:["Lyrique · épique · tragique · comique · ironique · pathétique · polémique · didactique"]},
+  ]},
+  {titre:"La question de grammaire",icon:"📐",contenu:[
+    {sous:"Ce que l'examinateur peut demander",items:["Identifier la nature et la fonction d'un mot ou groupe","Analyser la valeur d'un temps ou d'un mode verbal","Identifier et analyser une proposition subordonnée","Analyser un type de phrase (interrogative, négative…)"]},
+    {sous:"Méthode",items:["1. Identifier la nature (subordonnée relative, temps de l'indicatif…)","2. Nommer précisément (subjonctif présent, proposition subordonnée circonstancielle de but…)","3. Analyser la valeur dans le texte : relier le fait grammatical à l'interprétation"]},
+  ]},
+  {titre:"Exemples de questions d'entretien",icon:"💬",contenu:[
+    {sous:"Questions sur le ressenti",items:["Qu'avez-vous ressenti en lisant cette œuvre ? Pourquoi ?","Vous a-t-elle fait réfléchir ? En quoi ?","Quel passage vous a le plus ému ? Pourquoi ?"]},
+    {sous:"Questions sur la structure",items:["Qu'avez-vous pensé de la fin du livre ?","Que pensez-vous du titre choisi par l'auteur ?","Pourriez-vous imaginer un autre titre ?"]},
+    {sous:"Questions de mise en perspective",items:["Êtes-vous d'accord avec les idées défendues par l'auteur ?","Pensez-vous que cette œuvre peut encore nous intéresser aujourd'hui ?","La recommanderiez-vous ? Pourquoi ?","Si vous deviez ne conserver qu'une seule page, laquelle ? Pourquoi ?"]},
+  ]},
+];
 
-function ObjetModule({ objet, onBack }) {
-  const [tab, setTab] = useState('cours');
-  const info = OBJETS_INFO[objet.id];
-  const TABS = [['cours','📖 Cours'],['el','📝 Explications linéaires'],['quiz','🎯 Quiz']];
+const GRAM_NOTIONS=[
+  {titre:"Les classes grammaticales",items:["Nom (propre / commun) — varie en genre et en nombre","Déterminant — se place devant le nom : articles définis, indéfinis, partitifs, possessifs, démonstratifs","Adjectif — précise le sens d'un nom ; varie en genre et en nombre","Pronom — remplace un nom : personnel, possessif, démonstratif, indéfini, interrogatif, relatif","Verbe — varie en personne, nombre, temps, mode, voix","Adverbe (invariable) — précise un verbe, un adjectif, un autre adverbe","Préposition (invariable) — introduit un GN, pronom, infinitif : à, de, par, pour, sans…","Conjonction de coordination : mais, ou, et, donc, or, ni, car","Conjonction de subordination — introduit une subordonnée : que, quand, si, parce que…"]},
+  {titre:"Les valeurs des temps de l'indicatif",items:["Présent : d'actualité · de vérité générale · de narration (vivacité) · futur proche · ordre","Passé simple : action de premier plan, achevée, délimitée dans le temps","Imparfait : second plan, description, action inachevée · valeurs modales : politesse, hypothèse, regret","Plus-que-parfait : action antérieure à un repère passé · irréel du passé","Futur simple : action à venir · certitude · ordre · vérité générale","Futur antérieur : action accomplie avant un repère futur · supposition","Conditionnel présent : condition · demande polie · hypothèse non avérée","Conditionnel passé : possibilité non réalisée · atténuation"]},
+  {titre:"Le subjonctif et l'impératif",items:["Subjonctif — mode du possible, de la virtualité","En subordonnée complétive : après verbes de volonté (vouloir…), de sentiment (craindre…)","En subordonnée circonstancielle : but (pour que, afin que), concession (bien que), temps (avant que)","En subordonnée relative : après superlatif, après négation absolue","Impératif — ordre · défense · demande polie · conseil","Impératif présent : action future / Impératif passé : action achevée à un moment futur"]},
+  {titre:"Les propositions subordonnées relatives",items:["Introduite par un pronom relatif : qui, que, quoi, dont, où (simples) ; lequel, auquel, duquel… (composés)","ATTENTION : « que » n'est un pronom relatif que s'il remplace un nom (antécédent)","Relative épithète (déterminative) : ne peut être supprimée sans modifier le sens","Relative apposée (explicative) : peut être supprimée ; entre virgules","Fonction du pronom relatif dans la relative : sujet, COD, COI, CC de lieu, complément du nom…"]},
+  {titre:"Les propositions subordonnées circonstancielles",items:["Cause : parce que, puisque, dès lors que…","Conséquence : si bien que, de sorte que…","But : pour que, afin que, de peur que… (subjonctif)","Temps : quand, lorsque, après que, avant que…","Condition : si + présent → futur (éventuel) · si + imparfait → conditionnel (potentiel) · si + plus-que-parfait → conditionnel passé (irréel)","Concession : bien que, quoique… (subjonctif)","Opposition : tandis que, alors que… (indicatif)"]},
+  {titre:"L'interrogation",items:["Interrogative directe totale (oui/non) : inversion ou « est-ce que »","Interrogative directe partielle (réponse précise) : adverbe (comment, pourquoi, quand…) ou pronom (qui, que, lequel…)","Interrogative indirecte totale : introduite par « si » · pas d'inversion · pas de point d'interrogation","Interrogative indirecte partielle : mêmes mots interrogatifs · pas d'inversion · pas de ?"]},
+  {titre:"La négation",items:["Négation grammaticale : NE + pas, point, plus, jamais, rien, personne, aucun, ni…ni","Négation totale : porte sur toute la proposition (ne…pas, ne…point)","Négation partielle : nie un aspect (ne…plus, ne…jamais, ne…rien)","Négation exceptive : équivaut à « seulement » (ne…que)","Double négation : peut équivaloir à une affirmation","Ne explétif : sans valeur négative réelle (« je crains qu'il ne vienne »)","Niveau de langue : l'absence du NE relève du registre familier"]},
+  {titre:"La phrase complexe",items:["Propositions juxtaposées : séparées par virgule, point-virgule ou deux points — lien implicite","Propositions coordonnées : reliées par une conjonction de coordination","Subordonnée conjonctive complétive : introduite par « que », COD du verbe principal","Subordonnée conjonctive circonstancielle : déplaçable, supprimable, exprime une circonstance","Subordonnée relative : introduite par pronom relatif, complète un antécédent","Proposition participiale : sujet différent du principal, valeur de cause ou de temps"]},
+];
 
-  return (
-    <div>
-      <button onClick={onBack} style={{...s.btn, marginBottom:'1rem', fontSize:12}}>← Retour aux objets d'étude</button>
-      <div style={{padding:'1rem 1.25rem', background:objet.c+'15', borderLeft:`3px solid ${objet.c}`, borderRadius:8, marginBottom:'1rem'}}>
-        <p style={{fontSize:11, textTransform:'uppercase', letterSpacing:'0.08em', color:objet.c, fontWeight:600}}>{objet.label}</p>
-        <h2 style={{fontSize:18, fontWeight:500, margin:'4px 0'}}>{info.auteur}, <em>{info.oeuvre}</em> ({info.date})</h2>
-        <p style={{fontSize:13, color:'#666'}}>Parcours : {info.parcours}</p>
+const buildPrompt=t=>`Tu es un examinateur du baccalauréat français pour l'épreuve orale de Français (Première générale). Tu conduis l'entretien qui suit la présentation de l'élève (≈ 10 min).
+
+TEXTE : ${t.numero} — ${t.auteur} (${t.date}) — ${t.titre}
+Parcours : ${t.parcours}
+Problématique de l'élève : ${t.problematique}
+Plan : ${t.etapes.map((e,i)=>`M${i+1} (${e.label}) : ${e.titre}`).join(' / ')}
+
+DOMAINES À COUVRIR :
+1. Approfondissement d'un procédé mentionné
+2. Procédé non mentionné → demander une analyse
+3. Question de grammaire (OBLIGATOIRE) : ${t.grammaire.enonce}
+4. Parcours associé « ${t.parcours} » + comparaison avec un autre texte
+5. Contexte historique et littéraire
+6. Interprétation personnelle de l'élève
+7. Mise en scène / genre si applicable
+
+RÈGLES : Commence par accueillir l'élève. 2–4 phrases max par prise de parole. Ton bienveillant mais exigeant. Si l'élève bloque, guide-le. Bilan encourageant après 8–10 échanges. Réponds toujours en français.`;
+
+const s={
+  card:{background:'#fff',border:'0.5px solid #ddd',borderRadius:12,padding:'1.25rem'},
+  label:{fontSize:11,textTransform:'uppercase',letterSpacing:'0.08em',color:'#888',display:'block',marginBottom:4},
+  btn:{padding:'7px 16px',fontSize:13,fontWeight:500,borderRadius:8,border:'0.5px solid #ccc',background:'#f5f4f0',cursor:'pointer'},
+  tabBtn:a=>({padding:'7px 13px',fontSize:13,fontWeight:a?500:400,borderRadius:8,border:a?'0.5px solid #aaa':'0.5px solid transparent',background:a?'#fff':'transparent',color:a?'#1a1a18':'#888',cursor:'pointer'}),
+  lvlBtn:(a,c)=>({padding:'6px 14px',fontSize:12,fontWeight:a?600:400,borderRadius:20,border:`1px solid ${a?c:'#ddd'}`,background:a?c:'#f5f4f0',color:a?'#fff':'#888',cursor:'pointer'}),
+};
+
+function CoursObjet({info,c}){
+  const [open,setOpen]=useState(0);
+  return(<div style={{display:'flex',flexDirection:'column',gap:8}}>
+    {info.cours.map((bloc,i)=>(
+      <div key={i} style={{...s.card,padding:0,overflow:'hidden'}}>
+        <button onClick={()=>setOpen(open===i?-1:i)} style={{width:'100%',textAlign:'left',padding:'1rem 1.25rem',background:'none',border:'none',cursor:'pointer',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+          <span style={{fontSize:14,fontWeight:500}}>{bloc.titre}</span>
+          <span style={{color:'#888'}}>{open===i?'▲':'▼'}</span>
+        </button>
+        {open===i&&(<div style={{padding:'0 1.25rem 1.25rem',borderTop:'0.5px solid #eee'}}>
+          <ul style={{margin:'0.75rem 0 0 16px',fontSize:13,lineHeight:1.85,color:'#444'}}>
+            {bloc.items.map((it,k)=><li key={k}>{it}</li>)}
+          </ul>
+        </div>)}
       </div>
-      <div style={{display:'flex', gap:6, marginBottom:'1.25rem', flexWrap:'wrap'}}>
-        {TABS.map(([k,l]) => <button key={k} style={s.tabBtn(tab===k)} onClick={()=>setTab(k)}>{l}</button>)}
-      </div>
-      {tab==='cours' && <CoursObjet info={info} c={objet.c} />}
-      {tab==='el' && <ELObjet objetId={objet.id} c={objet.c} />}
-      {tab==='quiz' && <QuizObjet objetId={objet.id} c={objet.c} label={objet.label} />}
-    </div>
-  );
+    ))}
+  </div>);
 }
 
-function CoursObjet({ info, c }) {
-  const [open, setOpen] = useState(0);
-  return (
-    <div style={{display:'flex', flexDirection:'column', gap:8}}>
-      {info.cours.map((bloc,i) => (
-        <div key={i} style={{...s.card, padding:0, overflow:'hidden'}}>
-          <button onClick={()=>setOpen(open===i?-1:i)} style={{width:'100%', textAlign:'left', padding:'1rem 1.25rem', background:'none', border:'none', cursor:'pointer', display:'flex', justifyContent:'space-between', alignItems:'center'}}>
-            <span style={{fontSize:14, fontWeight:500}}>{bloc.titre}</span>
-            <span style={{color:'#888'}}>{open===i?'▲':'▼'}</span>
-          </button>
-          {open===i && (
-            <div style={{padding:'0 1.25rem 1.25rem', borderTop:'0.5px solid #eee'}}>
-              <ul style={{margin:'0.75rem 0 0 16px', fontSize:13, lineHeight:1.85, color:'#444'}}>
-                {bloc.items.map((it,k) => <li key={k}>{it}</li>)}
-              </ul>
+function ELObjet({objetId,c}){
+  const textes=TEXTES.filter(t=>t.objet===objetId);
+  const [sel,setSel]=useState(textes[0]?.id);
+  const [gramOpen,setGramOpen]=useState(false);
+  const [repOpen,setRepOpen]=useState(false);
+  const t=textes.find(x=>x.id===sel)||textes[0];
+  const select=id=>{setSel(id);setGramOpen(false);setRepOpen(false);};
+  return(<div>
+    <div style={{display:'flex',gap:8,marginBottom:'1rem',flexWrap:'wrap'}}>
+      {textes.map(tx=><button key={tx.id} onClick={()=>select(tx.id)} style={{...s.btn,fontWeight:sel===tx.id?600:400,background:sel===tx.id?'#fff':'#f5f4f0'}}>{tx.numero}</button>)}
+    </div>
+    {t&&(<div style={s.card}>
+      <div style={{marginBottom:'0.75rem'}}>
+        <span style={{fontSize:11,textTransform:'uppercase',letterSpacing:'0.08em',color:c}}>{t.mouvement} · {t.date} · {t.numero}</span>
+        <h2 style={{fontSize:16,fontWeight:500,margin:'4px 0 2px'}}>{t.auteur}, <em>{t.titre}</em></h2>
+      </div>
+      <div style={{background:'#f5f4f0',borderRadius:8,padding:'0.75rem 1rem',marginBottom:'1rem',fontSize:13,lineHeight:1.8,fontStyle:'italic',whiteSpace:'pre-wrap',maxHeight:200,overflowY:'auto'}}>{t.extrait}</div>
+      <div style={{marginBottom:'1rem'}}>
+        <span style={s.label}>Problématique</span>
+        <p style={{fontSize:14,lineHeight:1.6,borderLeft:`2px solid ${c}`,paddingLeft:12}}>{t.problematique}</p>
+      </div>
+      <span style={s.label}>Étapes du parcours linéaire</span>
+      <div style={{display:'flex',flexDirection:'column',gap:10,marginTop:8,marginBottom:'1rem'}}>
+        {t.etapes.map((e,i)=>(
+          <div key={i} style={{border:'0.5px solid #ddd',borderRadius:8,padding:'0.75rem 1rem'}}>
+            <div style={{display:'flex',alignItems:'baseline',gap:8,marginBottom:6}}>
+              <span style={{fontSize:11,fontWeight:500,background:'#f5f4f0',padding:'2px 8px',borderRadius:20,color:'#666',whiteSpace:'nowrap'}}>{e.label}</span>
+              <span style={{fontSize:14,fontWeight:500}}>{e.titre}</span>
             </div>
-          )}
-        </div>
-      ))}
-    </div>
-  );
-}
-
-function ELObjet({ objetId, c }) {
-  const textes = TEXTES.filter(t => t.objet === objetId);
-  const [sel, setSel] = useState(textes[0]?.id);
-  const [gramOpen, setGramOpen] = useState(false);
-  const [repOpen, setRepOpen] = useState(false);
-  const t = textes.find(x => x.id === sel) || textes[0];
-
-  const select = id => { setSel(id); setGramOpen(false); setRepOpen(false); };
-
-  return (
-    <div>
-      <div style={{display:'flex', gap:8, marginBottom:'1rem', flexWrap:'wrap'}}>
-        {textes.map(tx => <button key={tx.id} onClick={()=>select(tx.id)} style={{...s.btn, fontWeight:sel===tx.id?600:400, background:sel===tx.id?'#fff':'#f5f4f0'}}>{tx.numero} — {tx.auteur.split(' ').slice(-1)[0]}</button>)}
-      </div>
-      {t && (
-        <div style={s.card}>
-          <div style={{marginBottom:'0.75rem'}}>
-            <span style={{fontSize:11, textTransform:'uppercase', letterSpacing:'0.08em', color:c}}>{t.mouvement} · {t.date} · {t.numero}</span>
-            <h2 style={{fontSize:16, fontWeight:500, margin:'4px 0 2px'}}>{t.auteur}, <em>{t.titre}</em></h2>
-          </div>
-          <div style={{background:'#f5f4f0', borderRadius:8, padding:'0.75rem 1rem', marginBottom:'1rem', fontSize:13, lineHeight:1.8, fontStyle:'italic', whiteSpace:'pre-wrap', maxHeight:200, overflowY:'auto'}}>{t.extrait}</div>
-          <div style={{marginBottom:'1rem'}}>
-            <span style={s.label}>Problématique</span>
-            <p style={{fontSize:14, lineHeight:1.6, borderLeft:`2px solid ${c}`, paddingLeft:12}}>{t.problematique}</p>
-          </div>
-          <span style={s.label}>Étapes du parcours linéaire</span>
-          <div style={{display:'flex', flexDirection:'column', gap:10, marginTop:8, marginBottom:'1rem'}}>
-            {t.etapes.map((e,i) => (
-              <div key={i} style={{border:'0.5px solid #ddd', borderRadius:8, padding:'0.75rem 1rem'}}>
-                <div style={{display:'flex', alignItems:'baseline', gap:8, marginBottom:6}}>
-                  <span style={{fontSize:11, fontWeight:500, background:'#f5f4f0', padding:'2px 8px', borderRadius:20, color:'#666', whiteSpace:'nowrap'}}>{e.label}</span>
-                  <span style={{fontSize:14, fontWeight:500}}>{e.titre}</span>
-                </div>
-                <ul style={{margin:'0 0 0 16px', fontSize:13, color:'#555', lineHeight:1.85}}>
-                  {e.procedes.map((p,j) => <li key={j}>{p}</li>)}
-                </ul>
-              </div>
-            ))}
-          </div>
-          {/* Question de grammaire */}
-          <div style={{borderTop:'0.5px solid #eee', paddingTop:'0.75rem'}}>
-            <button onClick={()=>{setGramOpen(o=>!o); setRepOpen(false);}} style={{...s.btn, background:gramOpen?'#1a1a18':'#f5f4f0', color:gramOpen?'#fff':'#1a1a18', width:'100%', textAlign:'left'}}>
-              📐 Question de grammaire {gramOpen?'▲':'▼'}
-            </button>
-            {gramOpen && (
-              <div style={{marginTop:10, padding:'0.75rem 1rem', background:'#f0f4ff', borderRadius:8, border:'0.5px solid #c3cfe2'}}>
-                <p style={{fontSize:14, lineHeight:1.6, marginBottom:10, fontStyle:'italic'}}>« {t.grammaire.enonce} »</p>
-                <button onClick={()=>setRepOpen(o=>!o)} style={{...s.btn, fontSize:12}}>
-                  {repOpen ? 'Masquer la réponse' : 'Voir la réponse'}
-                </button>
-                {repOpen && <p style={{fontSize:13, lineHeight:1.7, marginTop:10, color:'#1a5276'}}>{t.grammaire.reponse}</p>}
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-    </div>
-  );
-}
-
-function Quiz() { return null; } // Remplacé par QuizObjet dans chaque module
-
-function QuizObjet({ objetId, c, label }) {
-  const questions = QUIZ_OBJETS[objetId] || [];
-  const [qi, setQi] = useState(0);
-  const [score, setScore] = useState(0);
-  const [ans, setAns] = useState(null);
-  const [done, setDone] = useState(false);
-  const q = questions[qi];
-
-  const handleAns = i => {
-    if(ans!==null) return;
-    setAns(i);
-    if(i===q.r) setScore(s=>s+1);
-  };
-  const next = () => {
-    if(qi+1>=questions.length){ setDone(true); return; }
-    setQi(q=>q+1); setAns(null);
-  };
-  const reset = () => { setQi(0); setScore(0); setAns(null); setDone(false); };
-
-  if(!questions.length) return <div style={s.card}><p style={{fontSize:13,color:'#888'}}>Quiz à venir pour cet objet d'étude.</p></div>;
-
-  return (
-    <div style={s.card}>
-      <p style={{fontSize:11, textTransform:'uppercase', letterSpacing:'0.08em', color:c, fontWeight:600, marginBottom:'0.75rem'}}>Quiz {label}</p>
-      {!done ? (
-        <>
-          <div style={{display:'flex', justifyContent:'space-between', marginBottom:'0.75rem'}}>
-            <span style={{fontSize:12, color:'#888'}}>Question {qi+1} / {questions.length}</span>
-            <span style={{fontSize:12, color:'#888'}}>Score : {score}</span>
-          </div>
-          <div style={{background:'#f5f4f0', borderRadius:8, padding:'0.75rem 1rem', marginBottom:'1rem'}}>
-            <p style={{fontSize:15, fontWeight:500, lineHeight:1.5}}>{q.q}</p>
-          </div>
-          <div style={{display:'flex', flexDirection:'column', gap:8}}>
-            {q.o.map((opt,i) => {
-              let bg='#fff', bc='#ddd', col='#1a1a18';
-              if(ans!==null){ if(i===q.r){bg='#eafaf1';bc='#27ae60';col='#1a6b3a';} else if(i===ans){bg='#fdf0ef';bc='#e74c3c';col='#a93226';} }
-              return <button key={i} onClick={()=>handleAns(i)} style={{textAlign:'left', padding:'10px 14px', fontSize:14, borderRadius:8, border:`0.5px solid ${bc}`, background:bg, color:col, cursor:ans===null?'pointer':'default', lineHeight:1.5}}>{opt}</button>;
-            })}
-          </div>
-          {ans!==null && <button onClick={next} style={{...s.btn, marginTop:'1rem'}}>{qi+1>=questions.length?'Voir le résultat':'Question suivante →'}</button>}
-        </>
-      ) : (
-        <div style={{textAlign:'center', padding:'1.5rem 0'}}>
-          <p style={{fontSize:36, fontWeight:500, marginBottom:8}}>{score} / {questions.length}</p>
-          <p style={{fontSize:14, color:'#888', marginBottom:'1.5rem'}}>{score>=questions.length*0.8?'Excellent travail !':score>=questions.length*0.6?'Bon début, continue à réviser.':'Reprends tes fiches avant de réessayer.'}</p>
-          <button onClick={reset} style={s.btn}>Recommencer</button>
-        </div>
-      )}
-    </div>
-  );
-}
-
-function Methode() {
-  const [open, setOpen] = useState(0);
-  return (
-    <div style={{display:'flex', flexDirection:'column', gap:8}}>
-      {METHODE.map((bloc,i) => (
-        <div key={i} style={{...s.card, padding:0, overflow:'hidden'}}>
-          <button onClick={()=>setOpen(open===i?-1:i)} style={{width:'100%', textAlign:'left', padding:'1rem 1.25rem', background:'none', border:'none', cursor:'pointer', display:'flex', justifyContent:'space-between', alignItems:'center'}}>
-            <span style={{fontSize:14, fontWeight:500}}>{bloc.icon} {bloc.titre}</span>
-            <span style={{color:'#888'}}>{open===i?'▲':'▼'}</span>
-          </button>
-          {open===i && (
-            <div style={{padding:'0 1.25rem 1.25rem', borderTop:'0.5px solid #eee'}}>
-              {bloc.table ? (
-                <div style={{display:'flex', flexDirection:'column', gap:12, marginTop:12}}>
-                  {bloc.table.map((row,j) => (
-                    <div key={j} style={{border:'0.5px solid #eee', borderRadius:8, padding:'0.75rem 1rem'}}>
-                      <p style={{fontSize:12, fontWeight:600, color:'#888', textTransform:'uppercase', letterSpacing:'0.06em', marginBottom:6}}>{row.cat}</p>
-                      <ul style={{margin:'0 0 0 16px', fontSize:13, lineHeight:1.8, color:'#444'}}>
-                        {row.items.map((it,k) => <li key={k}>{it}</li>)}
-                      </ul>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                bloc.contenu.map((sec,j) => (
-                  <div key={j} style={{marginTop:12}}>
-                    <p style={{fontSize:12, fontWeight:600, color:'#888', textTransform:'uppercase', letterSpacing:'0.06em', marginBottom:6}}>{sec.sous}</p>
-                    <ul style={{margin:'0 0 0 16px', fontSize:13, lineHeight:1.85, color:'#444'}}>
-                      {sec.items.map((it,k) => <li key={k}>{it}</li>)}
-                    </ul>
-                  </div>
-                ))
-              )}
-            </div>
-          )}
-        </div>
-      ))}
-    </div>
-  );
-}
-
-function Grammaire() {
-  const [open, setOpen] = useState(0);
-  return (
-    <div>
-      <p style={{fontSize:13, color:'#888', marginBottom:'1rem', lineHeight:1.6}}>Fiches de référence pour la question de grammaire — les exemples sont issus des textes au programme.</p>
-      <div style={{display:'flex', flexDirection:'column', gap:8}}>
-        {GRAM_NOTIONS.map((n,i) => (
-          <div key={i} style={{...s.card, padding:0, overflow:'hidden'}}>
-            <button onClick={()=>setOpen(open===i?-1:i)} style={{width:'100%', textAlign:'left', padding:'1rem 1.25rem', background:'none', border:'none', cursor:'pointer', display:'flex', justifyContent:'space-between', alignItems:'center'}}>
-              <span style={{fontSize:14, fontWeight:500}}>📌 {n.titre}</span>
-              <span style={{color:'#888'}}>{open===i?'▲':'▼'}</span>
-            </button>
-            {open===i && (
-              <div style={{padding:'0 1.25rem 1.25rem', borderTop:'0.5px solid #eee'}}>
-                <ul style={{margin:'0.75rem 0 0 16px', fontSize:13, lineHeight:1.9, color:'#444'}}>
-                  {n.items.map((it,k) => <li key={k}>{it}</li>)}
-                </ul>
-              </div>
-            )}
+            <ul style={{margin:'0 0 0 16px',fontSize:13,color:'#555',lineHeight:1.85}}>
+              {e.procedes.map((p,j)=><li key={j}>{p}</li>)}
+            </ul>
           </div>
         ))}
       </div>
-    </div>
-  );
+      <div style={{borderTop:'0.5px solid #eee',paddingTop:'0.75rem'}}>
+        <button onClick={()=>{setGramOpen(o=>!o);setRepOpen(false);}} style={{...s.btn,background:gramOpen?'#1a1a18':'#f5f4f0',color:gramOpen?'#fff':'#1a1a18',width:'100%',textAlign:'left'}}>
+          📐 Question de grammaire {gramOpen?'▲':'▼'}
+        </button>
+        {gramOpen&&(<div style={{marginTop:10,padding:'0.75rem 1rem',background:'#f0f4ff',borderRadius:8,border:'0.5px solid #c3cfe2'}}>
+          <p style={{fontSize:14,lineHeight:1.6,marginBottom:10,fontStyle:'italic'}}>« {t.grammaire.enonce} »</p>
+          <button onClick={()=>setRepOpen(o=>!o)} style={{...s.btn,fontSize:12}}>{repOpen?'Masquer la réponse':'Voir la réponse'}</button>
+          {repOpen&&<p style={{fontSize:13,lineHeight:1.7,marginTop:10,color:'#1a5276'}}>{t.grammaire.reponse}</p>}
+        </div>)}
+      </div>
+    </div>)}
+  </div>);
 }
 
-function Simulation() {
-  const [simId, setSimId] = useState(1);
-  const [copied, setCopied] = useState(false);
-  const t = TEXTES.find(x=>x.id===simId);
+function QuizObjet({objetId,c,label}){
+  const qData=QUIZ_OBJETS[objetId]||{};
+  const niveaux=[['n1','Niveau 1'],['n2','Niveau 2'],['n3','Niveau 3']];
+  const [niv,setNiv]=useState('n1');
+  const [qi,setQi]=useState(0);
+  const [score,setScore]=useState(0);
+  const [ans,setAns]=useState(null);
+  const [done,setDone]=useState(false);
+  const n=qData[niv]||{questions:[],label:'',c:'#888'};
+  const q=n.questions[qi];
 
-  const copy = () => { navigator.clipboard.writeText(buildPrompt(t)).then(()=>{ setCopied(true); setTimeout(()=>setCopied(false),2000); }); };
-  const open = () => { window.open('https://claude.ai/new?q='+encodeURIComponent(buildPrompt(t).substring(0,2000)),'_blank'); };
+  const changeNiv=v=>{setNiv(v);setQi(0);setScore(0);setAns(null);setDone(false);};
+  const handleAns=i=>{if(ans!==null)return;setAns(i);if(i===q.r)setScore(s=>s+1);};
+  const next=()=>{if(qi+1>=n.questions.length){setDone(true);return;}setQi(q=>q+1);setAns(null);};
+  const reset=()=>{setQi(0);setScore(0);setAns(null);setDone(false);};
 
-  return (
+  return(<div>
+    <div style={{display:'flex',gap:8,marginBottom:'1rem',flexWrap:'wrap'}}>
+      {niveaux.map(([k,l])=>qData[k]&&<button key={k} onClick={()=>changeNiv(k)} style={s.lvlBtn(niv===k,qData[k].c)}>{qData[k].label}</button>)}
+    </div>
+    {!n.questions.length?<div style={s.card}><p style={{fontSize:13,color:'#888'}}>Quiz à venir.</p></div>:
     <div style={s.card}>
-      <p style={{fontSize:14, lineHeight:1.7, color:'#666', marginBottom:'1.25rem'}}>La simulation s\'ouvre dans <strong>claude.ai</strong> avec le prompt de l\'examinateur configuré pour le texte choisi. Un compte Claude gratuit suffit.</p>
-      <div style={{marginBottom:'1.25rem'}}>
-        <label style={s.label}>Texte pour la simulation</label>
-        <select value={simId} onChange={e=>setSimId(Number(e.target.value))} style={{maxWidth:420}}>
-          {TEXTES.map(t=><option key={t.id} value={t.id}>{t.numero} — {t.auteur}, {t.titre}</option>)}
-        </select>
-      </div>
-      {t && (
-        <div style={{background:'#f5f4f0', borderRadius:8, padding:'0.75rem 1rem', marginBottom:'1.25rem', fontSize:13}}>
-          <p><strong>Problématique :</strong> {t.problematique}</p>
-          <p style={{marginTop:6}}><strong>L\'examinateur posera des questions sur :</strong> procédés · parcours associé · contexte littéraire · question de grammaire · interprétation personnelle · comparaison avec d\'autres textes.</p>
-          <p style={{marginTop:6, color:'#888', fontSize:12}}><strong>Question de grammaire suggérée :</strong> {t.grammaire.enonce}</p>
+      {!done?(<>
+        <div style={{display:'flex',justifyContent:'space-between',marginBottom:'0.75rem'}}>
+          <span style={{fontSize:12,color:'#888'}}>Question {qi+1} / {n.questions.length}</span>
+          <span style={{fontSize:12,color:'#888'}}>Score : {score}</span>
+        </div>
+        <div style={{background:'#f5f4f0',borderRadius:8,padding:'0.75rem 1rem',marginBottom:'1rem'}}>
+          <p style={{fontSize:15,fontWeight:500,lineHeight:1.5}}>{q.q}</p>
+        </div>
+        <div style={{display:'flex',flexDirection:'column',gap:8}}>
+          {q.o.map((opt,i)=>{
+            let bg='#fff',bc='#ddd',col='#1a1a18';
+            if(ans!==null){if(i===q.r){bg='#eafaf1';bc='#27ae60';col='#1a6b3a';}else if(i===ans){bg='#fdf0ef';bc='#e74c3c';col='#a93226';}}
+            return<button key={i} onClick={()=>handleAns(i)} style={{textAlign:'left',padding:'10px 14px',fontSize:14,borderRadius:8,border:`0.5px solid ${bc}`,background:bg,color:col,cursor:ans===null?'pointer':'default',lineHeight:1.5}}>{opt}</button>;
+          })}
+        </div>
+        {ans!==null&&<button onClick={next} style={{...s.btn,marginTop:'1rem'}}>{qi+1>=n.questions.length?'Voir le résultat':'Question suivante →'}</button>}
+      </>):(
+        <div style={{textAlign:'center',padding:'1.5rem 0'}}>
+          <p style={{fontSize:36,fontWeight:500,marginBottom:8}}>{score} / {n.questions.length}</p>
+          <p style={{fontSize:14,color:'#888',marginBottom:'1.5rem'}}>{score>=n.questions.length*0.8?'Excellent travail !':score>=n.questions.length*0.6?'Bon début, continue à réviser.':'Reprends tes fiches avant de réessayer.'}</p>
+          <button onClick={reset} style={s.btn}>Recommencer</button>
         </div>
       )}
-      <div style={{display:'flex', gap:8, flexWrap:'wrap'}}>
-        <button onClick={open} style={{...s.btn, background:'#1a1a18', color:'#fff', border:'none'}}>Ouvrir dans Claude →</button>
-        <button onClick={copy} style={s.btn}>{copied?'Copié ✓':'Copier le prompt'}</button>
-      </div>
-      <p style={{fontSize:12, color:'#aaa', marginTop:'1rem', lineHeight:1.6}}>Si le lien ne s\'ouvre pas directement, copiez le prompt et collez-le dans une nouvelle conversation Claude.</p>
-    </div>
-  );
+    </div>}
+  </div>);
 }
 
-// ─── APP ─────────────────────────────────────────────────────────────────────
-export default function App() {
-  const [view, setView] = useState('home'); // 'home' | 'objet' | 'methode' | 'grammaire' | 'sim'
-  const [currentObjet, setCurrentObjet] = useState(null);
+function ObjetModule({objet,onBack}){
+  const [tab,setTab]=useState('cours');
+  const info=OBJETS_INFO[objet.id];
+  const TABS=[['cours','📖 Cours'],['el','📝 Explications linéaires'],['quiz','🎯 Quiz']];
+  return(<div>
+    <button onClick={onBack} style={{...s.btn,marginBottom:'1rem',fontSize:12}}>← Retour</button>
+    <div style={{padding:'1rem 1.25rem',background:objet.c+'15',borderLeft:`3px solid ${objet.c}`,borderRadius:8,marginBottom:'1rem'}}>
+      <p style={{fontSize:11,textTransform:'uppercase',letterSpacing:'0.08em',color:objet.c,fontWeight:600}}>{objet.label}</p>
+      <h2 style={{fontSize:18,fontWeight:500,margin:'4px 0'}}>{info.auteur}, <em>{info.oeuvre}</em> ({info.date})</h2>
+      <p style={{fontSize:13,color:'#666'}}>Parcours : {info.parcours}</p>
+    </div>
+    <div style={{display:'flex',gap:6,marginBottom:'1.25rem',flexWrap:'wrap'}}>
+      {TABS.map(([k,l])=><button key={k} style={s.tabBtn(tab===k)} onClick={()=>setTab(k)}>{l}</button>)}
+    </div>
+    {tab==='cours'&&<CoursObjet info={info} c={objet.c}/>}
+    {tab==='el'&&<ELObjet objetId={objet.id} c={objet.c}/>}
+    {tab==='quiz'&&<QuizObjet objetId={objet.id} c={objet.c} label={objet.label}/>}
+  </div>);
+}
 
-  const openObjet = (o) => { setCurrentObjet(o); setView('objet'); };
-  const home = () => { setView('home'); setCurrentObjet(null); };
-
-  return (
-    <div style={{maxWidth:740, margin:'0 auto', padding:'2rem 1rem'}}>
-      <div style={{cursor:'pointer'}} onClick={home}>
-        <h1 style={{fontSize:20, fontWeight:500, marginBottom:4}}>Révision oral de bac — Français</h1>
-        <p style={{fontSize:13, color:'#888', marginBottom:'1.5rem'}}>Lycée Jean Prévost · 1ères G · Mme Berger</p>
-      </div>
-
-      {view === 'home' && (
-        <div>
-          <p style={{fontSize:13, color:'#666', marginBottom:'1.25rem', lineHeight:1.6}}>Choisis un objet d'étude pour accéder au cours, aux explications linéaires et aux quiz.</p>
-          <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:12, marginBottom:'1.5rem'}}>
-            {OBJETS.map(o => {
-              const info = OBJETS_INFO[o.id];
-              return (
-                <div key={o.id} onClick={()=>openObjet(o)} style={{cursor:'pointer', padding:'1.25rem 1rem', borderRadius:12, border:`1px solid ${o.c}40`, background:o.c+'10', transition:'all 0.15s'}}
-                     onMouseEnter={e=>{e.currentTarget.style.background=o.c+'20'; e.currentTarget.style.transform='translateY(-2px)';}}
-                     onMouseLeave={e=>{e.currentTarget.style.background=o.c+'10'; e.currentTarget.style.transform='translateY(0)';}}>
-                  <p style={{fontSize:11, textTransform:'uppercase', letterSpacing:'0.08em', color:o.c, fontWeight:600, marginBottom:6}}>{o.label}</p>
-                  <p style={{fontSize:14, fontWeight:500, marginBottom:2}}>{info.auteur}</p>
-                  <p style={{fontSize:13, fontStyle:'italic', color:'#444', marginBottom:6}}>{info.oeuvre}</p>
-                  <p style={{fontSize:11, color:'#888'}}>Parcours : {info.parcours}</p>
+function Methode(){
+  const [open,setOpen]=useState(0);
+  return(<div style={{display:'flex',flexDirection:'column',gap:8}}>
+    {METHODE.map((bloc,i)=>(
+      <div key={i} style={{...s.card,padding:0,overflow:'hidden'}}>
+        <button onClick={()=>setOpen(open===i?-1:i)} style={{width:'100%',textAlign:'left',padding:'1rem 1.25rem',background:'none',border:'none',cursor:'pointer',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+          <span style={{fontSize:14,fontWeight:500}}>{bloc.icon} {bloc.titre}</span>
+          <span style={{color:'#888'}}>{open===i?'▲':'▼'}</span>
+        </button>
+        {open===i&&(<div style={{padding:'0 1.25rem 1.25rem',borderTop:'0.5px solid #eee'}}>
+          {bloc.table?(
+            <div style={{display:'flex',flexDirection:'column',gap:12,marginTop:12}}>
+              {bloc.table.map((row,j)=>(
+                <div key={j} style={{border:'0.5px solid #eee',borderRadius:8,padding:'0.75rem 1rem'}}>
+                  <p style={{fontSize:12,fontWeight:600,color:'#888',textTransform:'uppercase',letterSpacing:'0.06em',marginBottom:6}}>{row.cat}</p>
+                  <ul style={{margin:'0 0 0 16px',fontSize:13,lineHeight:1.8,color:'#444'}}>{row.items.map((it,k)=><li key={k}>{it}</li>)}</ul>
                 </div>
-              );
-            })}
-          </div>
-          <div style={{borderTop:'0.5px solid #eee', paddingTop:'1.25rem'}}>
-            <p style={{fontSize:11, textTransform:'uppercase', letterSpacing:'0.08em', color:'#888', fontWeight:600, marginBottom:10}}>Outils transversaux</p>
-            <div style={{display:'flex', gap:8, flexWrap:'wrap'}}>
-              <button onClick={()=>setView('methode')} style={s.btn}>📐 Méthode de l'oral</button>
-              <button onClick={()=>setView('grammaire')} style={s.btn}>📌 Fiches de grammaire</button>
-              <button onClick={()=>setView('sim')} style={s.btn}>🤖 Simulation d'oral IA</button>
+              ))}
             </div>
-          </div>
-        </div>
-      )}
-
-      {view === 'objet' && currentObjet && <ObjetModule objet={currentObjet} onBack={home} />}
-
-      {(view === 'methode' || view === 'grammaire' || view === 'sim') && (
-        <div>
-          <button onClick={home} style={{...s.btn, marginBottom:'1rem', fontSize:12}}>← Retour à l'accueil</button>
-          {view === 'methode' && <Methode />}
-          {view === 'grammaire' && <Grammaire />}
-          {view === 'sim' && <Simulation />}
-        </div>
-      )}
-    </div>
-  );
+          ):(
+            bloc.contenu.map((sec,j)=>(
+              <div key={j} style={{marginTop:12}}>
+                <p style={{fontSize:12,fontWeight:600,color:'#888',textTransform:'uppercase',letterSpacing:'0.06em',marginBottom:6}}>{sec.sous}</p>
+                <ul style={{margin:'0 0 0 16px',fontSize:13,lineHeight:1.85,color:'#444'}}>{sec.items.map((it,k)=><li key={k}>{it}</li>)}</ul>
+              </div>
+            ))
+          )}
+        </div>)}
+      </div>
+    ))}
+  </div>);
 }
+
+function Grammaire(){
+  const [open,setOpen]=useState(0);
+  return(<div>
+    <p style={{fontSize:13,color:'#888',marginBottom:'1rem',lineHeight:1.6}}>Fiches de référence pour la question de grammaire.</p>
+    <div style={{display:'flex',flexDirection:'column',gap:8}}>
+      {GRAM_NOTIONS.map((n,i)=>(
+        <div key={i} style={{...s.card,padding:0,overflow:'hidden'}}>
+          <button onClick={()=>setOpen(open===i?-1:i)} style={{width:'100%',textAlign:'left',padding:'1rem 1.25rem',background:'none',border:'none',cursor:'pointer',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+            <span style={{fontSize:14,fontWeight:500}}>📌 {n.titre}</span>
+            <span style={{color:'#888'}}>{open===i?'▲':'▼'}</span>
+          </button>
+          {open===i&&(<div style={{padding:'0 1.25rem 1.25rem',borderTop:'0.5px solid #eee'}}>
+            <ul style={{margin:'0.75rem 0 0 16px',fontSize:13,lineHeight:1.9,color:'#444'}}>{n.items.map((it,k)=><li key={k}>{it}</li>)}</ul>
+          </div>)}
+        </div>
+      ))}
+    </div>
+  </div>);
+}
+
+function Simulation(){
+  const [simId,setSimId]=useState(1);
+  const [copied,setCopied]=useState(false);
+  const t=TEXTES.find(x=>x.id===simId);
+  const copy=()=>{navigator.clipboard.writeText(buildPrompt(t)).then(()=>{setCopied(true);setTimeout(()=>setCopied(false),2000);});};
+  const open=()=>{window.open('https://claude.ai/new?q='+encodeURIComponent(buildPrompt(t).substring(0,2000)),'_blank');};
+  return(<div style={s.card}>
+    <p style={{fontSize:14,lineHeight:1.7,color:'#666',marginBottom:'1.25rem'}}>La simulation s'ouvre dans <strong>claude.ai</strong> avec le prompt de l'examinateur configuré pour le texte choisi.</p>
+    <div style={{marginBottom:'1.25rem'}}>
+      <label style={s.label}>Texte pour la simulation</label>
+      <select value={simId} onChange={e=>setSimId(Number(e.target.value))} style={{maxWidth:420}}>
+        {TEXTES.map(t=><option key={t.id} value={t.id}>{t.numero} — {t.auteur}, {t.titre}</option>)}
+      </select>
+    </div>
+    {t&&(<div style={{background:'#f5f4f0',borderRadius:8,padding:'0.75rem 1rem',marginBottom:'1.25rem',fontSize:13}}>
+      <p><strong>Problématique :</strong> {t.problematique}</p>
+      <p style={{marginTop:6,color:'#888',fontSize:12}}><strong>Question de grammaire suggérée :</strong> {t.grammaire.enonce}</p>
+    </div>)}
+    <div style={{display:'flex',gap:8,flexWrap:'wrap'}}>
+      <button onClick={open} style={{...s.btn,background:'#1a1a18',color:'#fff',border:'none'}}>Ouvrir dans Claude →</button>
+      <button onClick={copy} style={s.btn}>{copied?'Copié ✓':'Copier le prompt'}</button>
+    </div>
+  </div>);
+}
+
+function App(){
+  const [view,setView]=useState('home');
+  const [currentObjet,setCurrentObjet]=useState(null);
+  const openObjet=o=>{setCurrentObjet(o);setView('objet');};
+  const home=()=>{setView('home');setCurrentObjet(null);};
+  return(<div style={{maxWidth:740,margin:'0 auto',padding:'2rem 1rem'}}>
+    <div style={{cursor:'pointer'}} onClick={home}>
+      <h1 style={{fontSize:20,fontWeight:500,marginBottom:4}}>Révision oral de bac — Français</h1>
+      <p style={{fontSize:13,color:'#888',marginBottom:'1.5rem'}}>Lycée Jean Prévost · 1ères G · Mme Berger</p>
+    </div>
+    {view==='home'&&(<div>
+      <p style={{fontSize:13,color:'#666',marginBottom:'1.25rem',lineHeight:1.6}}>Choisis un objet d'étude pour accéder au cours, aux explications linéaires et aux quiz.</p>
+      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginBottom:'1.5rem'}}>
+        {OBJETS.map(o=>{
+          const info=OBJETS_INFO[o.id];
+          return(<div key={o.id} onClick={()=>openObjet(o)} style={{cursor:'pointer',padding:'1.25rem 1rem',borderRadius:12,border:`1px solid ${o.c}40`,background:o.c+'10',transition:'all 0.15s'}}
+            onMouseEnter={e=>{e.currentTarget.style.background=o.c+'22';e.currentTarget.style.transform='translateY(-2px)';}}
+            onMouseLeave={e=>{e.currentTarget.style.background=o.c+'10';e.currentTarget.style.transform='translateY(0)';}}>
+            <p style={{fontSize:11,textTransform:'uppercase',letterSpacing:'0.08em',color:o.c,fontWeight:600,marginBottom:6}}>{o.label}</p>
+            <p style={{fontSize:14,fontWeight:500,marginBottom:2}}>{info.auteur}</p>
+            <p style={{fontSize:13,fontStyle:'italic',color:'#444',marginBottom:6}}>{info.oeuvre}</p>
+            <p style={{fontSize:11,color:'#888'}}>Parcours : {info.parcours}</p>
+          </div>);
+        })}
+      </div>
+      <div style={{borderTop:'0.5px solid #eee',paddingTop:'1.25rem'}}>
+        <p style={{fontSize:11,textTransform:'uppercase',letterSpacing:'0.08em',color:'#888',fontWeight:600,marginBottom:10}}>Outils transversaux</p>
+        <div style={{display:'flex',gap:8,flexWrap:'wrap'}}>
+          <button onClick={()=>setView('methode')} style={s.btn}>📐 Méthode de l'oral</button>
+          <button onClick={()=>setView('grammaire')} style={s.btn}>📌 Fiches de grammaire</button>
+          <button onClick={()=>setView('sim')} style={s.btn}>🤖 Simulation d'oral IA</button>
+        </div>
+      </div>
+    </div>)}
+    {view==='objet'&&currentObjet&&<ObjetModule objet={currentObjet} onBack={home}/>}
+    {(view==='methode'||view==='grammaire'||view==='sim')&&(<div>
+      <button onClick={home} style={{...s.btn,marginBottom:'1rem',fontSize:12}}>← Retour à l'accueil</button>
+      {view==='methode'&&<Methode/>}
+      {view==='grammaire'&&<Grammaire/>}
+      {view==='sim'&&<Simulation/>}
+    </div>)}
+  </div>);
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(App));
+</script>
+</body>
+</html>
