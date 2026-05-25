@@ -56,9 +56,9 @@ function createAudio(type){
 
 /* ── DONNÉES ────────────────────────────────────────────────────────────── */
 const OBJETS=[
-  {id:'theatre',label:'Théâtre',c:'#8e44ad',music:'sarraute'},
-  {id:'poesie',label:'Poésie',c:'#27ae60',music:'dorion'},
-  {id:'roman',label:'Roman et récit',c:'#e67e22',music:'prevost'},
+  {id:'theatre',label:"Théâtre",c:'#8e44ad',music:'sarraute'},
+  {id:'poesie',label:"Poésie",c:'#27ae60',music:'dorion'},
+  {id:'roman',label:"Roman et récit",c:'#e67e22',music:'prevost'},
   {id:'idees',label:"Littérature d'idées",c:'#2980b9',music:'laboetie'},
 ];
 
@@ -521,7 +521,7 @@ const TEXTES=[
 /* ── QUIZ PAR OBJET (3 niveaux) ─────────────────────────────────────────── */
 const QUIZ_OBJETS={
   theatre:{
-    n1:{label:'Niveau 1 — Notions théâtrales',c:'#27ae60',questions:[
+    n1:{label:"Niveau 1 — Notions théâtrales",c:'#27ae60',questions:[
       {q:"Qu'est-ce qu'une didascalie ?",o:["Un monologue intérieur non dit sur scène","Une indication scénique écrite par l'auteur (décor, jeu, déplacements)","Une réplique très courte d'un personnage secondaire","Un entracte entre deux actes"],r:1},
       {q:"La double énonciation désigne…",o:["Deux acteurs qui se répondent en écho","Le personnage qui parle à un autre mais aussi au public","La pièce écrite pour être lue et jouée","Le metteur en scène qui prend la parole"],r:1},
       {q:"Les stichomythies sont…",o:["Des apartés chuchotés entre acteurs hors scène","Des répliques très courtes qui s'enchaînent rapidement","Des monologues divisés en plusieurs tirades","Des didascalies de déplacement scénique"],r:1},
@@ -538,7 +538,7 @@ const QUIZ_OBJETS={
       {q:"Qu'est-ce qu'un dénouement ?",o:["La première scène qui pose le conflit","La résolution finale de l'intrigue, heureuse ou tragique","Un coup de théâtre au milieu de la pièce","La liste des personnages en fin de texte"],r:1},
       {q:"Qu'est-ce que le registre comique ?",o:["Un registre qui provoque la crainte et la pitié","Un registre qui provoque le rire par des procédés variés (quiproquo, ironie, caricature)","Un registre qui provoque l'indignation morale","Un registre qui provoque le sentiment du sublime"],r:1},
     ]},
-    n2:{label:'Niveau 2 — Application aux textes',c:'#e67e22',questions:[
+    n2:{label:"Niveau 2 — Application aux textes",c:'#e67e22',questions:[
       {q:"Pourquoi Sarraute nomme ses personnages H1 et H2 ?",o:["Pour signaler qu'ils sont deux historiens de métier","Pour concentrer l'attention sur la parole, non sur l'identité","Pour imiter la nomenclature scientifique classique","Pour permettre au metteur en scène de choisir librement"],r:1},
       {q:"Dans « C'est bien, ça » (EL 3), quel est le véritable motif de la rupture ?",o:["Une dette financière non remboursée","Une intonation condescendante dans le « bien… ça » — le ton, non le sens","Un oubli de rendez-vous important","Un mensonge découvert lors d'un dîner"],r:1},
       {q:"Dans Clôture de l'amour (EL 1), quel procédé Audrey utilise-t-elle en répétant « une fiction » en fin de groupe ?",o:["Une anaphore (répétition en tête de groupe)","Une épiphore (répétition en fin de groupe)","Une épizeuxe (répétition immédiate du même mot)","Un chiasme (inversion de l'ordre des termes)"],r:1},
@@ -555,7 +555,7 @@ const QUIZ_OBJETS={
       {q:"Dans EL 1, le rythme ternaire « malheur chagrin désespoir » sert à…",o:["Résumer objectivement les conséquences de la rupture","Amplifier par accumulation l'avenir sombre qu'Audrey projette ironiquement","Introduire trois thèmes distincts développés ensuite","Créer un effet de pause méditative dans le discours"],r:1},
       {q:"Dans EL 4, le terme « déboutés » entre guillemets relève…",o:["Du registre amoureux et lyrique","Du vocabulaire judiciaire — la société prononce un verdict sur les personnages","Du registre familier et argotique","Du lexique théologique lié au péché"],r:1},
     ]},
-    n3:{label:'Niveau 3 — Approfondissement',c:'#8e44ad',questions:[
+    n3:{label:"Niveau 3 — Approfondissement",c:'#8e44ad',questions:[
       {q:"Les exclamations finales « Oui. » / « Non ! » rattachent la pièce à…",o:["Au classicisme (harmonie et règles)","Au théâtre de l'Absurde (Beckett, Ionesco — conflit sans résolution)","Au romantisme (expression du moi)","Au surréalisme (logique du rêve)"],r:1},
       {q:"La « sous-conversation » chez Sarraute désigne…",o:["Le texte des didascalies lu à voix basse","Le flux intérieur inavoué qui coule sous la conversation apparente","Les répliques coupées au montage scénique","Le résumé du texte placé en exergue"],r:1},
       {q:"Dans EL 1, Audrey dit « tu as raison » puis décrit un avenir sombre. Quelle stratégie ?",o:["La concession apparente — accorder pour mieux retourner l'argument","L'aveu sincère de sa défaite totale","La captatio benevolentiae bienveillante","L'ironie romantique sans portée argumentative"],r:0},
@@ -574,7 +574,7 @@ const QUIZ_OBJETS={
     ]},
   },
   poesie:{
-    n1:{label:'Niveau 1 — Notions poétiques',c:'#27ae60',questions:[
+    n1:{label:"Niveau 1 — Notions poétiques",c:'#27ae60',questions:[
       {q:"Qu'est-ce qu'un alexandrin ?",o:["Un vers de 8 syllabes, propre à la poésie légère","Un vers de 12 syllabes, mètre noble de la poésie classique","Un vers de 10 syllabes, fréquent dans la chanson","Un vers de 14 syllabes, propre à la poésie baroque"],r:1},
       {q:"Un enjambement est…",o:["Une rime riche qui relie deux strophes","Le passage d'un vers à l'autre sans pause syntaxique","Une allitération renforcée en fin de vers","L'inversion du sujet et du verbe dans un vers"],r:1},
       {q:"L'élégie est un registre…",o:["Comique et léger, propre aux pastorales","Plaintif et mélancolique, exprimant souvent un deuil ou une perte","Héroïque et solennel, célébrant les exploits guerriers","Polémique et agressif, dénonçant une injustice"],r:1},
@@ -591,7 +591,7 @@ const QUIZ_OBJETS={
       {q:"La prosopopée consiste à…",o:["Répéter un mot en fin de groupe pour insister","Donner la parole à un être absent, mort ou inanimé","Exagérer une réalité pour frapper l'imagination","Atténuer une réalité pour suggérer davantage"],r:1},
       {q:"Le registre élégiaque se définit par…",o:["L'expression de la joie et de la vitalité","L'expression mélancolique d'une perte, d'un deuil, d'un regret","L'expression satirique d'une indignation politique","L'expression héroïque d'un idéal moral"],r:1},
     ]},
-    n2:{label:'Niveau 2 — Application aux textes',c:'#e67e22',questions:[
+    n2:{label:"Niveau 2 — Application aux textes",c:'#e67e22',questions:[
       {q:"Dans L'Isolement (EL 5), que signifie « Le soleil des vivants n'échauffe plus les morts » ?",o:["Lamartine critique la société qui oublie ses défunts","En deuil, le poète se perçoit comme mort — le monde des vivants ne l'atteint plus","C'est une métaphore du coucher du soleil en hiver","C'est une allusion à l'enfer de Dante dans la Divine Comédie"],r:1},
       {q:"Dans « Mes forêts » (EL 6), que signifie le déterminant possessif « Mes » dans le titre ?",o:["Une possession légale — Dorion possède ces forêts au Québec","Une appropriation affective et intellectuelle — la forêt comme espace intérieur","Une erreur typographique dans l'édition originale","Une désignation collective des forêts québécoises en général"],r:1},
       {q:"Dans « La nuit s'approfondit » (EL 8), la traversée des références littéraires représente…",o:["Une critique de la tradition littéraire européenne jugée trop lourde","Une généalogie poétique — la poétesse traverse ses inspirations comme une forêt","Une démonstration d'érudition gratuite sans lien avec l'intime","Un hommage funèbre à des auteurs récemment disparus"],r:1},
@@ -608,7 +608,7 @@ const QUIZ_OBJETS={
       {q:"Dans EL 5, le conditionnel passé « j'aurais aimé » exprime…",o:["Un futur certain dans la continuité du poème","Un regret et un irréel du passé — ce qui aurait pu être mais ne sera pas","Une hypothèse ouverte sur l'avenir du poète","Un simple souhait poli adressé à la nature"],r:1},
       {q:"Dans EL 8, le monostiche final « un poème murmure » produit…",o:["Un effet d'inachèvement et d'incompétence de l'autrice","Un effet d'humilité — la révélation poétique est discrète, comme un murmure","Un effet comique par contraste avec les vers précédents","Un effet de clôture violente et définitive"],r:1},
     ]},
-    n3:{label:'Niveau 3 — Approfondissement',c:'#8e44ad',questions:[
+    n3:{label:"Niveau 3 — Approfondissement",c:'#8e44ad',questions:[
       {q:"Dans L'Isolement, « Un seul être vous manque, et tout est dépeuplé » est…",o:["Un imparfait de narration présentant un souvenir","Un présent de vérité générale — une sentence universelle formulée comme une loi","Un conditionnel exprimant un regret irréel","Un futur proche exprimant une menace imminente"],r:1},
       {q:"Dans L'Isolement, Lamartine contemple la terre « ainsi qu'une ombre errante » parce que…",o:["Il fait de l'humour noir sur sa mauvaise condition physique","En deuil, il se perçoit comme mort — fantôme errant parmi les vivants","Il décrit une randonnée nocturne dans la campagne","Il fait une allusion à L'Enfer de Dante"],r:1},
       {q:"Le tableau de Caspar David Friedrich est rapproché de L'Isolement parce que…",o:["Friedrich a illustré le poème à la demande de Lamartine","Tous deux mettent en scène un moi solitaire face à un paysage sublime — figure du romantisme européen","Lamartine et Friedrich se sont rencontrés lors d'un voyage en Allemagne","Ils sont strictement contemporains et se connaissaient"],r:1},
@@ -627,7 +627,7 @@ const QUIZ_OBJETS={
     ]},
   },
   roman:{
-    n1:{label:'Niveau 1 — Notions narratologiques',c:'#27ae60',questions:[
+    n1:{label:"Niveau 1 — Notions narratologiques",c:'#27ae60',questions:[
       {q:"Qu'appelle-t-on focalisation interne ?",o:["Le narrateur sait tout sur tous les personnages (omniscience totale)","Le récit est filtré par le point de vue d'un seul personnage","Le narrateur est extérieur à l'histoire et reste neutre","Le lecteur en sait davantage que tous les personnages"],r:1},
       {q:"Le discours indirect libre se caractérise par…",o:["La présence de guillemets et d'un verbe introducteur explicite","L'absence de guillemets et de verbe introducteur — fusion des voix narrateur/personnage","Un verbe introducteur suivi d'une conjonction « que »","Une narration à la deuxième personne du singulier"],r:1},
       {q:"Une analepse est…",o:["Une anticipation sur la suite des événements (flash-forward)","Un retour en arrière dans le récit (flash-back)","Un résumé elliptique d'une longue période","Un monologue intérieur au présent"],r:0},
@@ -644,7 +644,7 @@ const QUIZ_OBJETS={
       {q:"L'ellipse narrative consiste à…",o:["Décrire un moment en l'amplifiant par des détails","Sauter une période temporelle sans la raconter (« deux ans plus tard »)","Revenir sur un moment déjà narré pour le nuancer","Anticiper sur la suite de l'intrigue par le narrateur"],r:1},
       {q:"Le registre pathétique vise à…",o:["Faire rire le lecteur par des procédés comiques","Susciter la compassion et l'émotion du lecteur face à la souffrance","Convaincre par une argumentation rigoureuse","Évoquer la grandeur et la puissance des héros"],r:1},
     ]},
-    n2:{label:'Niveau 2 — Application aux textes',c:'#e67e22',questions:[
+    n2:{label:"Niveau 2 — Application aux textes",c:'#e67e22',questions:[
       {q:"Dans EL 12 (Prince Italien), pourquoi Manon coiffe-t-elle des Grieux ?",o:["Elle veut lui exprimer sa tendresse par un geste domestique","Elle prépare des Grieux comme accessoire de sa mise en scène avec le Prince","Elle s'occupe par désœuvrement en attendant une visite","C'est une habitude anodine du couple sans portée dramatique"],r:1},
       {q:"La litote « ne dut pas lui causer peu d'étonnement » (EL 12) signifie…",o:["L'étranger fut peu étonné — légère surprise passagère","L'étranger fut très étonné — litote ironique du narrateur","L'étranger fut totalement indifférent au spectacle","L'étranger ne fut pas étonné du tout — réaction ordinaire"],r:1},
       {q:"Qui est le narrateur de Manon Lescaut ?",o:["Manon Lescaut elle-même, dans un journal intime","Un narrateur omniscient extérieur à toute l'histoire","Le chevalier des Grieux, narrateur rétrospectif autodiégétique","L'Abbé Prévost en tant que personnage-cadre principal"],r:2},
@@ -661,7 +661,7 @@ const QUIZ_OBJETS={
       {q:"Tiberge, dans Manon Lescaut, incarne…",o:["Le frère prodigue qui entraîne Des Grieux dans le vice","La vertu et la raison — miroir positif qui souligne les chutes du héros","Le libertin cynique qui tire profit des amours du couple","Le narrateur-cadre qui encadre le récit de Des Grieux"],r:1},
       {q:"Dans EL 10, la reprise emphatique « moi, qui… moi, dis-je, dont… » sert à…",o:["Exprimer l'humilité de Des Grieux devant la perfection de Manon","Construire un autoportrait rétrospectif insistant — souligner l'écart entre ce qu'il était et ce qu'il fait","Adresser directement le lecteur en le prenant à témoin","Introduire une comparaison entre deux versions de lui-même"],r:1},
     ]},
-    n3:{label:'Niveau 3 — Approfondissement',c:'#8e44ad',questions:[
+    n3:{label:"Niveau 3 — Approfondissement",c:'#8e44ad',questions:[
       {q:"Le terme « spectacle » pour Des Grieux (EL 12) révèle que…",o:["Il est simplement décrit comme beau à regarder par le Prince","Manon est la metteuse en scène et Des Grieux son accessoire — inversion des rôles","Des Grieux est ridiculisé volontairement par le Prince étranger","Il désigne le miroir devant lequel Manon le coiffe"],r:1},
       {q:"Être narrateur rétrospectif implique que Des Grieux…",o:["Ignore totalement ce qui va se passer dans le récit","Raconte avec la lucidité que confère la distance — il sait ce qu'il n'a pas su lire sur le moment","Invente les faits pour mieux se justifier aux yeux du lecteur","Raconte au présent de l'action sans recul"],r:1},
       {q:"Manon est un personnage « en marge » parce que…",o:["Elle habite physiquement en dehors de la ville","Elle s'affranchit des normes sociales, morales et religieuses de son époque","Elle est pauvre et sans famille dans un milieu hostile","Elle est étrangère à la France et y vit en exilée"],r:1},
@@ -680,7 +680,7 @@ const QUIZ_OBJETS={
     ]},
   },
   idees:{
-    n1:{label:'Niveau 1 — Notions d'argumentation',c:'#27ae60',questions:[
+    n1:{label:"Niveau 1 — Notions d'argumentation",c:'#27ae60',questions:[
       {q:"Qu'est-ce qu'une apostrophe en rhétorique ?",o:["Une figure qui atténue une réalité déplaisante","Adresser brusquement la parole à quelqu'un (réel, absent ou imaginaire)","Une répétition d'un même son en fin de phrase","Une comparaison entre deux réalités sans outil"],r:1},
       {q:"Le registre polémique vise à…",o:["Émouvoir le lecteur par la pitié et la compassion","Attaquer, dénoncer, convaincre en prenant parti avec force","Amuser par des procédés comiques et burlesques","Décrire objectivement une réalité sans prendre parti"],r:1},
       {q:"La litote consiste à…",o:["Exagérer une réalité pour mieux frapper l'imagination","Dire moins pour suggérer davantage — l'atténuation sert l'intensité","Comparer deux éléments avec un outil comparatif explicite","Répéter la même idée sous des formes différentes"],r:1},
@@ -697,7 +697,7 @@ const QUIZ_OBJETS={
       {q:"Le raisonnement par exemplum consiste à…",o:["Partir d'une vérité générale pour l'appliquer à un cas particulier (déduction)","Illustrer une thèse générale par un exemple historique, mythologique ou littéraire","Concéder un point à l'adversaire avant de le réfuter","Accumuler des exemples contradictoires pour déstabiliser"],r:1},
       {q:"Qu'est-ce qu'une apologie ?",o:["Un aveu de culpabilité adressé à une victime","Un discours qui défend, justifie ou fait l'éloge d'une personne ou d'une idée","Une critique virulente et argumentée d'un adversaire","Une description neutre et objective d'une pratique sociale"],r:1},
     ]},
-    n2:{label:'Niveau 2 — Application aux textes',c:'#e67e22',questions:[
+    n2:{label:"Niveau 2 — Application aux textes",c:'#e67e22',questions:[
       {q:"La « servitude volontaire » chez La Boétie désigne…",o:["Une servitude imposée par la violence directe du tyran","La soumission librement consentie du peuple — le tyran tient de ce consentement son pouvoir","Une forme de méditation religieuse ascétique","Le service militaire obligatoire imposé aux sujets"],r:1},
       {q:"Dans EL 14, pourquoi La Boétie passe-t-il de « des ennemis » à « de l'ennemi » ?",o:["Pour alléger la phrase d'une répétition maladroite","Pour singulariser : la véritable cause est unique — le tyran que le peuple crée lui-même","Pour désigner un ennemi extérieur jamais nommé","Pour montrer que tous les ennemis se valent"],r:1},
       {q:"La maxime la plus célèbre du Discours est…",o:["« Je pense, donc je suis » (Descartes, Discours de la méthode)","« Soyez résolus à ne plus servir, et vous voilà libres »","« L'homme est un loup pour l'homme » (Hobbes, Léviathan)","« L'homme est né libre, et partout il est dans les fers » (Rousseau)"],r:1},
@@ -714,7 +714,7 @@ const QUIZ_OBJETS={
       {q:"L'ami de La Boétie qui hérite de ses manuscrits est…",o:["Joachim Du Bellay, poète et ami depuis le collège","Michel de Montaigne — qui lui consacre son chapitre « De l'amitié »","Pierre de Ronsard, chef de la Pléiade","François Rabelais, humaniste et satiriste"],r:1},
       {q:"La Fontaine et La Boétie sont mis en regard dans la séquence parce que…",o:["Ils sont contemporains et se connaissaient personnellement","Tous deux dénoncent la servitude volontaire — l'un par la fable, l'autre par l'essai","Ils écrivent tous deux en latin, langue de l'humanisme","Ils partagent la même conception de la tyrannie militaire"],r:1},
     ]},
-    n3:{label:'Niveau 3 — Approfondissement',c:'#8e44ad',questions:[
+    n3:{label:"Niveau 3 — Approfondissement",c:'#8e44ad',questions:[
       {q:"Dans EL 15, le conditionnel « plairait » vs le présent « profite » produit…",o:["Aucun effet — les deux temps sont interchangeables","Une opposition réel/virtuel : profiteurs réels vs ceux qui désirent sans agir","Une concession rhétorique habituelle chez La Boétie","Une hypothèse ouverte sur un futur possible"],r:1},
       {q:"Dans EL 14, la maxime finale « Soyez résolus à ne plus servir, et vous voilà libres » est…",o:["Une promesse vague qui engage peu de chose pratique","Une injonction radicale résumant le Discours — la liberté est un acte de volonté immédiat","Une citation d'Ulysse servant d'exergue au texte","Un constat pessimiste sur l'inutilité du combat"],r:1},
       {q:"La libération exige-t-elle, selon La Boétie, une révolution violente ?",o:["Oui — il faut renverser le tyran par une guerre civile juste","Non — il suffit de retirer son consentement : ne plus soutenir le tyran suffit","Oui — mais uniquement par des moyens symboliques et pacifiques","La Boétie ne répond pas directement à cette question"],r:1},
@@ -754,7 +754,7 @@ const QUIZ_METHODE={
       {q:"La problématique d'une explication linéaire doit être…",o:["Une question fermée à laquelle on répond par oui/non","Une question spécifique au texte, appelant une réponse nuancée vérifiable ligne à ligne","Une reformulation du titre","Une simple description du sujet"],r:1},
       {q:"Le plan d'une explication linéaire est constitué de…",o:["3 grandes parties thématiques (comme un commentaire)","Mouvements correspondant aux étapes successives du texte","Une liste de procédés","Aucun plan n'est nécessaire"],r:1},
   ]},
-  n2:{label:'Niveau 2 — Analyser et argumenter',c:'#e67e22',questions:[
+  n2:{label:"Niveau 2 — Analyser et argumenter",c:'#e67e22',questions:[
       {q:"Quelle est l'erreur la plus fréquente dans une explication linéaire ?",o:["Citer trop de procédés","Paraphraser le texte sans analyser les effets des procédés","Parler du contexte historique","Donner son avis personnel"],r:1},
       {q:"Lors de l'entretien, la présentation de l'œuvre choisie doit être…",o:["Une récitation de la fiche de lecture","Une présentation personnelle justifiée par des références précises à l'œuvre","Un résumé complet de l'intrigue","Une liste des personnages"],r:1},
       {q:"Qu'est-ce qu'une problématique efficace pour une explication linéaire ?",o:["Une question générale sur le genre littéraire","Une question spécifique à ce texte, appelant une réponse nuancée vérifiable ligne à ligne","Une question à laquelle on répond par oui ou non","Une reformulation du titre de l'œuvre"],r:1},
@@ -939,9 +939,9 @@ function Entretien(){
   useEffect(()=>()=>{cancelAnimationFrame(animRef.current);},[]);
 
   const oeuvres=[
-    {id:'theatre',label:'Théâtre',c:'#8e44ad',info:OBJETS_INFO.theatre},
-    {id:'poesie',label:'Poésie',c:'#27ae60',info:OBJETS_INFO.poesie},
-    {id:'roman',label:'Roman',c:'#e67e22',info:OBJETS_INFO.roman},
+    {id:'theatre',label:"Théâtre",c:'#8e44ad',info:OBJETS_INFO.theatre},
+    {id:'poesie',label:"Poésie",c:'#27ae60',info:OBJETS_INFO.poesie},
+    {id:'roman',label:"Roman",c:'#e67e22',info:OBJETS_INFO.roman},
     {id:'idees',label:"Idées",c:'#2980b9',info:OBJETS_INFO.idees},
   ];
 
@@ -1381,7 +1381,7 @@ function Grammaire(){
 
   // Quiz grammaire : questions tirées des EL
   const QUIZ_GRAM={
-    n1:{label:'Niveau 1 — Notions fondamentales',c:'#27ae60',questions:[
+    n1:{label:"Niveau 1 — Notions fondamentales",c:'#27ae60',questions:[
       {type:'qcm',q:"Quelle est la nature de « que » dans « Des mots qu'on n'a pas eus » (Sarraute, EL 3) ?",o:["Conjonction de subordination","Pronom relatif COD","Adverbe interrogatif","Pronom interrogatif"],r:1,ex:"Pronom relatif : il reprend l'antécédent « des mots » et a la fonction COD du verbe « a eus » dans la relative."},
       {type:'qcm',q:"Dans « puisque nous en sommes là » (Sarraute, EL 4), quelle est la nature de « puisque » ?",o:["Conjonction de coordination","Adverbe","Conjonction de subordination introduisant une circonstancielle de cause","Pronom relatif"],r:2,ex:"Conjonction de subordination introduisant une proposition subordonnée conjonctive circonstancielle de cause. « Puisque » exprime une cause connue et partagée par les deux interlocuteurs."},
       {type:'qcm',q:"Dans « Le soleil des vivants n'échauffe plus les morts » (Lamartine, EL 5), quelle est la valeur du présent ?",o:["Présent d'actualité","Présent de narration","Présent de vérité générale (gnomique)","Présent futur proche"],r:2,ex:"Présent de vérité générale ou gnomique : ce vers énonce une loi universelle, une sentence immuable. Ce n'est pas une action en cours mais une vérité présentée comme permanente."},
@@ -1398,7 +1398,7 @@ function Grammaire(){
       {type:'qcm',q:"La proposition subordonnée participiale est…",o:["Une subordonnée introduite par « que »","Une subordonnée construite autour d'un participe (présent ou passé) avec son propre sujet (« Le soleil étant couché, nous rentrâmes »)","Une principale","Un complément du nom"],r:1,ex:"La subordonnée participiale a son propre sujet, distinct de celui de la principale. Le verbe est au participe. Exemple : « La nuit tombant, nous rentrâmes » — sujet « la nuit », distinct de « nous »."},
       {type:'qcm',q:"Une phrase nominale est…",o:["Une phrase sans nom","Une phrase sans verbe conjugué, dont le noyau est un nom ou un groupe nominal (« Quelle belle journée ! »)","Une phrase à la voix passive","Une phrase interrogative"],r:1,ex:"La phrase nominale n'a pas de verbe conjugué. Son noyau est un nom ou groupe nominal. Très utilisée pour l'expression rapide, l'exclamation, les titres, la description elliptique."},
     ]},
-    n2:{label:'Niveau 2 — Application aux textes',c:'#e67e22',questions:[
+    n2:{label:"Niveau 2 — Application aux textes",c:'#e67e22',questions:[
       {type:'qcm',q:"Dans « elle voulait que mes cheveux fussent accommodés » (Prévost, EL 12), quel est le mode et le temps de « fussent accommodés » ?",o:["Subjonctif imparfait passif","Indicatif imparfait passif","Conditionnel présent passif","Subjonctif présent passif"],r:0,ex:"Subjonctif imparfait passif : auxiliaire être au subjonctif imparfait (fussent) + participe passé (accommodés). Le subjonctif est obligatoire après un verbe de volonté ; l'imparfait marque la concordance des temps."},
       {type:'qcm',q:"Dans « Rien qu'on puisse dire » (Sarraute, EL 2), quelle est la nature de la proposition « qu'on puisse dire » ?",o:["Proposition subordonnée relative adjective après négation absolue","Proposition subordonnée complétive","Proposition principale","Proposition circonstancielle de but"],r:0,ex:"Proposition subordonnée relative adjective épithète de l'antécédent « rien ». Le subjonctif est obligatoire dans une relative dépendant de « rien » (négation absolue)."},
       {type:'qcm',q:"Dans « on ne pourra pas toujours / ne pas recommencer » (Dorion, EL 7), que résulte-t-il de la double négation ?",o:["Une affirmation renforcée : on recommencera forcément","Une négation totale : on ne recommencera jamais","Une interrogation rhétorique","Une atténuation"],r:0,ex:"Double négation qui produit une affirmation : « ne pas pouvoir ne pas + infinitif » = « être obligé de + infinitif ». NEG(NEG) = affirmation."},
@@ -1415,7 +1415,7 @@ function Grammaire(){
       {type:'qcm',q:"Dans « ça survit, ça survit, ça agonise » (Haenel, EL 9), quelle est la nature du « ça » répété ?",o:["Pronom personnel","Pronom démonstratif neutre (forme familière de « cela »), sujet","Adverbe","Article"],r:1,ex:"Pronom démonstratif neutre, forme familière de « cela ». Sujet des verbes. Effet : réification de la victime."},
       {type:'qcm',q:"Dans « N'avez-vous pas toujours, avec elle, de quoi finir vos inquiétudes ? » (Prévost, EL 11), quel type de phrase ?",o:["Déclarative à la forme négative","Question rhétorique à la forme interro-négative (la réponse est implicitement évidente)","Exclamative","Injonctive"],r:1,ex:"Question rhétorique interro-négative : elle n'attend pas de réponse car la réponse est implicite. Lescaut présente la prostitution comme une évidence — ce qui rend la phrase scandaleuse."},
     ]},
-    n3:{label:'Niveau 3 — Approfondissement',c:'#8e44ad',questions:[
+    n3:{label:"Niveau 3 — Approfondissement",c:'#8e44ad',questions:[
       {type:'qcm',q:"Dans « Ces six cents en tiennent sous leur dépendance six mille, qu'ils élèvent en dignité » (La Boétie, EL 15), quelle est la nature de « qu'ils élèvent en dignité » ?",o:["Subordonnée relative adjective épithète de « six mille »","Complétive COD","Circonstancielle de but","Principale"],r:0,ex:"Subordonnée relative adjective épithète. « que » = pronom relatif COD de « élèvent » ; antécédent = « six mille ». Relative déterminative."},
       {type:'qcm',q:"Dans « J'en arrive maintenant à un point qui est, selon moi, le ressort et le secret de la domination » (La Boétie, EL 15), nature de « selon moi » ?",o:["Subordonnée de cause","Groupe adverbial à valeur modalisante","COI","Incise"],r:1,ex:"Modalisateur : « selon moi » indique le point de vue personnel de l'auteur. Déplaçable, supprimable."},
       {type:'qcm',q:"Dans « Il faut du temps pour que ça revienne, cette pulsation, un pouls qui se remet à battre » (Sarraute, EL 4), nature de « cette pulsation, un pouls qui se remet à battre » ?",o:["Appositions au pronom « ça »","COD","Attributs","Compléments de manière"],r:0,ex:"Appositions : elles précisent ce que désigne « ça » par des reprises nominales, en relation d'équivalence et séparées par des virgules."},
