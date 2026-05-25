@@ -27,23 +27,37 @@ const {useState,useEffect,useRef,useCallback}=React;
 /* ── AUDIO (MP3 files placed alongside index.html) ──────────────────────── */
 function createAudio(type){
   const sources={
-    dorion:'Murmures_en_Stereo.mp3',
-    laboetie:'Million_Se_Soumet.mp3'
+    dorion:'dorion.mp3',
+    laboetie:'laboetie.mp3',
+    prevost:'prevost.mp3'
   };
   const src=sources[type];
-  if(!src)return {stop:()=>{}};
+  if(!src)return {stop:()=>{},onError:()=>{}};
   const audio=new Audio(src);
   audio.loop=true;
   audio.volume=0.4;
-  audio.play().catch(e=>console.error('Audio play failed:',e));
-  return {stop:()=>{audio.pause();audio.src='';}};
+  let errorCb=null;
+  audio.addEventListener('error',()=>{
+    const code=audio.error?.code;
+    let msg='Erreur audio';
+    if(code===4) msg=`Fichier "${src}" introuvable sur le serveur.`;
+    else if(code===2) msg='Erreur réseau au chargement.';
+    else if(code===3) msg='Erreur de décodage du fichier.';
+    else if(code===1) msg='Chargement interrompu.';
+    if(errorCb) errorCb(msg);
+  });
+  audio.play().catch(e=>{if(errorCb) errorCb('Lecture refusée : '+e.message);});
+  return {
+    stop:()=>{audio.pause();audio.src='';},
+    onError:cb=>{errorCb=cb;}
+  };
 }
 
 /* ── DONNÉES ────────────────────────────────────────────────────────────── */
 const OBJETS=[
   {id:'theatre',label:'Théâtre',c:'#8e44ad',music:false},
   {id:'poesie',label:'Poésie',c:'#27ae60',music:'dorion'},
-  {id:'roman',label:'Roman et récit',c:'#e67e22',music:false},
+  {id:'roman',label:'Roman et récit',c:'#e67e22',music:'prevost'},
   {id:'idees',label:"Littérature d'idées",c:'#2980b9',music:'laboetie'},
 ];
 
@@ -1208,6 +1222,7 @@ function GrammaireEL({questions}){
 function ObjetModule({objet,onBack}){
   const [tab,setTab]=useState('cours');
   const [musicOn,setMusicOn]=useState(false);
+  const [musicError,setMusicError]=useState(null);
   const musicRef=useRef(null);
   const info=OBJETS_INFO[objet.id];
   const TABS=[['cours','📖 Cours'],['el','📝 EL'],['quiz','🎯 Quiz']];
@@ -1218,11 +1233,19 @@ function ObjetModule({objet,onBack}){
       musicRef.current?.stop();
       musicRef.current=null;
       setMusicOn(false);
+      setMusicError(null);
     } else {
+      setMusicError(null);
       try{
         musicRef.current=createAudio(objet.music);
+        musicRef.current.onError?.(msg=>{
+          setMusicError(msg);
+          setMusicOn(false);
+        });
         setMusicOn(true);
-      }catch(e){console.error(e);}
+      }catch(e){
+        setMusicError(e.message);
+      }
     }
   };
   useEffect(()=>()=>{musicRef.current?.stop();},[]);
@@ -1237,6 +1260,12 @@ function ObjetModule({objet,onBack}){
           </button>
         )}
       </div>
+      {musicError&&(
+        <div style={{background:'#fdf0ef',border:'0.5px solid #e74c3c',borderRadius:8,padding:'0.5rem 0.75rem',marginBottom:'1rem',fontSize:12,color:'#a93226',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+          <span>⚠ {musicError}</span>
+          <button onClick={()=>setMusicError(null)} style={{background:'none',border:'none',color:'#a93226',cursor:'pointer',fontSize:14}}>×</button>
+        </div>
+      )}
       <div style={{padding:'1rem 1.25rem',background:objet.c+'15',borderLeft:`3px solid ${objet.c}`,borderRadius:8,marginBottom:'1rem'}}>
         <p style={{fontSize:11,textTransform:'uppercase',letterSpacing:'0.08em',color:objet.c,fontWeight:600}}>{objet.label}</p>
         <h2 style={{fontSize:18,fontWeight:500,margin:'4px 0'}}>{info.auteur}, <em>{info.oeuvre}</em> ({info.date})</h2>
@@ -1419,6 +1448,42 @@ function Grammaire(){
 }
 
 /* ── APP ────────────────────────────────────────────────────────────────── */
+function Countdown(){
+  const now=new Date();
+  const ecrit=new Date('2026-06-11');
+  const oral=new Date('2026-06-25');
+  const msDay=1000*60*60*24;
+  const dEcrit=Math.ceil((ecrit-now)/msDay);
+  const dOral=Math.ceil((oral-now)/msDay);
+  if(dOral<0) return null;
+  const isUrgent=dEcrit<=7;
+  const bg=isUrgent?'#fdf0ef':'#f0f4ff';
+  const border=isUrgent?'#e74c3c':'#2980b9';
+  const col=isUrgent?'#a93226':'#1a5276';
+  return(
+    <div style={{background:bg,border:`1px solid ${border}40`,borderLeft:`3px solid ${border}`,borderRadius:8,padding:'0.65rem 1rem',marginBottom:'1.25rem',display:'flex',gap:'1.5rem',flexWrap:'wrap',alignItems:'center'}}>
+      {dEcrit>0?(
+        <div style={{display:'flex',alignItems:'baseline',gap:6}}>
+          <span style={{fontSize:26,fontWeight:600,color:border,lineHeight:1}}>{dEcrit}</span>
+          <span style={{fontSize:12,color:col}}>j. avant l'<strong>écrit</strong> (11 juin)</span>
+        </div>
+      ):(
+        <div style={{fontSize:12,color:col,fontWeight:500}}>✓ Écrit passé</div>
+      )}
+      <div style={{width:'1px',background:border+'30',alignSelf:'stretch',minHeight:20}}/>
+      {dOral>0?(
+        <div style={{display:'flex',alignItems:'baseline',gap:6}}>
+          <span style={{fontSize:26,fontWeight:600,color:border,lineHeight:1}}>{dOral}</span>
+          <span style={{fontSize:12,color:col}}>j. avant les <strong>oraux</strong> (25 juin)</span>
+        </div>
+      ):(
+        <div style={{fontSize:12,color:col,fontWeight:500}}>✓ Oraux en cours</div>
+      )}
+      {isUrgent&&dEcrit>0&&<span style={{fontSize:12,color:border,marginLeft:'auto'}}>⚡ Dernière ligne droite !</span>}
+    </div>
+  );
+}
+
 function App(){
   const [view,setView]=useState('home');
   const [cur,setCur]=useState(null);
@@ -1429,6 +1494,7 @@ function App(){
         <h1 style={{fontSize:20,fontWeight:500,marginBottom:4}}>Révision oral de bac — Français</h1>
         <p style={{fontSize:13,color:'#888',marginBottom:'1.5rem'}}>Lycée Jean Prévost · 1ères G · Mme Berger</p>
       </div>
+      <Countdown/>
       {view==='home'&&(
         <div>
           <p style={{fontSize:13,color:'#666',marginBottom:'1.25rem',lineHeight:1.6}}>Choisis un objet d'étude pour accéder aux cours, aux EL et aux quiz.</p>
