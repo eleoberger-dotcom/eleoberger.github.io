@@ -29,7 +29,8 @@ function createAudio(type){
   const sources={
     dorion:'dorion.mp3',
     laboetie:'laboetie.mp3',
-    prevost:'prevost.mp3'
+    prevost:'prevost.mp3',
+    sarraute:'sarraute.mp3'
   };
   const src=sources[type];
   if(!src)return {stop:()=>{},onError:()=>{}};
@@ -55,7 +56,7 @@ function createAudio(type){
 
 /* ── DONNÉES ────────────────────────────────────────────────────────────── */
 const OBJETS=[
-  {id:'theatre',label:'Théâtre',c:'#8e44ad',music:false},
+  {id:'theatre',label:'Théâtre',c:'#8e44ad',music:'sarraute'},
   {id:'poesie',label:'Poésie',c:'#27ae60',music:'dorion'},
   {id:'roman',label:'Roman et récit',c:'#e67e22',music:'prevost'},
   {id:'idees',label:"Littérature d'idées",c:'#2980b9',music:'laboetie'},
