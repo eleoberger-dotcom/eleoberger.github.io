@@ -741,7 +741,7 @@ const QUIZ_METHODE={
       {q:"Que doit contenir l'introduction de l'explication linéaire ?",o:["Uniquement la biographie de l'auteur","Présentation du texte, lecture à voix haute, problématique et annonce du plan","Un résumé de toute l'œuvre","La liste de tous les procédés stylistiques"],r:1},
       {q:"La méthode P.E.E. signifie…",o:["Personnage — Espace — Époque","Procédé — Effet — Enjeu","Phrase — Exemple — Explication","Plan — Énoncé — Évaluation"],r:1},
       {q:"Que veut dire « sortir de l'ordre du texte » dans une explication linéaire ?",o:["Citer des textes d'autres auteurs","Traiter les passages dans un ordre différent de leur ordre d'apparition dans le texte","Oublier de mentionner l'auteur","Donner son avis personnel sur le texte"],r:1},
-      {q:"La présentation de l'œuvre lors de l'entretien dure…",o:["10 à 12 minutes","30 minutes","2 à 3 minutes","5 à 6 minutes"],r:2},
+      {q:"Quelle est la structure de l'entretien (≈ 8 min) ?",o:["Présentation de l'œuvre 8 min, puis questions","Question de grammaire (2–3 min), puis échange sur l'œuvre choisie et le parcours (5–6 min)","Questions de cours uniquement","L'élève choisit librement l'ordre"],r:1},
       {q:"L'oral de bac de français dure au total…",o:["20 minutes","30 minutes","45 minutes","1 heure"],r:1},
       {q:"La préparation de l'oral (« le temps de préparation ») est…",o:["De 20 minutes","De 30 minutes","De 45 minutes","De 1 heure"],r:1},
       {q:"La lecture à voix haute du texte rapporte…",o:["Aucun point","Des points sur les 20 — la lecture est évaluée","C'est facultatif","C'est noté à part"],r:1},
@@ -762,7 +762,7 @@ const QUIZ_METHODE={
       {q:"Citer un procédé sans en analyser l'effet, c'est…",o:["Suffisant pour une bonne note","Insuffisant — il faut nommer ET analyser l'effet ET l'enjeu (méthode P.E.E.)","Recommandé par les examinateurs","Une stratégie efficace"],r:1},
       {q:"Pour une explication linéaire, l'élève doit-il citer le texte ?",o:["Non, jamais","Oui, systématiquement — citer brièvement, en marquant la ligne, et entre guillemets","Uniquement la première phrase","Uniquement les vers"],r:1},
       {q:"Une bonne conclusion d'explication linéaire…",o:["Résume tout le texte","Répond à la problématique posée en introduction","Ajoute un nouvel argument","Cite la biographie de l'auteur"],r:1},
-      {q:"La gestion du temps lors de l'oral est…",o:["Facultative","Cruciale — gérer 12 min d'EL puis 10 min d'entretien sans déborder","Surveillée par l'élève","Comptée par les autres candidats"],r:1},
+      {q:"La gestion du temps lors de l'oral est…",o:["Facultative","Cruciale — gérer 12 min d'EL puis 8 min d'entretien sans déborder","Surveillée par l'élève","Comptée par les autres candidats"],r:1},
       {q:"Pour analyser un procédé, il faut éviter de…",o:["Nommer la figure de style","Décrire ce que dit le texte sans en analyser la portée — c'est de la paraphrase","Faire référence au contexte","Mobiliser des connaissances"],r:1},
       {q:"Lors de la lecture à voix haute, il faut…",o:["Lire le plus vite possible","Articuler, respecter la ponctuation, marquer le rythme — la lecture est expressive","Lire à voix basse","Lire sans intonation"],r:1},
       {q:"Pendant l'EL, l'élève doit suivre…",o:["L'ordre des thèmes qui l'intéressent","L'ordre du texte, ligne après ligne, en respectant ses mouvements","Un plan thématique","L'ordre chronologique de l'auteur"],r:1},
@@ -821,7 +821,7 @@ const QUESTIONS_ORAL=[
 const METHODE=[
   {titre:"Structure de l'oral (30 minutes)",icon:"⏱",contenu:[
     {sous:"Explication linéaire + question de grammaire (≈ 20 min)",items:["Présentation du texte : auteur, œuvre, date, situation dans l'œuvre, lecture à voix haute (2 min)","Annonce de la problématique et du plan (les mouvements) (1 min)","Explication linéaire : suivre l'ordre du texte, procédés + effets reliés à la problématique (10–12 min)","Conclusion partielle avant l'entretien"]},
-    {sous:"Entretien (≈ 10 min)",items:["Présentation de l'œuvre choisie : 2–3 min","Questions du jury sur l'EL, le parcours, la grammaire, la mise en perspective : ≈ 8 min"]},
+    {sous:"Entretien (≈ 8 min)",items:["Question de grammaire sur un passage du texte : 2–3 min","Échange avec le jury : présentation de l'œuvre choisie, questions sur le parcours, la mise en perspective : 5–6 min"]},
   ]},
   {titre:"La présentation de l'œuvre (2–3 min)",icon:"📖",contenu:[
     {sous:"Ce que ce n'est PAS ❌",items:["La récitation d'une fiche de lecture impersonnelle","La récitation d'un cours"]},
@@ -948,7 +948,7 @@ function Entretien(){
     <div>
       <div style={{...s.card,marginBottom:'1rem',background:'#fffaf0',borderColor:'#f4d8a4'}}>
         <p style={{fontSize:13,lineHeight:1.7,color:'#7d4f10',margin:0}}>
-          <strong>L'entretien (≈ 10 min)</strong> commence par une présentation personnelle de ton œuvre choisie (2–3 min), puis le jury te pose des questions pendant ≈ 8 min.
+          <strong>L'entretien (≈ 8 min)</strong> commence par la question de grammaire (2–3 min), puis un échange avec le jury sur l'œuvre choisie et le parcours (5–6 min).
         </p>
       </div>
 
