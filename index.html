@@ -1700,6 +1700,44 @@ function App(){
           {view==='grammaire'&&<Grammaire/>}
         </div>
       )}
+      <a href="mailto:eleo.berger@gmail.com?subject=Question%20-%20Révision%20oral%20bac%20français"
+        title="Envoyer une question à Mme Berger"
+        style={{position:'fixed',bottom:'1.25rem',right:'1.25rem',background:'white',border:'1.5px solid #e0ddd8',borderRadius:50,padding:'0.45rem 0.9rem 0.45rem 0.45rem',fontSize:12,textDecoration:'none',boxShadow:'0 2px 14px rgba(0,0,0,0.12)',display:'flex',alignItems:'center',gap:8,zIndex:999,color:'#1a1a18',fontFamily:'inherit'}}>
+        <svg width="34" height="34" viewBox="0 0 34 34">
+          {/* Fond cercle coloré */}
+          <circle cx="17" cy="17" r="17" fill="#f5f0ff"/>
+          {/* Corps */}
+          <ellipse cx="17" cy="32" rx="12" ry="7" fill="#8e44ad"/>
+          {/* Col */}
+          <ellipse cx="17" cy="27" rx="8" ry="4" fill="#f0ede8"/>
+          {/* Cou */}
+          <rect x="14" y="22" width="6" height="6" rx="3" fill="#e8c8a0"/>
+          {/* Cheveux longs et lisses — derrière, tombant sur les épaules */}
+          <rect x="5" y="10" width="7" height="22" rx="3" fill="#3a2010"/>
+          <rect x="22" y="10" width="7" height="22" rx="3" fill="#3a2010"/>
+          {/* Dessus de la tête */}
+          <ellipse cx="17" cy="9" rx="11" ry="7" fill="#3a2010"/>
+          {/* Visage par-dessus */}
+          <ellipse cx="17" cy="17" rx="9" ry="10" fill="#e8c8a0"/>
+          {/* Deux petites mèches devant les oreilles */}
+          <path d="M8 18 Q6 22 7 26" fill="none" stroke="#3a2010" strokeWidth="2.5" strokeLinecap="round"/>
+          <path d="M26 18 Q28 22 27 26" fill="none" stroke="#3a2010" strokeWidth="2.5" strokeLinecap="round"/>
+          {/* Yeux */}
+          <ellipse cx="13" cy="15" rx="2" ry="1.8" fill="#2a1a0a"/>
+          <ellipse cx="21" cy="15" rx="2" ry="1.8" fill="#2a1a0a"/>
+          <circle cx="12.3" cy="14.3" r="0.7" fill="white" opacity="0.8"/>
+          <circle cx="20.3" cy="14.3" r="0.7" fill="white" opacity="0.8"/>
+          {/* Sourcils */}
+          <path d="M10 12 Q13 10.5 16 12" fill="none" stroke="#3a2010" strokeWidth="0.9" strokeLinecap="round"/>
+          <path d="M18 12 Q21 10.5 24 12" fill="none" stroke="#3a2010" strokeWidth="0.9" strokeLinecap="round"/>
+          {/* Sourire */}
+          <path d="M12 21 Q17 25 22 21" fill="none" stroke="#a07060" strokeWidth="1.1" strokeLinecap="round"/>
+          {/* Boucles d'oreilles */}
+          <circle cx="8" cy="17" r="1.2" fill="#8e44ad"/>
+          <circle cx="26" cy="17" r="1.2" fill="#8e44ad"/>
+        </svg>
+        <span style={{fontWeight:500}}>Une question ?</span>
+      </a>
     </div>
   );
 }
