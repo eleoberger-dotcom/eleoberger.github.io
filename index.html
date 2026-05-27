@@ -23,7 +23,87 @@ textarea{resize:vertical;min-height:120px;width:100%;padding:10px;border:0.5px s
 <body>
 <div id="root"></div>
 <script type="text/babel">
-const {useState,useEffect,useRef,useCallback}=React;
+const {useState,useEffect,useRef,useCallback,useMemo}=React;
+
+/* ── GLOSSAIRE DES FIGURES DE STYLE ─────────────────────────────────────── */
+const GLOSSAIRE={
+  "anaphore":"Répétition d'un même mot ou groupe en tête de plusieurs phrases ou vers consécutifs. Effet : insistance, martèlement, amplification.",
+  "épiphore":"Répétition d'un mot ou groupe en fin de plusieurs groupes successifs. Effet : clôture, insistance finale.",
+  "épizeuxe":"Répétition immédiate d'un mot, sans autre mot intercalé (ex. : « Vite, vite ! »). Effet : urgence, intensité.",
+  "chiasme":"Figure de construction en miroir : A B / B A (ex. : « Il faut manger pour vivre, non vivre pour manger »). Effet : balance, mise en relief.",
+  "parallélisme":"Répétition d'une même structure syntaxique. Effet : symétrie, amplification rythmique.",
+  "gradation":"Succession de termes en progression croissante ou décroissante. Effet : amplification ou atténuation progressive.",
+  "accumulation":"Juxtaposition de plusieurs éléments de même nature sans hiérarchie. Effet : profusion, débordement.",
+  "énumération":"Liste d'éléments de même nature séparés par des virgules ou conjonctions. Effet : exhaustivité ou profusion.",
+  "métaphore":"Comparaison implicite sans outil comparatif (comme, tel que). Rapproche deux réalités par analogie. Effet : image frappante.",
+  "comparaison":"Mise en relation de deux éléments à l'aide d'un outil comparatif (comme, tel, pareil à). Effet : illustration, clarification.",
+  "métonymie":"Désignation d'une chose par un terme qui lui est logiquement lié (contenant pour contenu, cause pour effet…). Effet : condensation, élargissement.",
+  "synecdoque":"Désignation d'un tout par une partie, ou d'une partie par le tout (ex. : « les voiles » pour les bateaux). Effet : condensation, symbolisation.",
+  "prosopopée":"Attribution de la parole ou de qualités humaines à un être absent, mort ou inanimé. Effet : personnification dramatique.",
+  "personnification":"Attribution de traits humains à un être non humain ou à un objet. Effet : animation, vivification.",
+  "litote":"Atténuation : dire moins pour suggérer davantage (ex. : « ce n'est pas sans importance »). Effet : intensification par l'understatement.",
+  "hyperbole":"Exagération volontaire qui force l'expression d'une idée. Effet : dramatisation, emphase.",
+  "antithèse":"Opposition de deux termes ou idées contraires dans une même structure. Effet : contraste saisissant, mise en relief.",
+  "oxymore":"Association de deux termes contradictoires dans un même groupe (ex. : « bourreau tranquille »). Effet : paradoxe, tension.",
+  "antiphrase":"Dire le contraire de ce que l'on pense pour faire comprendre le sens réel (ironie). Effet : ironie mordante.",
+  "ironie":"Dire le contraire de ce qu'on pense, de sorte que le lecteur comprend le sens réel. Effet : distanciation critique.",
+  "euphémisme":"Atténuation d'une réalité dure ou choquante par une formulation adoucie. Effet : pudeur, déni.",
+  "périphrase":"Remplacement d'un mot par un groupe de mots équivalents. Effet : emphase, contournement, mise en relief.",
+  "apostrophe":"Interpellation soudaine d'un être (réel, absent, imaginaire) dans le discours. Effet : dramatisation, implication.",
+  "question rhétorique":"Question qui n'attend pas de réponse car la réponse est implicite et évidente. Effet : implication du lecteur, force argumentative.",
+  "aposiopèse":"Interruption brusque de la phrase, marquée par des points de suspension. Effet : suspension, parole qui se cherche ou se brise.",
+  "épanorthose":"Reprise ou correction de ce qu'on vient de dire (ex. : « … ou plutôt… »). Effet : nuance, ajustement de la pensée.",
+  "stichomythie":"Échange de répliques très courtes entre deux personnages. Effet au théâtre : tension, duel verbal, rapidité.",
+  "didascalie":"Indication scénique de l'auteur (décor, jeu d'acteur, déplacements). Peut être externe ou interne au dialogue.",
+  "prolepse":"Anticipation par le narrateur sur ce qui va se passer. Effet : tension dramatique, sentiment d'inéluctabilité.",
+  "analepse":"Retour en arrière dans le récit (flash-back). Effet : mise en perspective, explication rétrospective.",
+  "ellipse":"Saut d'une période temporelle non racontée. Effet : accélération du récit, concentration sur l'essentiel.",
+  "in medias res":"Début du récit au milieu de l'action, sans exposition préalable. Effet : immersion immédiate.",
+  "discours indirect libre":"Fusion de la voix du narrateur et du personnage, sans guillemets ni verbe introducteur. Effet : accès à la subjectivité du personnage.",
+  "focalisation interne":"Le récit est filtré par le point de vue d'un seul personnage. Effet : identification, subjectivité.",
+  "asyndète":"Suppression des mots de liaison (conjonctions) entre des propositions. Effet : rapidité, parataxe, juxtaposition sèche.",
+  "parataxe":"Juxtaposition de propositions sans mot de liaison. Effet : neutralité apparente, accumulation.",
+  "allitération":"Répétition d'un son consonantique. Effet : musicalité, expressivité sonore.",
+  "assonance":"Répétition d'un son vocalique. Effet : harmonie, résonance.",
+  "enjambement":"Passage d'un vers à l'autre sans pause syntaxique. Effet : fluidité, tension entre forme et sens.",
+  "rejet":"Report en début du vers suivant d'un élément syntaxiquement lié au vers précédent. Effet : mise en relief.",
+  "contre-rejet":"Report en fin de vers d'un élément qui introduit le vers suivant. Effet : suspension, anticipation.",
+  "monostiche":"Vers isolé, formant à lui seul une strophe ou un poème. Effet : concentration, silence autour du vers.",
+  "apostrophe":"Interpellation directe d'un être (présent, absent ou inanimé) dans le discours.",
+  "concession":"En argumentation : accord partiel avec l'adversaire pour mieux le réfuter ensuite. Effet : nuance, crédibilité.",
+  "exemplum":"Illustration d'une thèse par un exemple historique, mythologique ou littéraire. Effet : preuve par le cas particulier.",
+  "maxime":"Formule brève et frappante énonçant une vérité générale ou une règle de conduite.",
+  "apologue":"Court récit qui illustre une morale ou une leçon (fable, parabole). Forme : narration + morale.",
+  "tropisme":"Chez Sarraute : mouvement intérieur inconscient qui affleure sous la conversation ordinaire.",
+  "sous-conversation":"Chez Sarraute : flux intérieur inavoué qui coule sous la conversation apparente.",
+};
+
+// Détecte et rend cliquables les figures dans un texte de procédé
+function ProcedéText({text, onTermClick}){
+  const terms=Object.keys(GLOSSAIRE);
+  // Cherche le premier terme connu dans le texte
+  const lower=text.toLowerCase();
+  let bestIdx=Infinity, bestTerm=null, bestLen=0;
+  terms.forEach(t=>{
+    const idx=lower.indexOf(t.toLowerCase());
+    if(idx>=0 && (idx<bestIdx || (idx===bestIdx && t.length>bestLen))){
+      bestIdx=idx; bestTerm=t; bestLen=t.length;
+    }
+  });
+  if(!bestTerm || bestIdx===Infinity) return <span>{text}</span>;
+  const before=text.slice(0,bestIdx);
+  const matched=text.slice(bestIdx,bestIdx+bestTerm.length);
+  const after=text.slice(bestIdx+bestTerm.length);
+  return(
+    <span>
+      {before}
+      <span onClick={()=>onTermClick(bestTerm)} style={{textDecoration:'underline dotted',cursor:'pointer',color:'inherit',fontWeight:600}}>
+        {matched}
+      </span>
+      <ProcedéText text={after} onTermClick={onTermClick}/>
+    </span>
+  );
+}
 
 /* ── AUDIO (MP3 files placed alongside index.html) ──────────────────────── */
 function createAudio(type){
@@ -81,7 +161,7 @@ const OBJETS_INFO={
         "Le motif de la dispute : une intonation, un suspens dans la phrase « C'est bien… ça… » suffit à provoquer la rupture.",
         "Pas de dénouement classique : la pièce se referme sur un duel verbal « Oui. » / « Non ! » — boucle cyclique proche du théâtre de l'Absurde.",
         "Thèmes : l'incommunicabilité, le poids des non-dits, la violence latente du langage quotidien, l'impossibilité de se comprendre.",
-        "Le Nouveau Roman au théâtre : pas d'intrigue, pas d'action physique — seule la parole fait avancer (ou stagner) le drame."
+        "Le théâtre de la parole : pas d'intrigue, pas d'action physique — seule la parole fait avancer (ou stagner) le drame."
       ]},
       {titre:"Le parcours associé : « Théâtre et dispute »",items:[
         "La dispute comme moteur dramatique : le conflit verbal structure l'action depuis le théâtre classique jusqu'au contemporain.",
@@ -90,8 +170,8 @@ const OBJETS_INFO={
         "Le théâtre de la parole : la dispute chez Sarraute n'est pas visible — elle se joue dans les sous-conversations, sous la surface polie.",
         "Procédés à maîtriser : stichomythies, didascalies, double énonciation, registres polémique et ironique, aposiopèse."
       ]},
-      {titre:"Contexte : le Nouveau Roman et le théâtre de la parole",items:[
-        "Le Nouveau Roman (années 1950–1960) : rejet des conventions du roman traditionnel (personnage nommé, psychologie, intrigue linéaire).",
+      {titre:"Sarraute : du Nouveau Roman au théâtre de la parole",items:[
+        "Sarraute est une figure majeure du Nouveau Roman (romancière et essayiste, L'Ère du soupçon, 1956). Mais Pour un oui ou pour un non est une pièce de théâtre — elle ne relève pas du Nouveau Roman, mais du théâtre de la parole.",
         "Auteurs proches : Robbe-Grillet, Butor, Simon, Duras — tous questionnent la forme romanesque.",
         "Sarraute au théâtre : Pour un oui ou pour un non s'inscrit dans un théâtre qui rejette aussi la convention — pas de décor, pas d'action, pas de noms.",
         "Influence du théâtre de l'Absurde : Beckett (En attendant Godot, Fin de partie), Ionesco — personnages coincés dans des répétitions sans issue.",
@@ -254,7 +334,7 @@ const TEXTES=[
    ]
   },
   {id:2,objet:'theatre',numero:'EL 2',titre:"Scène d'exposition",auteur:'Nathalie Sarraute',date:'1981',
-   mouvement:'Nouveau Roman / Théâtre de la parole',
+   mouvement:'Théâtre de la parole',
    extrait:"H.1. – Écoute, je voulais te demander… C'est un peu pour ça que je suis venu… que s'est-il passé ? Qu'est-ce que tu as contre moi ?\nH.2. – Mais rien… Pourquoi ?\nH.1. – Il me semble que tu t'éloignes… tu ne fais plus jamais signe…\nH.2. – Tu sais bien : je prends rarement l'initiative, j'ai peur de déranger.\nH.1. – Nous n'en sommes tout de même pas là… Non, je sens qu'il y a quelque chose…\nH.2. – Mais que veux-tu qu'il y ait ?\nH.1. – il n'y a jamais rien eu entre nous… rien dont je me souvienne…\nH.2. – Moi, par contre, il y a des choses que je n'oublie pas.\n[…] H.1. – tu étais à l'autre bout du monde… ça me fait de la peine, tu sais…\nH.2. – Non… vraiment rien… Rien qu'on puisse dire…",
    problematique:"Comment cette scène d'exposition joue-t-elle sur l'incertitude des répliques pour annoncer un des thèmes centraux de la pièce ?",
    etapes:[
@@ -270,7 +350,7 @@ const TEXTES=[
    ]
   },
   {id:3,objet:'theatre',numero:'EL 3',titre:"« C'est bien, ça »",auteur:'Nathalie Sarraute',date:'1981',
-   mouvement:'Nouveau Roman / Théâtre de la parole',
+   mouvement:'Théâtre de la parole',
    extrait:"H. 1 : Allons, vas-y…\nH. 2 : Eh bien, c'est juste des mots…\nH. 1 : Des mots ? Entre nous ? Ne me dis pas qu'on a eu des mots...\nH. 2 : Non, pas des mots comme ça... Des mots qu'on n'a pas « eus », justement...\nH. 2 : tu m'as dit : « C'est bien... ça... » Juste avec ce suspens... cet accent…\nH. 1 : Ce n'est pas vrai. Ça ne peut pas être ça...\nH. 2 : « C'est biiien…… ça... » Un étirement et un suspens avant que « ça » arrive... ce n'est pas sans importance.\nH. 1 : Et ça... ce « ça » précédé d'un suspens t'a poussé à rompre...",
    problematique:"Comment le dévoilement du motif de la dispute, d'apparence dérisoire, permet-il de réfléchir sur ce qui se cache derrière le langage quotidien ?",
    etapes:[
@@ -286,7 +366,7 @@ const TEXTES=[
    ]
   },
   {id:4,objet:'theatre',numero:'EL 4',titre:'Le dénouement',auteur:'Nathalie Sarraute',date:'1981',
-   mouvement:'Nouveau Roman / Théâtre de la parole',
+   mouvement:'Théâtre de la parole',
    extrait:"H. 2 : puisque nous en sommes là... c'est comme de la claustrophobie... je suis dans un édifice fermé de tous côtés... j'ai envie de m'échapper...\nDu mal à reprendre vie... parfois encore le lendemain je me sens comme un peu inerte... il faut du temps pour que ça revienne, cette pulsation, un pouls qui se remet à battre…\nH. 1 : Oui. Je vois. Un silence. A quoi bon s'acharner ?\nH. 2 : Ce serait tellement plus sain…\nH. 1 : Pour chacun de nous... plus salutaire…\nH. 2 : La meilleure solution…\nH. 1 : Mais tu sais bien comment nous sommes.\nH. 2 : « ils peuvent rompre pour un oui ou pour un non »\nH. 1 : Pour un oui... ou pour un non ? Un silence.\nH. 2 : Oui ou non ?…\nH. 1 : Ce n'est pourtant pas la même chose…\nH. 1 : Oui.\nH. 2 : Non !",
    problematique:"En quoi le dénouement de Pour un oui ou pour un non se présente-t-il comme une résolution ambiguë ?",
    etapes:[
@@ -527,7 +607,7 @@ const QUIZ_OBJETS={
       {q:"La double énonciation désigne…",o:["Deux acteurs qui se répondent en écho","Le personnage qui parle à un autre mais aussi au public","La pièce écrite pour être lue et jouée","Le metteur en scène qui prend la parole"],r:1},
       {q:"Les stichomythies sont…",o:["Des apartés chuchotés entre acteurs hors scène","Des répliques très courtes qui s'enchaînent rapidement","Des monologues divisés en plusieurs tirades","Des didascalies de déplacement scénique"],r:1},
       {q:"Qu'est-ce qu'un aparté ?",o:["Une réplique adressée au public, non entendue par les autres personnages","Un long discours adressé à tous les personnages","Une indication de sortie de scène","Une question rhétorique adressée au ciel"],r:0},
-      {q:"Le Nouveau Roman rejette principalement…",o:["La versification et la rime","Le personnage traditionnel, l'intrigue linéaire, la psychologie conventionnelle","Le dialogue et les répliques théâtrales","La mise en scène réaliste"],r:1},
+      {q:"Le Nouveau Roman, dont Sarraute est une figure majeure comme romancière, rejette principalement…",o:["La versification et la rime","Le personnage traditionnel, l'intrigue linéaire, la psychologie conventionnelle","Le dialogue et les répliques théâtrales","La mise en scène réaliste"],r:1},
       {q:"La tragédie classique suscite chez le spectateur…",o:["Le rire et la légèreté","La crainte et la pitié face à un destin inéluctable","La curiosité intellectuelle et l'admiration","L'indifférence et la distance critique"],r:1},
       {q:"Qu'est-ce qu'un monologue théâtral ?",o:["Une réplique très courte adressée à un autre personnage","Le discours d'un personnage seul qui se parle à lui-même ou au public","Un échange rapide entre trois personnages","Une indication scénique sur le jeu de l'acteur"],r:1},
       {q:"Qu'est-ce qu'une tirade ?",o:["Une didascalie longue décrivant le décor","Une longue réplique ininterrompue adressée à un autre personnage","Un échange de très courtes répliques","Une chanson intercalée dans la pièce"],r:1},
@@ -544,7 +624,7 @@ const QUIZ_OBJETS={
       {q:"Dans « C'est bien, ça » (EL 3), quel est le véritable motif de la rupture ?",o:["Une dette financière non remboursée","Une intonation condescendante dans le « bien… ça » — le ton, non le sens","Un oubli de rendez-vous important","Un mensonge découvert lors d'un dîner"],r:1},
       {q:"Dans Clôture de l'amour (EL 1), quel procédé Audrey utilise-t-elle en répétant « une fiction » en fin de groupe ?",o:["Une anaphore (répétition en tête de groupe)","Une épiphore (répétition en fin de groupe)","Une épizeuxe (répétition immédiate du même mot)","Un chiasme (inversion de l'ordre des termes)"],r:1},
       {q:"Qu'est-ce qu'un tropisme selon Sarraute ?",o:["Une figure de style fondée sur la comparaison animale","Un mouvement intérieur inconscient qui affleure sous la conversation ordinaire","Un genre théâtral du XXe siècle proche du mime","Une technique de mise en scène fondée sur le silence"],r:1},
-      {q:"Quel mouvement littéraire relie les textes de Sarraute ?",o:["Le surréalisme (automatisme et inconscient)","Le Nouveau Roman / Théâtre de la parole","L'existentialisme (liberté et mauvaise foi)","Le naturalisme (déterminisme social)"],r:1},
+      {q:"Sarraute est une figure du Nouveau Roman, mais la pièce Pour un oui ou pour un non relève de…",o:["Le Nouveau Roman — même genre que ses romans","Le théâtre de la parole — même intérêt pour les sous-conversations, mais genre distinct","Le surréalisme — automatisme et inconscient","Le naturalisme — déterminisme social"],r:1},
       {q:"Dans EL 1, l'absence de ponctuation dans la tirade d'Audrey produit…",o:["Un effet de confusion signalant l'hésitation du personnage","Un souffle haletant qui traduit la colère et l'urgence émotionnelle","Un effet comique par accumulation burlesque","Un ralentissement qui invite à la méditation"],r:1},
       {q:"Dans EL 1, Audrey emploie « bravo », « jolie », « super » — quelle figure ?",o:["Une hyperbole (exagération volontaire pour frapper)","Une antiphrase — dire le contraire de ce qu'on pense (ironie cinglante)","Une métaphore (comparaison implicite)","Une litote (atténuation qui suggère davantage)"],r:1},
       {q:"Dans EL 2, les points de suspension répétés correspondent à…",o:["Une faute typographique de l'édition originale","Une aposiopèse — la parole se cherche, hésite, s'interrompt","Un effet comique de bégaiement volontaire","Un silence imposé par la mise en scène radiophonique"],r:1},
@@ -1037,7 +1117,7 @@ function shuffleOpts(q){
   return {opts:idxs.map(i=>q.o[i]),r:idxs.indexOf(q.r)};
 }
 
-function QuizGeneric({data,niveaux}){
+function QuizGeneric({data,niveaux,objetId}){
   const firstNiv=niveaux[0][0];
   const [niv,setNiv]=useState(firstNiv);
   const [qi,setQi]=useState(0);
@@ -1059,7 +1139,17 @@ function QuizGeneric({data,niveaux}){
   const changeNiv=v=>{setNiv(v);setQi(0);setScore(0);setAns(null);setRep('');setDone(false);setShowEx(false);};
   const handleQCM=i=>{if(ans!==null)return;setAns(i);if(i===correctIdx)setScore(s=>s+1);};
   const nextQ=()=>{setQi(q=>q+1);setAns(null);setRep('');setShowEx(false);};
-  const nextDone=()=>setDone(true);
+  const nextDone=()=>{
+    setDone(true);
+    if(objetId){
+      try{
+        const p=JSON.parse(localStorage.getItem('quiz_progress')||'{}');
+        if(!p[objetId])p[objetId]={};
+        p[objetId][niv]=true;
+        localStorage.setItem('quiz_progress',JSON.stringify(p));
+      }catch(e){}
+    }
+  };
   const reset=()=>{setQi(0);setScore(0);setAns(null);setRep('');setDone(false);setShowEx(false);};
 
   if(!n.questions.length)return<div style={s.card}><p style={{fontSize:13,color:'#888'}}>Quiz à venir.</p></div>;
@@ -1130,8 +1220,9 @@ function ELObjet({objetId,c}){
   const textes=TEXTES.filter(t=>t.objet===objetId);
   const [sel,setSel]=useState(textes[0]?.id);
   const [gramOpen,setGramOpen]=useState(false);
+  const [defTerm,setDefTerm]=useState(null);
   const t=textes.find(x=>x.id===sel)||textes[0];
-  const select=id=>{setSel(id);setGramOpen(false);};
+  const select=id=>{setSel(id);setGramOpen(false);setDefTerm(null);};
   return(
     <div>
       <div style={{display:'flex',gap:8,marginBottom:'1rem',flexWrap:'wrap'}}>
@@ -1148,8 +1239,21 @@ function ELObjet({objetId,c}){
             <span style={s.label}>Problématique</span>
             <p style={{fontSize:14,lineHeight:1.6,borderLeft:`2px solid ${c}`,paddingLeft:12}}>{t.problematique}</p>
           </div>
-          <span style={s.label}>Étapes du parcours linéaire</span>
-          <div style={{display:'flex',flexDirection:'column',gap:10,marginTop:8,marginBottom:'1rem'}}>
+          <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginTop:8,marginBottom:6}}>
+            <span style={s.label}>Étapes du parcours linéaire</span>
+            <span style={{fontSize:10,color:'#aaa',fontStyle:'italic'}}>Clique sur un procédé souligné pour sa définition</span>
+          </div>
+          {/* Popup définition */}
+          {defTerm&&(
+            <div style={{background:'#fffbea',border:'1px solid #f0d060',borderRadius:8,padding:'0.75rem 1rem',marginBottom:10,position:'relative'}}>
+              <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start'}}>
+                <p style={{fontSize:12,fontWeight:700,color:'#b8860b',textTransform:'capitalize',margin:'0 0 4px'}}>{defTerm}</p>
+                <button onClick={()=>setDefTerm(null)} style={{background:'none',border:'none',color:'#aaa',cursor:'pointer',fontSize:16,lineHeight:1,padding:0,marginLeft:8}}>×</button>
+              </div>
+              <p style={{fontSize:13,color:'#2a2a28',lineHeight:1.6,margin:0}}>{GLOSSAIRE[defTerm]}</p>
+            </div>
+          )}
+          <div style={{display:'flex',flexDirection:'column',gap:10,marginBottom:'1rem'}}>
             {t.etapes.map((e,i)=>(
               <div key={i} style={{border:'0.5px solid #ddd',borderRadius:8,padding:'0.75rem 1rem'}}>
                 <div style={{display:'flex',alignItems:'baseline',gap:8,marginBottom:6}}>
@@ -1157,7 +1261,9 @@ function ELObjet({objetId,c}){
                   <span style={{fontSize:14,fontWeight:500}}>{e.titre}</span>
                 </div>
                 <ul style={{margin:'0 0 0 16px',fontSize:13,color:'#555',lineHeight:1.85}}>
-                  {e.procedes.map((p,j)=><li key={j}>{p}</li>)}
+                  {e.procedes.map((p,j)=>(
+                    <li key={j}><ProcedéText text={p} onTermClick={term=>{setDefTerm(defTerm===term?null:term);}}/></li>
+                  ))}
                 </ul>
               </div>
             ))}
@@ -1296,7 +1402,7 @@ function ObjetModule({objet,onBack}){
       </div>
       {tab==='cours'&&<CoursObjet info={info} c={objet.c}/>}
       {tab==='el'&&<ELObjet objetId={objet.id} c={objet.c}/>}
-      {tab==='quiz'&&<QuizGeneric data={QUIZ_OBJETS[objet.id]} niveaux={niveaux}/>}
+      {tab==='quiz'&&<QuizGeneric data={QUIZ_OBJETS[objet.id]} niveaux={niveaux} objetId={objet.id}/>}
     </div>
   );
 }
@@ -1642,6 +1748,307 @@ function Avatar({id}){
   return null;
 }
 
+function TirageEL({onBack}){
+  const [el,setEl]=useState(null);
+  const [phase,setPhase]=useState('draw'); // draw | prepare | reveal
+  const [timeLeft,setTimeLeft]=useState(30*60);
+  const [running,setRunning]=useState(false);
+
+  const draw=()=>{
+    const picked=TEXTES[Math.floor(Math.random()*TEXTES.length)];
+    setEl(picked);setPhase('prepare');setTimeLeft(30*60);setRunning(true);
+  };
+  const redraw=()=>{setEl(null);setPhase('draw');setRunning(false);};
+
+  useEffect(()=>{
+    if(!running||phase!=='prepare')return;
+    if(timeLeft<=0){setRunning(false);setPhase('reveal');return;}
+    const t=setTimeout(()=>setTimeLeft(s=>s-1),1000);
+    return()=>clearTimeout(t);
+  },[running,timeLeft,phase]);
+
+  const fmt=s=>`${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;
+  const pct=((30*60-timeLeft)/(30*60))*100;
+  const urgent=timeLeft<5*60;
+  const objetCoul=el?OBJETS.find(o=>o.id===el.objet)?.c:'#1a1a18';
+
+  return(
+    <div>
+      <button onClick={onBack} style={{...s.btn,marginBottom:'1.5rem',fontSize:12}}>← Retour à l'accueil</button>
+      <h2 style={{fontSize:16,fontWeight:600,marginBottom:4}}>🎲 Tirage au sort</h2>
+      <p style={{fontSize:13,color:'#666',marginBottom:'1.25rem'}}>Simule les conditions du bac : tu tires un texte, tu as 30 minutes pour préparer ton explication.</p>
+
+      {phase==='draw'&&(
+        <div style={{...s.card,textAlign:'center',padding:'2.5rem 1rem'}}>
+          <p style={{fontSize:48,marginBottom:'1rem'}}>🎲</p>
+          <p style={{fontSize:14,color:'#666',marginBottom:'1.5rem'}}>Prêt·e ? Le chrono démarre dès le tirage.</p>
+          <button onClick={draw} style={{...s.btn,background:'#1a1a18',color:'white',border:'none',fontWeight:600,fontSize:15,padding:'0.75rem 2rem'}}>
+            Tirer un texte au sort
+          </button>
+        </div>
+      )}
+
+      {(phase==='prepare'||phase==='reveal')&&el&&(
+        <div>
+          {/* Chrono */}
+          {phase==='prepare'&&(
+            <div style={{marginBottom:'1rem'}}>
+              <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:6}}>
+                <span style={{fontSize:12,color:'#888'}}>Temps de préparation</span>
+                <span style={{fontSize:24,fontWeight:700,color:urgent?'#e74c3c':'#1a1a18',fontVariantNumeric:'tabular-nums'}}>{fmt(timeLeft)}</span>
+              </div>
+              <div style={{height:6,background:'#eee',borderRadius:4}}>
+                <div style={{height:6,borderRadius:4,background:urgent?'#e74c3c':objetCoul,width:`${pct}%`,transition:'width 1s linear'}}/>
+              </div>
+              <div style={{display:'flex',gap:8,marginTop:8}}>
+                <button onClick={()=>setRunning(r=>!r)} style={{...s.btn,fontSize:11}}>{running?'⏸ Pause':'▶ Reprendre'}</button>
+                <button onClick={()=>{setRunning(false);setPhase('reveal');}} style={{...s.btn,fontSize:11,color:objetCoul,border:`1px solid ${objetCoul}60`}}>Je suis prêt·e →</button>
+              </div>
+            </div>
+          )}
+
+          {/* Carte EL */}
+          <div style={s.card}>
+            <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:'1rem'}}>
+              <div>
+                <span style={{fontSize:11,fontWeight:600,color:objetCoul,textTransform:'uppercase',letterSpacing:'0.06em'}}>{el.numero}</span>
+                <p style={{fontSize:17,fontWeight:600,margin:'2px 0'}}>{el.titre}</p>
+                <p style={{fontSize:13,color:'#888'}}>{el.auteur} · {el.date}</p>
+              </div>
+              <span style={{fontSize:11,background:objetCoul+'15',color:objetCoul,padding:'3px 8px',borderRadius:20,fontWeight:500}}>{el.mouvement}</span>
+            </div>
+
+            <div style={{background:'#f8f6f2',borderRadius:8,padding:'0.9rem 1rem',fontSize:13,lineHeight:1.9,marginBottom:'1rem',fontStyle:'italic',whiteSpace:'pre-line',maxHeight:280,overflowY:'auto'}}>
+              {el.extrait}
+            </div>
+
+            {phase==='prepare'&&(
+              <div style={{background:'#f5f0ff',borderRadius:8,padding:'0.75rem 1rem',border:'1px solid #8e44ad30'}}>
+                <p style={{fontSize:12,color:'#5b2d8e',fontWeight:500,margin:0}}>💭 Entraîne-toi à :</p>
+                <ul style={{margin:'6px 0 0 16px',fontSize:12,color:'#5b2d8e',lineHeight:1.8}}>
+                  <li>Formuler la problématique</li>
+                  <li>Identifier et nommer les mouvements</li>
+                  <li>Repérer les procédés clés par mouvement</li>
+                </ul>
+              </div>
+            )}
+
+            {phase==='reveal'&&(
+              <div>
+                <div style={{borderTop:'0.5px solid #eee',paddingTop:'1rem',marginBottom:'1rem'}}>
+                  <p style={{fontSize:11,fontWeight:600,color:objetCoul,textTransform:'uppercase',letterSpacing:'0.06em',marginBottom:6}}>Problématique</p>
+                  <p style={{fontSize:14,fontStyle:'italic',lineHeight:1.6,color:'#2a2a28'}}>{el.problematique}</p>
+                </div>
+                <div style={{borderTop:'0.5px solid #eee',paddingTop:'1rem'}}>
+                  <p style={{fontSize:11,fontWeight:600,color:objetCoul,textTransform:'uppercase',letterSpacing:'0.06em',marginBottom:8}}>Mouvements</p>
+                  {el.etapes.map((e,i)=>(
+                    <div key={i} style={{marginBottom:8}}>
+                      <div style={{display:'flex',gap:8,alignItems:'flex-start',marginBottom:4}}>
+                        <span style={{background:objetCoul,color:'white',borderRadius:12,padding:'1px 8px',fontSize:11,fontWeight:600,flexShrink:0}}>{e.label}</span>
+                        <span style={{fontSize:13,fontWeight:500}}>{e.titre}</span>
+                      </div>
+                      <ul style={{margin:'0 0 0 48px',padding:0,listStyle:'none'}}>
+                        {e.procedes.map((p,j)=><li key={j} style={{fontSize:12,color:'#555',lineHeight:1.6}}>→ {p}</li>)}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+                <div style={{display:'flex',gap:8,marginTop:'1.25rem',flexWrap:'wrap'}}>
+                  <button onClick={redraw} style={{...s.btn,background:'#1a1a18',color:'white',border:'none',fontWeight:600}}>🎲 Nouveau tirage</button>
+                  <button onClick={onBack} style={s.btn}>← Accueil</button>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function FlashMode({onBack}){
+  const OBJETS_FLASH=[
+    {id:'all',label:'Tous les textes',c:'#1a1a18'},
+    {id:'theatre',label:'Théâtre',c:'#8e44ad'},
+    {id:'poesie',label:'Poésie',c:'#27ae60'},
+    {id:'roman',label:'Roman',c:'#e67e22'},
+    {id:'idees',label:'Idées',c:'#2980b9'},
+  ];
+  const [filtre,setFiltre]=useState('all');
+  const [cards,setCards]=useState([]);
+  const [idx,setIdx]=useState(0);
+  const [step,setStep]=useState(0); // 0=extrait seul, 1=mouvements révélés, 2=pb question, 3=pb révélée
+  const [scores,setScores]=useState({mv:0,pb:0,mvTot:0,pbTot:0});
+  const [done,setDone]=useState(false);
+  const [selfMv,setSelfMv]=useState(null);
+  const [selfPb,setSelfPb]=useState(null);
+
+  const buildCards=f=>{
+    const src=f==='all'?TEXTES:TEXTES.filter(t=>t.objet===f);
+    const sh=[...src].sort(()=>Math.random()-0.5);
+    setCards(sh);setIdx(0);setStep(0);setDone(false);
+    setScores({mv:0,pb:0,mvTot:0,pbTot:0});setSelfMv(null);setSelfPb(null);
+  };
+  useEffect(()=>{buildCards(filtre);},[filtre]);
+
+  const next=()=>{
+    if(idx+1>=cards.length){setDone(true);}
+    else{setIdx(i=>i+1);setStep(0);setSelfMv(null);setSelfPb(null);}
+  };
+
+  const handleMv=knew=>{
+    setSelfMv(knew);
+    setScores(s=>({...s,mv:s.mv+(knew?1:0),mvTot:s.mvTot+1}));
+    setStep(2);
+  };
+  const handlePb=knew=>{
+    setSelfPb(knew);
+    setScores(s=>({...s,pb:s.pb+(knew?1:0),pbTot:s.pbTot+1}));
+  };
+
+  const col=OBJETS.find(o=>o.id===(cards[0]?.objet))?.c||'#1a1a18';
+
+  if(done) return(
+    <div>
+      <button onClick={onBack} style={{...s.btn,marginBottom:'1.5rem',fontSize:12}}>← Retour à l'accueil</button>
+      <div style={s.card}>
+        <div style={{textAlign:'center',padding:'1rem 0'}}>
+          <p style={{fontSize:32}}>🎉</p>
+          <p style={{fontSize:20,fontWeight:600,marginBottom:'1.5rem'}}>Session terminée !</p>
+          <div style={{display:'flex',gap:'1rem',justifyContent:'center',flexWrap:'wrap',marginBottom:'1.5rem'}}>
+            <div style={{background:'#eafaf1',border:'1px solid #27ae6040',borderRadius:12,padding:'1rem 1.5rem',textAlign:'center'}}>
+              <p style={{fontSize:28,fontWeight:600,color:'#27ae60',margin:0}}>{scores.mv}/{scores.mvTot}</p>
+              <p style={{fontSize:12,color:'#555',margin:0}}>Mouvements sus</p>
+            </div>
+            <div style={{background:'#eaf2fb',border:'1px solid #2980b940',borderRadius:12,padding:'1rem 1.5rem',textAlign:'center'}}>
+              <p style={{fontSize:28,fontWeight:600,color:'#2980b9',margin:0}}>{scores.pb}/{scores.pbTot}</p>
+              <p style={{fontSize:12,color:'#555',margin:0}}>Problématiques sues</p>
+            </div>
+          </div>
+          <div style={{display:'flex',gap:8,justifyContent:'center',flexWrap:'wrap'}}>
+            <button onClick={()=>buildCards(filtre)} style={{...s.btn,background:'#1a1a18',color:'#fff',border:'none'}}>🔄 Recommencer</button>
+            <button onClick={onBack} style={s.btn}>← Accueil</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const card=cards[idx];
+  if(!card)return null;
+  const objetCoul=OBJETS.find(o=>o.id===card.objet)?.c||'#1a1a18';
+  const total=cards.length;
+
+  return(
+    <div>
+      <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'1rem'}}>
+        <button onClick={onBack} style={{...s.btn,fontSize:12}}>← Retour</button>
+        <span style={{fontSize:12,color:'#888'}}>Carte {idx+1} / {total}</span>
+      </div>
+      {/* Filtres */}
+      <div style={{display:'flex',gap:6,flexWrap:'wrap',marginBottom:'1rem'}}>
+        {OBJETS_FLASH.map(o=>(
+          <button key={o.id} onClick={()=>setFiltre(o.id)}
+            style={{...s.btn,fontSize:11,color:filtre===o.id?'white':o.c,background:filtre===o.id?o.c:'white',border:`1px solid ${o.c}60`,padding:'4px 10px'}}>
+            {o.label}
+          </button>
+        ))}
+      </div>
+      {/* Barre de progression */}
+      <div style={{height:4,background:'#eee',borderRadius:4,marginBottom:'1.25rem'}}>
+        <div style={{height:4,background:objetCoul,borderRadius:4,width:`${((idx)/total)*100}%`,transition:'width 0.3s'}}/>
+      </div>
+
+      <div style={s.card}>
+        {/* En-tête */}
+        <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:'1rem'}}>
+          <div>
+            <span style={{fontSize:11,fontWeight:600,color:objetCoul,textTransform:'uppercase',letterSpacing:'0.06em'}}>{card.numero}</span>
+            <p style={{fontSize:16,fontWeight:600,margin:'2px 0'}}>{card.titre}</p>
+            <p style={{fontSize:12,color:'#888'}}>{card.auteur} · {card.date}</p>
+          </div>
+          <span style={{fontSize:11,background:objetCoul+'15',color:objetCoul,padding:'3px 8px',borderRadius:20,fontWeight:500,whiteSpace:'nowrap'}}>{card.mouvement}</span>
+        </div>
+
+        {/* Extrait */}
+        <div style={{background:'#f8f6f2',borderRadius:8,padding:'0.85rem 1rem',fontSize:13,lineHeight:1.8,maxHeight:200,overflowY:'auto',marginBottom:'1rem',fontStyle:'italic',color:'#2a2a28',whiteSpace:'pre-line'}}>
+          {card.extrait}
+        </div>
+
+        {/* ÉTAPE 1 — Mouvements */}
+        {step===0&&(
+          <div style={{textAlign:'center',padding:'0.5rem 0'}}>
+            <p style={{fontSize:13,color:'#555',marginBottom:'1rem'}}>🔍 Quels sont les <strong>mouvements</strong> de ce texte ?</p>
+            <button onClick={()=>setStep(1)} style={{...s.btn,background:objetCoul,color:'white',border:'none',fontWeight:500}}>
+              Révéler les mouvements
+            </button>
+          </div>
+        )}
+
+        {/* Mouvements révélés */}
+        {step>=1&&(
+          <div style={{marginBottom:'1rem'}}>
+            <p style={{fontSize:11,fontWeight:600,color:objetCoul,textTransform:'uppercase',letterSpacing:'0.06em',marginBottom:8}}>Mouvements</p>
+            {card.etapes.map((e,i)=>(
+              <div key={i} style={{display:'flex',gap:10,marginBottom:6,alignItems:'flex-start'}}>
+                <span style={{background:objetCoul,color:'white',borderRadius:12,padding:'1px 8px',fontSize:11,fontWeight:600,flexShrink:0}}>{e.label}</span>
+                <span style={{fontSize:13,lineHeight:1.5}}>{e.titre}</span>
+              </div>
+            ))}
+            {step===1&&selfMv===null&&(
+              <div style={{marginTop:'1rem',display:'flex',gap:8,justifyContent:'center'}}>
+                <p style={{fontSize:12,color:'#888',width:'100%',textAlign:'center',marginBottom:8}}>Est-ce que tu le savais ?</p>
+                <button onClick={()=>handleMv(true)} style={{...s.btn,background:'#eafaf1',color:'#27ae60',border:'1px solid #27ae6060',fontWeight:600}}>✅ Oui</button>
+                <button onClick={()=>handleMv(false)} style={{...s.btn,background:'#fdf0ef',color:'#e74c3c',border:'1px solid #e74c3c60',fontWeight:600}}>❌ Non</button>
+              </div>
+            )}
+            {selfMv!==null&&step===1&&(
+              <p style={{fontSize:12,textAlign:'center',color:selfMv?'#27ae60':'#e74c3c',marginTop:8}}>
+                {selfMv?'Super ! ':'Pas grave, tu t\'en souviendras la prochaine fois.'}
+              </p>
+            )}
+          </div>
+        )}
+
+        {/* ÉTAPE 2 — Problématique */}
+        {step===2&&(
+          <div style={{textAlign:'center',padding:'0.5rem 0',borderTop:'0.5px solid #eee',paddingTop:'1rem'}}>
+            <p style={{fontSize:13,color:'#555',marginBottom:'1rem'}}>💡 Quelle est la <strong>problématique</strong> de ce texte ?</p>
+            <button onClick={()=>setStep(3)} style={{...s.btn,background:objetCoul,color:'white',border:'none',fontWeight:500}}>
+              Révéler la problématique
+            </button>
+          </div>
+        )}
+
+        {/* Problématique révélée */}
+        {step>=3&&(
+          <div style={{borderTop:'0.5px solid #eee',paddingTop:'1rem',marginBottom:'1rem'}}>
+            <p style={{fontSize:11,fontWeight:600,color:objetCoul,textTransform:'uppercase',letterSpacing:'0.06em',marginBottom:6}}>Problématique</p>
+            <p style={{fontSize:14,fontStyle:'italic',lineHeight:1.6,color:'#2a2a28'}}>{card.problematique}</p>
+            {selfPb===null&&(
+              <div style={{marginTop:'1rem',display:'flex',gap:8,justifyContent:'center'}}>
+                <p style={{fontSize:12,color:'#888',width:'100%',textAlign:'center',marginBottom:8}}>Est-ce que tu la savais ?</p>
+                <button onClick={()=>handlePb(true)} style={{...s.btn,background:'#eafaf1',color:'#27ae60',border:'1px solid #27ae6060',fontWeight:600}}>✅ Oui</button>
+                <button onClick={()=>handlePb(false)} style={{...s.btn,background:'#fdf0ef',color:'#e74c3c',border:'1px solid #e74c3c60',fontWeight:600}}>❌ Non</button>
+              </div>
+            )}
+            {selfPb!==null&&(
+              <div style={{textAlign:'center',marginTop:'1rem'}}>
+                <p style={{fontSize:12,color:selfPb?'#27ae60':'#e74c3c',marginBottom:'1rem'}}>
+                  {selfPb?'Excellent ! ':'Relis la fiche — tu vas y arriver !'}
+                </p>
+                <button onClick={next} style={{...s.btn,background:'#1a1a18',color:'white',border:'none',fontWeight:500}}>
+                  {idx+1>=total?'Voir le résultat':'Carte suivante →'}
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 function App(){
   const [view,setView]=useState('home');
   const [cur,setCur]=useState(null);
@@ -1662,36 +2069,62 @@ function App(){
       {view==='home'&&(
         <div>
           <p style={{fontSize:13,color:'#666',marginBottom:'1.25rem',lineHeight:1.6}}>Choisis un objet d'étude pour accéder aux cours, aux EL et aux quiz.</p>
-          <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginBottom:'1.5rem'}}>
-            {OBJETS.map(o=>{
-              const info=OBJETS_INFO[o.id];
-              return(
-                <div key={o.id} onClick={()=>{setCur(o);setView('objet');}} style={{cursor:'pointer',padding:'1.25rem 1rem',borderRadius:12,border:`1px solid ${o.c}40`,background:o.c+'10',transition:'all 0.15s',display:'flex',gap:'0.75rem',alignItems:'center'}}
-                  onMouseEnter={e=>{e.currentTarget.style.background=o.c+'22';e.currentTarget.style.transform='translateY(-2px)';}}
-                  onMouseLeave={e=>{e.currentTarget.style.background=o.c+'10';e.currentTarget.style.transform='translateY(0)';}}>
-                  <Avatar id={o.id}/>
-                  <div style={{flex:1,minWidth:0}}>
-                    <p style={{fontSize:11,textTransform:'uppercase',letterSpacing:'0.08em',color:o.c,fontWeight:600,marginBottom:6}}>{o.label}</p>
-                    <p style={{fontSize:14,fontWeight:500,marginBottom:2}}>{info.auteur}</p>
-                    <p style={{fontSize:13,fontStyle:'italic',color:'#444',marginBottom:6}}>{info.oeuvre}</p>
-                    <p style={{fontSize:11,color:'#888'}}>Parcours : {info.parcours}</p>
-                    {o.music&&<p style={{fontSize:10,color:o.c,marginTop:4}}>🎵 Musique disponible</p>}
+          <div style={{display:'flex',gap:16,alignItems:'flex-start'}}>
+            {/* Cartes objets d'étude — 2×2 */}
+            <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,flex:'1 1 0'}}>
+              {OBJETS.map(o=>{
+                const info=OBJETS_INFO[o.id];
+                let prog={n1:false,n2:false,n3:false};
+                try{const p=JSON.parse(localStorage.getItem('quiz_progress')||'{}');if(p[o.id])prog={...prog,...p[o.id]};}catch(e){}
+                const done=[prog.n1,prog.n2,prog.n3].filter(Boolean).length;
+                return(
+                  <div key={o.id} onClick={()=>{setCur(o);setView('objet');}} style={{cursor:'pointer',padding:'1.25rem 1rem 1rem',borderRadius:12,border:`1px solid ${o.c}40`,background:o.c+'10',transition:'all 0.15s',display:'flex',gap:'0.75rem',alignItems:'flex-start',flexDirection:'column'}}
+                    onMouseEnter={e=>{e.currentTarget.style.background=o.c+'22';e.currentTarget.style.transform='translateY(-2px)';}}
+                    onMouseLeave={e=>{e.currentTarget.style.background=o.c+'10';e.currentTarget.style.transform='translateY(0)';}}>
+                    <div style={{display:'flex',gap:'0.75rem',alignItems:'center',width:'100%'}}>
+                      <Avatar id={o.id}/>
+                      <div style={{flex:1,minWidth:0}}>
+                        <p style={{fontSize:11,textTransform:'uppercase',letterSpacing:'0.08em',color:o.c,fontWeight:600,marginBottom:6}}>{o.label}</p>
+                        <p style={{fontSize:14,fontWeight:500,marginBottom:2}}>{info.auteur}</p>
+                        <p style={{fontSize:13,fontStyle:'italic',color:'#444',marginBottom:6}}>{info.oeuvre}</p>
+                        <p style={{fontSize:11,color:'#888'}}>Parcours : {info.parcours}</p>
+                        {o.music&&<p style={{fontSize:10,color:o.c,marginTop:4}}>🎵 Musique disponible</p>}
+                      </div>
+                    </div>
+                    <div style={{width:'100%'}}>
+                      <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:4}}>
+                        <span style={{fontSize:10,color:'#999'}}>Quiz</span>
+                        <span style={{fontSize:10,color:done===3?o.c:'#999',fontWeight:done===3?600:400}}>{done}/3 niveau{done>1?'x':''} {done===3?'✓':''}</span>
+                      </div>
+                      <div style={{height:3,background:'#e8e4df',borderRadius:3,display:'flex',gap:2}}>
+                        {['n1','n2','n3'].map(k=>(
+                          <div key={k} style={{flex:1,height:3,borderRadius:3,background:prog[k]?o.c:'#e8e4df',transition:'background 0.3s'}}/>
+                        ))}
+                      </div>
+                    </div>
                   </div>
-                </div>
-              );
-            })}
-          </div>
-          <div style={{borderTop:'0.5px solid #eee',paddingTop:'1.25rem'}}>
-            <p style={{fontSize:11,textTransform:'uppercase',letterSpacing:'0.08em',color:'#888',fontWeight:600,marginBottom:10}}>Outils transversaux</p>
-            <div style={{display:'flex',gap:8,flexWrap:'wrap'}}>
-              <button onClick={()=>setView('entretien')} style={{...s.btn,background:'#1a1a18',color:'#fff',border:'none',fontWeight:500}}>🎡 Entretien (2ᵉ partie)</button>
-              <button onClick={()=>setView('methode')} style={s.btn}>📐 Méthode de l'oral</button>
-              <button onClick={()=>setView('grammaire')} style={s.btn}>📌 Grammaire</button>
+                );
+              })}
+            </div>
+
+            {/* Outils transversaux — colonne droite */}
+            <div style={{width:170,flexShrink:0}}>
+              <p style={{fontSize:11,textTransform:'uppercase',letterSpacing:'0.08em',color:'#888',fontWeight:600,marginBottom:10}}>Outils</p>
+              <div style={{display:'flex',flexDirection:'column',gap:8}}>
+                <button onClick={()=>setView('entretien')} style={{...s.btn,background:'#1a1a18',color:'#fff',border:'none',fontWeight:500,width:'100%',textAlign:'left'}}>🎡 Entretien</button>
+                <button onClick={()=>setView('methode')} style={{...s.btn,width:'100%',textAlign:'left'}}>📐 Méthode</button>
+                <button onClick={()=>setView('grammaire')} style={{...s.btn,width:'100%',textAlign:'left'}}>📌 Grammaire</button>
+                <div style={{height:'0.5px',background:'#eee',margin:'4px 0'}}/>
+                <button onClick={()=>setView('flash')} style={{...s.btn,background:'#f5f0ff',color:'#8e44ad',border:'1px solid #8e44ad60',fontWeight:600,width:'100%',textAlign:'left'}}>🃏 Flash</button>
+                <button onClick={()=>setView('tirage')} style={{...s.btn,background:'#fff8e8',color:'#c0851a',border:'1px solid #c0851a60',fontWeight:600,width:'100%',textAlign:'left'}}>🎲 Tirage</button>
+              </div>
             </div>
           </div>
         </div>
       )}
       {view==='objet'&&cur&&<ObjetModule objet={cur} onBack={home}/>}
+      {view==='flash'&&<FlashMode onBack={home}/>}
+      {view==='tirage'&&<TirageEL onBack={home}/>}
       {(view==='methode'||view==='grammaire'||view==='entretien')&&(
         <div>
           <button onClick={home} style={{...s.btn,marginBottom:'1rem',fontSize:12}}>← Retour à l'accueil</button>
