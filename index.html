@@ -16,7 +16,11 @@ select,textarea{font-family:inherit}
 textarea{resize:vertical;min-height:120px;width:100%;padding:10px;border:0.5px solid #ccc;border-radius:8px;font-size:14px;line-height:1.6}
 @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
 @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.85;transform:scale(1.04)}}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-3px)}40%{transform:translateX(3px)}60%{transform:translateX(-2px)}80%{transform:translateX(2px)}}
 .fade{animation:fadeIn 0.3s ease}
+.pulse{animation:pulse 1.4s ease-in-out infinite}
+.shake{animation:shake 0.5s ease-in-out}
 </style>
   <script data-goatcounter="https://bac-berger.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </head>
@@ -1582,30 +1586,89 @@ function Countdown(){
   const dEcrit=Math.ceil((ecrit-now)/msDay);
   const dOral=Math.ceil((oral-now)/msDay);
   if(dOral<0) return null;
-  const isUrgent=dEcrit<=7;
-  const bg=isUrgent?'#fdf0ef':'#f0f4ff';
-  const border=isUrgent?'#e74c3c':'#2980b9';
-  const col=isUrgent?'#a93226':'#1a5276';
+
+  const ecritDone=dEcrit<=0;
+  const urgence=!ecritDone&&dEcrit<=7;
+  const tres_urgent=!ecritDone&&dEcrit<=3;
+
+  // Messages selon la phase
+  const messages=tres_urgent
+    ?["☠️ ALERTE MAXIMALE. Plus le temps de procrastiner.","💀 L'écrit arrive. Commentaire ou dissertation — t'es prêt·e ?","🚨 Dans {d} jours. Chaque heure compte MAINTENANT.","😱 {d} jours. Ferme TikTok. Ouvre tes fiches."]
+    :urgence
+    ?["⚠️ Le sprint final est lancé. On lâche rien.","🔥 Plus le temps de perdre — {d} jours avant l'écrit.","😬 {d} jours. Le commentaire et la dissertation n'attendent pas.","😤 {d} jours. C'est maintenant que ça se gagne."]
+    :ecritDone&&dOral<=7
+    ?["☠️ Les oraux arrivent ! Est-ce que tu connais toutes tes problématiques ?","💀 {d} jours avant l'oral. Les EL que tu n'as pas révisées te regardent.","🚨 {d} jours. Chaque EL compte. Ouvre le site.","😱 {d} jours. Ferme TikTok. Révise tes mouvements."]
+    :ecritDone
+    ?["✅ L'écrit c'est fait ! Maintenant concentre-toi sur les oraux.","🎤 {d} jours avant les oraux — est-ce que tu connais toutes tes EL ?","💪 {d} jours pour maîtriser tes 16 textes. C'est parti !","🎯 {d} jours. Focalise-toi sur tes points faibles."]
+    :dEcrit>30
+    ?["📚 {d} jours avant l'écrit — largement le temps de tout réviser !","✨ {d} jours. Commence maintenant, tu t'en féliciteras le 11 juin.","🎯 {d} jours. Le moment idéal pour commencer MAINTENANT."]
+    :["⏳ {d} jours avant l'écrit. La ligne droite approche !","💪 {d} jours. Tes fiches de méthode sont à jour ?","😤 {d} jours avant l'écrit. Ne relâche pas l'effort."];
+
+  const raw=messages[Math.floor(Date.now()/8000)%messages.length];
+  const msg=raw.replace('{d}', dEcrit);
+
+  const ecritColor=tres_urgent?'#c0392b':urgence?'#b7500a':'#2c3e50';
+  const oralColor='#6c3483';
+
   return(
-    <div style={{background:bg,border:`1px solid ${border}40`,borderLeft:`3px solid ${border}`,borderRadius:8,padding:'0.65rem 1rem',marginBottom:'1.25rem',display:'flex',gap:'1.5rem',flexWrap:'wrap',alignItems:'center'}}>
-      {dEcrit>0?(
-        <div style={{display:'flex',alignItems:'baseline',gap:6}}>
-          <span style={{fontSize:26,fontWeight:600,color:border,lineHeight:1}}>{dEcrit}</span>
-          <span style={{fontSize:12,color:col}}>j. avant l'<strong>écrit</strong> (11 juin)</span>
+    <div style={{
+      background:'white',
+      borderRadius:14,
+      padding:'1rem 1.25rem',
+      marginBottom:'1.25rem',
+      border:`1.5px solid ${tres_urgent?'#e74c3c':urgence?'#e67e22':'#e8e4df'}`,
+      boxShadow:tres_urgent?'0 4px 20px rgba(231,76,60,0.2)':urgence?'0 4px 16px rgba(230,126,34,0.15)':'0 2px 10px rgba(0,0,0,0.06)',
+    }}>
+      <div style={{display:'flex',gap:10,alignItems:'stretch'}}>
+        {/* Écrit */}
+        <div style={{
+          flex:1,textAlign:'center',padding:'0.75rem 0.5rem',borderRadius:10,
+          background:ecritDone?'#eafaf1':tres_urgent?'#fdf0ef':urgence?'#fef5ec':'#f8f6f2',
+          border:`1px solid ${ecritDone?'#a9dfbf':tres_urgent?'#f1948a':urgence?'#f0a070':'#e8e4df'}`,
+        }}>
+          {ecritDone?(
+            <>
+              <div style={{fontSize:26}}>✅</div>
+              <div style={{fontSize:10,fontWeight:700,color:'#27ae60',marginTop:3,textTransform:'uppercase',letterSpacing:'0.06em'}}>Écrit passé !</div>
+            </>
+          ):(
+            <>
+              <div style={{
+                fontSize:tres_urgent?46:urgence?40:34,
+                fontWeight:900,
+                color:ecritColor,
+                lineHeight:1,
+                letterSpacing:'-2px',
+                fontVariantNumeric:'tabular-nums',
+                animation:tres_urgent?'pulse 1s ease-in-out infinite':urgence?'pulse 2s ease-in-out infinite':'none',
+              }}>
+                {tres_urgent&&<span style={{fontSize:28,verticalAlign:'middle',marginRight:2}}>☠️</span>}{dEcrit}
+              </div>
+              <div style={{fontSize:9,color:'#bbb',margin:'3px 0 4px',textTransform:'uppercase',letterSpacing:'0.08em',fontWeight:600}}>jour{dEcrit>1?'s':''}</div>
+              <div style={{fontSize:11,fontWeight:700,color:ecritColor}}>✍️ Écrit · 11 juin</div>
+            </>
+          )}
         </div>
-      ):(
-        <div style={{fontSize:12,color:col,fontWeight:500}}>✓ Écrit passé</div>
-      )}
-      <div style={{width:'1px',background:border+'30',alignSelf:'stretch',minHeight:20}}/>
-      {dOral>0?(
-        <div style={{display:'flex',alignItems:'baseline',gap:6}}>
-          <span style={{fontSize:26,fontWeight:600,color:border,lineHeight:1}}>{dOral}</span>
-          <span style={{fontSize:12,color:col}}>j. avant les <strong>oraux</strong> (25 juin)</span>
+        <div style={{display:'flex',alignItems:'center',color:'#ddd',fontSize:18,flexShrink:0,padding:'0 2px'}}>›</div>
+        {/* Oral */}
+        <div style={{
+          flex:1,textAlign:'center',padding:'0.75rem 0.5rem',borderRadius:10,
+          background:'#f9f4ff',border:'1px solid #d7bde2',
+        }}>
+          {dOral>0?(
+            <>
+              <div style={{fontSize:34,fontWeight:900,color:oralColor,lineHeight:1,letterSpacing:'-2px',fontVariantNumeric:'tabular-nums'}}>{dOral}</div>
+              <div style={{fontSize:9,color:'#bbb',margin:'3px 0 4px',textTransform:'uppercase',letterSpacing:'0.08em',fontWeight:600}}>jour{dOral>1?'s':''}</div>
+              <div style={{fontSize:11,fontWeight:700,color:oralColor}}>🎤 Oraux · 25 juin</div>
+            </>
+          ):(
+            <>
+              <div style={{fontSize:26}}>🎤</div>
+              <div style={{fontSize:10,fontWeight:700,color:oralColor,marginTop:3,textTransform:'uppercase',letterSpacing:'0.06em'}}>Oraux en cours !</div>
+            </>
+          )}
         </div>
-      ):(
-        <div style={{fontSize:12,color:col,fontWeight:500}}>✓ Oraux en cours</div>
-      )}
-      {isUrgent&&dEcrit>0&&<span style={{fontSize:12,color:border,marginLeft:'auto'}}>⚡ Dernière ligne droite !</span>}
+      </div>
     </div>
   );
 }
@@ -1875,35 +1938,48 @@ function FlashMode({onBack}){
     {id:'idees',label:'Idées',c:'#2980b9'},
   ];
   const [filtre,setFiltre]=useState('all');
+  const [mode,setMode]=useState('normal'); // 'normal' | 'inverse'
   const [cards,setCards]=useState([]);
   const [idx,setIdx]=useState(0);
-  const [step,setStep]=useState(0); // 0=extrait seul, 1=mouvements révélés, 2=pb question, 3=pb révélée
+  const [step,setStep]=useState(0);
   const [scores,setScores]=useState({mv:0,pb:0,mvTot:0,pbTot:0});
   const [done,setDone]=useState(false);
   const [selfMv,setSelfMv]=useState(null);
   const [selfPb,setSelfPb]=useState(null);
+  // Mode inverse
+  const [choices,setChoices]=useState([]);
+  const [chosen,setChosen]=useState(null);
+  const [showAns,setShowAns]=useState(false);
 
   const buildCards=f=>{
     const src=f==='all'?TEXTES:TEXTES.filter(t=>t.objet===f);
     const sh=[...src].sort(()=>Math.random()-0.5);
     setCards(sh);setIdx(0);setStep(0);setDone(false);
     setScores({mv:0,pb:0,mvTot:0,pbTot:0});setSelfMv(null);setSelfPb(null);
+    setChosen(null);setShowAns(false);
   };
-  useEffect(()=>{buildCards(filtre);},[filtre]);
+  useEffect(()=>{buildCards(filtre);},[filtre,mode]);
+
+  // Générer 4 choix pour le mode inverse
+  const buildChoices=card=>{
+    const others=TEXTES.filter(t=>t.id!==card.id).sort(()=>Math.random()-0.5).slice(0,3);
+    const all=[card,...others].sort(()=>Math.random()-0.5);
+    setChoices(all);setChosen(null);setShowAns(false);
+  };
+  useEffect(()=>{
+    if(mode==='inverse'&&cards[idx])buildChoices(cards[idx]);
+  },[idx,mode,cards]);
 
   const next=()=>{
     if(idx+1>=cards.length){setDone(true);}
-    else{setIdx(i=>i+1);setStep(0);setSelfMv(null);setSelfPb(null);}
+    else{setIdx(i=>i+1);setStep(0);setSelfMv(null);setSelfPb(null);setChosen(null);setShowAns(false);}
   };
-
-  const handleMv=knew=>{
-    setSelfMv(knew);
-    setScores(s=>({...s,mv:s.mv+(knew?1:0),mvTot:s.mvTot+1}));
-    setStep(2);
-  };
-  const handlePb=knew=>{
-    setSelfPb(knew);
-    setScores(s=>({...s,pb:s.pb+(knew?1:0),pbTot:s.pbTot+1}));
+  const handleMv=knew=>{setSelfMv(knew);setScores(s=>({...s,mv:s.mv+(knew?1:0),mvTot:s.mvTot+1}));setStep(2);};
+  const handlePb=knew=>{setSelfPb(knew);setScores(s=>({...s,pb:s.pb+(knew?1:0),pbTot:s.pbTot+1}));};
+  const handleChoice=c=>{
+    setChosen(c);setShowAns(true);
+    if(c.id===cards[idx].id)setScores(s=>({...s,mv:s.mv+1,mvTot:s.mvTot+1}));
+    else setScores(s=>({...s,mvTot:s.mvTot+1}));
   };
 
   const col=OBJETS.find(o=>o.id===(cards[0]?.objet))?.c||'#1a1a18';
@@ -1945,6 +2021,17 @@ function FlashMode({onBack}){
         <button onClick={onBack} style={{...s.btn,fontSize:12}}>← Retour</button>
         <span style={{fontSize:12,color:'#888'}}>Carte {idx+1} / {total}</span>
       </div>
+
+      {/* Toggle mode */}
+      <div style={{display:'flex',gap:0,marginBottom:'1rem',background:'#f0ede8',borderRadius:8,padding:3}}>
+        <button onClick={()=>setMode('normal')} style={{flex:1,padding:'6px 0',fontSize:12,fontWeight:mode==='normal'?600:400,background:mode==='normal'?'white':'transparent',border:'none',borderRadius:6,color:mode==='normal'?'#1a1a18':'#888',boxShadow:mode==='normal'?'0 1px 4px rgba(0,0,0,0.1)':'none'}}>
+          📖 Normal — texte → mouvements
+        </button>
+        <button onClick={()=>setMode('inverse')} style={{flex:1,padding:'6px 0',fontSize:12,fontWeight:mode==='inverse'?600:400,background:mode==='inverse'?'white':'transparent',border:'none',borderRadius:6,color:mode==='inverse'?'#1a1a18':'#888',boxShadow:mode==='inverse'?'0 1px 4px rgba(0,0,0,0.1)':'none'}}>
+          🔀 Inverse — mouvements → texte
+        </button>
+      </div>
+
       {/* Filtres */}
       <div style={{display:'flex',gap:6,flexWrap:'wrap',marginBottom:'1rem'}}>
         {OBJETS_FLASH.map(o=>(
@@ -1959,6 +2046,62 @@ function FlashMode({onBack}){
         <div style={{height:4,background:objetCoul,borderRadius:4,width:`${((idx)/total)*100}%`,transition:'width 0.3s'}}/>
       </div>
 
+      {/* ── MODE INVERSE ── */}
+      {mode==='inverse'&&(
+        <div style={s.card}>
+          <div style={{marginBottom:'1rem'}}>
+            <span style={{fontSize:11,fontWeight:600,color:objetCoul,textTransform:'uppercase',letterSpacing:'0.06em'}}>🔀 Mode inverse</span>
+            <p style={{fontSize:14,fontWeight:600,margin:'4px 0 2px'}}>Reconnais le texte à partir de ses mouvements</p>
+          </div>
+          {/* Mouvements affichés */}
+          <div style={{background:'#f8f6f2',borderRadius:8,padding:'0.85rem 1rem',marginBottom:'1rem'}}>
+            <p style={{fontSize:11,fontWeight:600,color:'#888',textTransform:'uppercase',letterSpacing:'0.06em',marginBottom:8}}>Les mouvements :</p>
+            {card.etapes.map((e,i)=>(
+              <div key={i} style={{display:'flex',gap:10,marginBottom:6,alignItems:'flex-start'}}>
+                <span style={{background:objetCoul,color:'white',borderRadius:12,padding:'1px 8px',fontSize:11,fontWeight:600,flexShrink:0}}>{e.label}</span>
+                <span style={{fontSize:13,lineHeight:1.5}}>{e.titre}</span>
+              </div>
+            ))}
+          </div>
+          <p style={{fontSize:13,color:'#555',marginBottom:'0.75rem',fontWeight:500}}>À quel texte correspondent ces mouvements ?</p>
+          {/* 4 choix */}
+          <div style={{display:'flex',flexDirection:'column',gap:8,marginBottom:'1rem'}}>
+            {choices.map((c,i)=>{
+              const isCorrect=c.id===card.id;
+              const isChosen=chosen?.id===c.id;
+              const obC=OBJETS.find(o=>o.id===c.objet)?.c||'#888';
+              let bg='#fff',bc='#ddd',col='#1a1a18';
+              if(showAns){
+                if(isCorrect){bg='#eafaf1';bc='#27ae60';col='#1a6b3a';}
+                else if(isChosen){bg='#fdf0ef';bc='#e74c3c';col='#a93226';}
+              }
+              return(
+                <button key={i} onClick={()=>!showAns&&handleChoice(c)}
+                  style={{textAlign:'left',padding:'10px 14px',borderRadius:8,border:`1px solid ${bc}`,background:bg,color:col,cursor:showAns?'default':'pointer',fontSize:13,lineHeight:1.4}}>
+                  <span style={{fontSize:10,fontWeight:600,color:showAns&&isCorrect?'#27ae60':obC,textTransform:'uppercase',marginRight:6}}>{c.numero}</span>
+                  {c.auteur}, <em>{c.titre}</em>
+                  {showAns&&isCorrect&&<span style={{float:'right'}}>✅</span>}
+                  {showAns&&isChosen&&!isCorrect&&<span style={{float:'right'}}>❌</span>}
+                </button>
+              );
+            })}
+          </div>
+          {showAns&&(
+            <div>
+              {chosen?.id===card.id
+                ?<p style={{fontSize:13,color:'#27ae60',fontWeight:600,marginBottom:'0.75rem'}}>Bravo ! Tu as reconnu le texte 🎉</p>
+                :<p style={{fontSize:13,color:'#e74c3c',marginBottom:'0.75rem'}}>C'était <strong>{card.numero} — {card.titre}</strong> ({card.auteur})</p>
+              }
+              <button onClick={next} style={{...s.btn,background:'#1a1a18',color:'white',border:'none',fontWeight:500}}>
+                {idx+1>=total?'Voir le résultat':'Carte suivante →'}
+              </button>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* ── MODE NORMAL ── */}
+      {mode==='normal'&&(
       <div style={s.card}>
         {/* En-tête */}
         <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:'1rem'}}>
@@ -1975,17 +2118,12 @@ function FlashMode({onBack}){
           {card.extrait}
         </div>
 
-        {/* ÉTAPE 1 — Mouvements */}
         {step===0&&(
           <div style={{textAlign:'center',padding:'0.5rem 0'}}>
             <p style={{fontSize:13,color:'#555',marginBottom:'1rem'}}>🔍 Quels sont les <strong>mouvements</strong> de ce texte ?</p>
-            <button onClick={()=>setStep(1)} style={{...s.btn,background:objetCoul,color:'white',border:'none',fontWeight:500}}>
-              Révéler les mouvements
-            </button>
+            <button onClick={()=>setStep(1)} style={{...s.btn,background:objetCoul,color:'white',border:'none',fontWeight:500}}>Révéler les mouvements</button>
           </div>
         )}
-
-        {/* Mouvements révélés */}
         {step>=1&&(
           <div style={{marginBottom:'1rem'}}>
             <p style={{fontSize:11,fontWeight:600,color:objetCoul,textTransform:'uppercase',letterSpacing:'0.06em',marginBottom:8}}>Mouvements</p>
@@ -2002,25 +2140,15 @@ function FlashMode({onBack}){
                 <button onClick={()=>handleMv(false)} style={{...s.btn,background:'#fdf0ef',color:'#e74c3c',border:'1px solid #e74c3c60',fontWeight:600}}>❌ Non</button>
               </div>
             )}
-            {selfMv!==null&&step===1&&(
-              <p style={{fontSize:12,textAlign:'center',color:selfMv?'#27ae60':'#e74c3c',marginTop:8}}>
-                {selfMv?'Super ! ':'Pas grave, tu t\'en souviendras la prochaine fois.'}
-              </p>
-            )}
+            {selfMv!==null&&step===1&&<p style={{fontSize:12,textAlign:'center',color:selfMv?'#27ae60':'#e74c3c',marginTop:8}}>{selfMv?'Super !':'Pas grave, tu t\'en souviendras !'}</p>}
           </div>
         )}
-
-        {/* ÉTAPE 2 — Problématique */}
         {step===2&&(
           <div style={{textAlign:'center',padding:'0.5rem 0',borderTop:'0.5px solid #eee',paddingTop:'1rem'}}>
-            <p style={{fontSize:13,color:'#555',marginBottom:'1rem'}}>💡 Quelle est la <strong>problématique</strong> de ce texte ?</p>
-            <button onClick={()=>setStep(3)} style={{...s.btn,background:objetCoul,color:'white',border:'none',fontWeight:500}}>
-              Révéler la problématique
-            </button>
+            <p style={{fontSize:13,color:'#555',marginBottom:'1rem'}}>💡 Quelle est la <strong>problématique</strong> ?</p>
+            <button onClick={()=>setStep(3)} style={{...s.btn,background:objetCoul,color:'white',border:'none',fontWeight:500}}>Révéler la problématique</button>
           </div>
         )}
-
-        {/* Problématique révélée */}
         {step>=3&&(
           <div style={{borderTop:'0.5px solid #eee',paddingTop:'1rem',marginBottom:'1rem'}}>
             <p style={{fontSize:11,fontWeight:600,color:objetCoul,textTransform:'uppercase',letterSpacing:'0.06em',marginBottom:6}}>Problématique</p>
@@ -2034,9 +2162,7 @@ function FlashMode({onBack}){
             )}
             {selfPb!==null&&(
               <div style={{textAlign:'center',marginTop:'1rem'}}>
-                <p style={{fontSize:12,color:selfPb?'#27ae60':'#e74c3c',marginBottom:'1rem'}}>
-                  {selfPb?'Excellent ! ':'Relis la fiche — tu vas y arriver !'}
-                </p>
+                <p style={{fontSize:12,color:selfPb?'#27ae60':'#e74c3c',marginBottom:'1rem'}}>{selfPb?'Excellent !':'Relis la fiche — tu vas y arriver !'}</p>
                 <button onClick={next} style={{...s.btn,background:'#1a1a18',color:'white',border:'none',fontWeight:500}}>
                   {idx+1>=total?'Voir le résultat':'Carte suivante →'}
                 </button>
@@ -2045,6 +2171,140 @@ function FlashMode({onBack}){
           </div>
         )}
       </div>
+      )}
+    </div>
+  );
+}
+
+/* ── COMPOSANT : GÉNÉRATEUR DE SUJETS DE DISSERTATION ───────────────────── */
+const SUJETS_DISSERT={
+  roman:[
+    {type:"question",q:"Dans quelle mesure Manon Lescaut est-il avant tout un roman du plaisir romanesque ?"},
+    {type:"question",q:"En quoi Des Grieux et Manon sont-ils des personnages « en marge » de la société ?"},
+    {type:"question",q:"La marginalité des personnages les rend-elle condamnables ou attachants ?"},
+    {type:"question",q:"Le roman de Prévost cherche-t-il davantage à instruire ou à plaire ?"},
+    {type:"question",q:"Le plaisir de lecture naît-il, dans Manon Lescaut, de la transgression ?"},
+    {type:"question",q:"Peut-on dire que Des Grieux est le seul artisan de sa propre chute ?"},
+    {type:"question",q:"La passion amoureuse est-elle, dans le roman, une force qui élève ou qui dégrade ?"},
+    {type:"question",q:"En quoi la figure du personnage marginal nourrit-elle le plaisir romanesque ?"},
+    {type:"question",q:"Le roman condamne-t-il vraiment les passions qu'il met en scène ?"},
+    {type:"question",q:"Manon est-elle un personnage ou une énigme pour le lecteur ?"},
+    {type:"question",q:"Le récit de Des Grieux, narrateur de sa propre histoire, est-il digne de confiance ?"},
+    {type:"question",q:"En quoi le récit des malheurs des deux amants peut-il être une source de plaisir pour le lecteur ?"},
+    {type:"citation",cite:"Outre le plaisir d'une lecture agréable, on y trouvera peu d'événements qui ne puissent servir à l'instruction des mœurs.",source:"Prévost, Avis de l'auteur",consigne:"Dans quelle mesure cette formule de l'Avis de l'auteur rend-elle compte de votre lecture de Manon Lescaut ?"},
+    {type:"citation",cite:"un traité de morale, réduit agréablement en exercice",source:"Prévost, Avis de l'auteur",consigne:"Manon Lescaut tient-il, selon vous, cette promesse d'un roman qui « instruit en amusant » ?"},
+    {type:"citation",cite:"un exemple terrible de la force des passions",source:"Prévost, Avis de l'auteur",consigne:"Le roman est-il selon vous une mise en garde contre la passion, ou en fait-il plutôt l'éloge ?"},
+    {type:"citation",cite:"Manon plaît, quoique le héros soit un fripon et l'héroïne une catin.",source:"Montesquieu, Pensées",consigne:"Comment expliquez-vous le plaisir de lecture que procure le roman, malgré l'immoralité de ses personnages ?"},
+  ],
+  theatre:[
+    {type:"question",q:"En quoi le conflit entre H1 et H2 dépasse-t-il une simple querelle d'amis ?"},
+    {type:"question",q:"La dispute est-elle, dans la pièce, le véritable sujet ou un simple prétexte ?"},
+    {type:"question",q:"Comment le langage devient-il, chez Sarraute, à la fois le lieu et l'arme du conflit ?"},
+    {type:"question",q:"Peut-on dire qu'il ne se passe « rien » dans Pour un oui ou pour un non ?"},
+    {type:"question",q:"En quoi cette pièce renouvelle-t-elle la forme traditionnelle du conflit théâtral ?"},
+    {type:"question",q:"La dispute révèle-t-elle les personnages ou, au contraire, les dissout-elle ?"},
+    {type:"question",q:"Dans quelle mesure le théâtre de Sarraute fait-il du non-dit un véritable ressort dramatique ?"},
+    {type:"question",q:"Le spectateur est-il invité à prendre parti entre H1 et H2 ?"},
+    {type:"question",q:"En quoi l'absence d'intrigue traditionnelle sert-elle le propos de la pièce ?"},
+    {type:"question",q:"Le tropisme est-il, finalement, le véritable personnage de la pièce ?"},
+    {type:"citation",cite:"C'est bien… ça",source:"Pour un oui ou pour un non",consigne:"En quoi ce presque rien, une phrase et son intonation, suffit-il à faire théâtre ?"},
+    {type:"citation",cite:"des mouvements indéfinissables qui glissent très rapidement aux limites de notre conscience",source:"Nathalie Sarraute, à propos des tropismes",consigne:"En quoi la dispute de la pièce met-elle au jour ces « tropismes » ?"},
+    {type:"citation",cite:"Théâtre et dispute",source:"intitulé du parcours",consigne:"La dispute est-elle, dans cette pièce, ce qui sépare ou ce qui lie les deux personnages ?"},
+  ],
+  poesie:[
+    {type:"question",q:"En quoi la nature est-elle, dans Mes forêts, un chemin vers l'intime ?"},
+    {type:"question",q:"La forêt n'est-elle qu'un décor dans le recueil de Dorion ?"},
+    {type:"question",q:"Comment la poésie de Dorion fait-elle dialoguer le monde extérieur et le monde intérieur ?"},
+    {type:"question",q:"La nature, dans Mes forêts, console-t-elle ou révèle-t-elle l'intime ?"},
+    {type:"question",q:"En quoi l'écriture de Dorion renouvelle-t-elle le lyrisme de la nature ?"},
+    {type:"question",q:"Peut-on dire que la forêt est, chez Dorion, une métaphore du moi ?"},
+    {type:"question",q:"La fragmentation de l'écriture sert-elle l'expression de l'intime ?"},
+    {type:"question",q:"En quoi le recueil relie-t-il l'intime à l'universel ?"},
+    {type:"question",q:"La nature est-elle, dans Mes forêts, une présence apaisante ou inquiète ?"},
+    {type:"question",q:"Comment le recueil interroge-t-il le lien entre l'homme et le vivant ?"},
+    {type:"citation",cite:"La Nature est un temple où de vivants piliers / Laissent parfois sortir de confuses paroles.",source:"Baudelaire, « Correspondances »",consigne:"Cette vision de la nature comme langage éclaire-t-elle votre lecture de Mes forêts ?"},
+    {type:"citation",cite:"Mes forêts",source:"le titre du recueil",consigne:"En quoi ce titre, qui lie un possessif intime à un paysage, programme-t-il tout le recueil ?"},
+    {type:"citation",cite:"La poésie, la nature, l'intime",source:"intitulé du parcours",consigne:"En quoi Mes forêts fait-il de la nature le miroir de l'intime ?"},
+  ],
+  idees:[
+    {type:"question",q:"Comment La Boétie explique-t-il la servitude volontaire des peuples ?"},
+    {type:"question",q:"Le Discours est-il un texte philosophique ou un texte de combat ?"},
+    {type:"question",q:"En quoi le Discours invite-t-il à la fois à « défendre » et à « entretenir » la liberté ?"},
+    {type:"question",q:"La liberté est-elle, selon La Boétie, un état naturel ou une conquête ?"},
+    {type:"question",q:"Dans quelle mesure la force du Discours tient-elle à sa rhétorique ?"},
+    {type:"question",q:"Le Discours de la servitude volontaire est-il encore d'actualité ?"},
+    {type:"question",q:"Peut-on être responsable de sa propre servitude ?"},
+    {type:"question",q:"En quoi La Boétie déplace-t-il la question du pouvoir du tyran vers le peuple lui-même ?"},
+    {type:"question",q:"La seule désobéissance suffit-elle, selon La Boétie, à conquérir la liberté ?"},
+    {type:"question",q:"En quoi l'habitude et l'éducation expliquent-elles, pour La Boétie, le maintien de la tyrannie ?"},
+    {type:"citation",cite:"Soyez résolus de ne servir plus, et vous voilà libres.",source:"La Boétie, Discours de la servitude volontaire",consigne:"Cette affirmation vous paraît-elle suffire à défendre et entretenir la liberté ?"},
+    {type:"citation",cite:"une exercitation rhétorique",source:"La Boétie, à propos de son propre Discours",consigne:"Le Discours se réduit-il, selon vous, à un brillant exercice de style ?"},
+    {type:"citation",cite:"Comment tant d'hommes endurent quelquefois un tyran seul ?",source:"d'après La Boétie",consigne:"En quoi cette question fondatrice commande-t-elle tout le propos du Discours ?"},
+  ],
+};
+
+function tirageSujet(pool,mode,exclude){
+  let f=mode==='all'?pool:pool.filter(x=>x.type===mode);
+  if(!f.length)f=pool;
+  let cand=f.filter(x=>x!==exclude);
+  if(!cand.length)cand=f;
+  return cand[Math.floor(Math.random()*cand.length)];
+}
+
+function DissertGenerator({onBack}){
+  const [oid,setOid]=useState('roman');
+  const [mode,setMode]=useState('all');
+  const [sujet,setSujet]=useState(null);
+  const o=OBJETS.find(x=>x.id===oid);
+  const info=OBJETS_INFO[oid];
+  const c=o.c;
+  const pool=SUJETS_DISSERT[oid]||[];
+  const gen=()=>setSujet(prev=>tirageSujet(pool,mode,prev));
+  const pickO=id=>{setOid(id);setSujet(null);};
+  const pickM=m=>{setMode(m);setSujet(null);};
+  const MODES=[['all','Aléatoire'],['question','Question'],['citation','Sur citation']];
+  return(
+    <div>
+      <button onClick={onBack} style={{...s.btn,marginBottom:'1rem',fontSize:12}}>← Retour à l'accueil</button>
+      <h2 style={{fontSize:18,fontWeight:600,margin:'0 0 4px'}}>📝 Générateur de sujets de dissertation</h2>
+      <p style={{fontSize:13,color:'#888',margin:'0 0 1.5rem'}}>Questions directes et sujets sur citation, rattachés à chaque parcours.</p>
+      <p style={s.label}>1 · Objet d'étude</p>
+      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10,marginBottom:'1.4rem'}}>
+        {OBJETS.map(ob=>{
+          const inf=OBJETS_INFO[ob.id];const act=ob.id===oid;
+          return(
+            <button key={ob.id} onClick={()=>pickO(ob.id)} style={{textAlign:'left',padding:'0.8rem 0.9rem',borderRadius:12,border:act?`1.5px solid ${ob.c}`:'0.5px solid #ddd',background:act?ob.c+'12':'#fff',cursor:'pointer',fontFamily:'inherit'}}>
+              <div style={{fontSize:10.5,textTransform:'uppercase',letterSpacing:'0.08em',color:ob.c,fontWeight:700,marginBottom:4}}>{ob.label}</div>
+              <div style={{fontSize:14,fontStyle:'italic',marginBottom:2}}>{inf.oeuvre}</div>
+              <div style={{fontSize:12,color:'#777'}}>{inf.auteur}</div>
+            </button>
+          );
+        })}
+      </div>
+      <p style={s.label}>2 · Type de sujet</p>
+      <div style={{display:'flex',gap:6,marginBottom:'1.4rem',flexWrap:'wrap'}}>
+        {MODES.map(([k,l])=><button key={k} onClick={()=>pickM(k)} style={s.lvl(mode===k,c)}>{l}</button>)}
+      </div>
+      <button onClick={gen} style={{width:'100%',padding:'0.85rem',borderRadius:12,border:'none',background:c,color:'#fff',fontSize:15,fontWeight:600,cursor:'pointer',fontFamily:'inherit',boxShadow:`0 2px 10px ${c}33`}}>{sujet?'Un autre sujet':'Générer un sujet'}</button>
+      {sujet&&(
+        <div style={{marginTop:'1.5rem',padding:'1.4rem',borderRadius:14,background:'#fff',border:'0.5px solid #e6e3de',boxShadow:'0 1px 3px rgba(0,0,0,0.04)'}}>
+          <div style={{fontSize:10.5,textTransform:'uppercase',letterSpacing:'0.07em',color:c,fontWeight:700,marginBottom:4}}>{info.oeuvre} — {info.auteur}</div>
+          <div style={{fontSize:12,color:'#999',fontStyle:'italic',marginBottom:'1rem'}}>Parcours : {info.parcours}</div>
+          {sujet.type==='citation'?(
+            <div>
+              <div style={{paddingLeft:'1.1rem',borderLeft:`3px solid ${c}`}}>
+                <p style={{margin:0,fontSize:17,fontStyle:'italic',lineHeight:1.55}}>« {sujet.cite} »</p>
+                <p style={{fontSize:12.5,color:'#888',margin:'8px 0 0'}}>— {sujet.source}</p>
+              </div>
+              <p style={{fontSize:16,lineHeight:1.6,margin:'1.1rem 0 0'}}>{sujet.consigne}</p>
+            </div>
+          ):(
+            <p style={{fontSize:18,lineHeight:1.6,margin:0}}>{sujet.q}</p>
+          )}
+        </div>
+      )}
+      {!sujet&&<p style={{fontSize:12.5,color:'#aaa',textAlign:'center',marginTop:'1.4rem',fontStyle:'italic'}}>Choisis un objet d'étude et un type, puis lance le tirage.</p>}
+      <p style={{fontSize:11.5,color:'#bbb',textAlign:'center',marginTop:'2.5rem',lineHeight:1.6}}>Astuce : avant de rédiger, reformule la problématique et cherche un plan en deux ou trois parties.</p>
     </div>
   );
 }
@@ -2060,10 +2320,10 @@ function App(){
         <p style={{fontSize:13,color:'#888',marginBottom:'1rem'}}>Lycée Jean Prévost · 1ères G · Mme Berger</p>
       </div>
       <div style={{borderLeft:'3px solid #1a1a18',paddingLeft:'1rem',marginBottom:'1.25rem'}}>
-        <p style={{fontSize:13,fontStyle:'italic',color:'#1a1a18',lineHeight:1.8,margin:0,letterSpacing:'0.01em'}}>
+        <p style={{fontSize:13,fontStyle:'italic',color:'#1a1a18',lineHeight:1.8,margin:0}}>
           « Déjà essayé. Déjà échoué. Peu importe.<br/>Essaie encore. Échoue encore. <strong>Échoue mieux.</strong> »
         </p>
-        <p style={{fontSize:11,color:'#888',marginTop:4,margin:'4px 0 0'}}>— Samuel Beckett, <em>Cap au pire</em></p>
+        <p style={{fontSize:11,color:'#888',margin:'4px 0 0'}}>— Samuel Beckett, <em>Cap au pire</em></p>
       </div>
       <Countdown/>
       {view==='home'&&(
@@ -2117,6 +2377,7 @@ function App(){
                 <div style={{height:'0.5px',background:'#eee',margin:'4px 0'}}/>
                 <button onClick={()=>setView('flash')} style={{...s.btn,background:'#f5f0ff',color:'#8e44ad',border:'1px solid #8e44ad60',fontWeight:600,width:'100%',textAlign:'left'}}>🃏 Flash</button>
                 <button onClick={()=>setView('tirage')} style={{...s.btn,background:'#fff8e8',color:'#c0851a',border:'1px solid #c0851a60',fontWeight:600,width:'100%',textAlign:'left'}}>🎲 Tirage</button>
+                <button onClick={()=>setView('dissert')} style={{...s.btn,background:'#eef4fb',color:'#2c4a6e',border:'1px solid #2c4a6e55',fontWeight:600,width:'100%',textAlign:'left'}}>📝 Dissert</button>
               </div>
             </div>
           </div>
@@ -2125,6 +2386,7 @@ function App(){
       {view==='objet'&&cur&&<ObjetModule objet={cur} onBack={home}/>}
       {view==='flash'&&<FlashMode onBack={home}/>}
       {view==='tirage'&&<TirageEL onBack={home}/>}
+      {view==='dissert'&&<DissertGenerator onBack={home}/>}
       {(view==='methode'||view==='grammaire'||view==='entretien')&&(
         <div>
           <button onClick={home} style={{...s.btn,marginBottom:'1rem',fontSize:12}}>← Retour à l'accueil</button>
