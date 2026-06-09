@@ -1619,7 +1619,7 @@ function Countdown(){
       border:`1.5px solid ${tres_urgent?'#e74c3c':urgence?'#e67e22':'#e8e4df'}`,
       boxShadow:tres_urgent?'0 4px 20px rgba(231,76,60,0.2)':urgence?'0 4px 16px rgba(230,126,34,0.15)':'0 2px 10px rgba(0,0,0,0.06)',
     }}>
-      <div style={{display:'flex',gap:10,alignItems:'stretch'}}>
+      <div style={{display:'flex',gap:10,alignItems:'stretch',marginBottom:'0.65rem'}}>
         {/* Écrit */}
         <div style={{
           flex:1,textAlign:'center',padding:'0.75rem 0.5rem',borderRadius:10,
@@ -1668,6 +1668,467 @@ function Countdown(){
             </>
           )}
         </div>
+      </div>
+      <p style={{
+        fontSize:12,margin:0,textAlign:'center',
+        fontWeight:tres_urgent||urgence?700:400,
+        color:tres_urgent?'#c0392b':urgence?'#b7500a':'#999',
+        fontStyle:tres_urgent||urgence?'normal':'italic',
+        animation:tres_urgent?'shake 3s ease-in-out infinite':'none',
+      }}>{msg}</p>
+    </div>
+  );
+}
+
+const MOUVEMENTS=[
+  {key:"HUMANISME",label:"Humanisme",periode:"XVIe siècle",sections:[
+    {h:null,parts:[
+      [{t:"txt",c:"L'HUMANISME"}],
+    ]},
+    {h:"UN QCM POUR COMMENCER",parts:[
+      [{t:"txt",c:"Le mouvement humaniste est apparu"},{t:"b",sa:false,o:["au XVIème siècle","au XVIIème siècle","au XVIIIème siècle"],a:"au XVIème siècle"}],
+      [{t:"txt",c:"Deux auteurs emblématiques de l'humanisme sont"},{t:"b",sa:false,o:["Charles Baudelaire et Victor Hugo","Alfred de Musset et Alphonse de Lamartine","Michel de Montaigne et Etienne de la Boétie"],a:"Michel de Montaigne et Etienne de la Boétie"}],
+      [{t:"txt",c:"Les auteurs humanistes ont été fortement influencés par"},{t:"b",sa:false,o:["les auteurs classiques","les auteurs grecs et latins","les auteurs surréalistes"],a:"les auteurs grecs et latins"}],
+      [{t:"txt",c:"Les auteurs humanistes souhaitent"},{t:"b",sa:false,o:["montrer les limites de la langue française","refuser le progrès et les nouvelles découvertes","rivaliser avec les auteurs antiques et défendre la langue française"],a:"rivaliser avec les auteurs antiques et défendre la langue française"}],
+    ]},
+    {h:"LE CONTEXTE",parts:[
+      [{t:"txt",c:"L'humanisme est marqué par les découvertes récentes de nouveaux territoires dont celle du continent"},{t:"b",sa:true,o:["américain"],a:"américain"}],
+      [{t:"txt",c:"La découverte de nouveaux peuples remet en cause l'ethnocentrisme et appelle à l'ouverture à l'autre appelée aussi"},{t:"b",sa:true,o:["tolérance"],a:"tolérance"}],
+      [{t:"txt",c:"Les découvertes de Galilée et de Copernic remettent en cause le fait que la Terre est le centre de l'univers, théorie qu'on appelle le"},{t:"b",sa:true,o:["géocentrisme"],a:"géocentrisme"}],
+      [{t:"txt",c:"Les humanistes célèbrent l'invention de Gutenberg qui permet une vaste diffusion du savoir et qui s'appelle l'"},{t:"b",sa:true,o:["imprimerie"],a:"imprimerie"}],
+      [{t:"txt",c:"De nombreux artistes sont invités à la cour des rois français dont le célèbre artiste qui a dessiné l'Homme de Vitruve"},{t:"b",sa:true,o:["Léonard de Vinci"],a:"Léonard de Vinci"}],
+      [{t:"txt",c:"L'humanisme est fortement marqué par les guerres de Religion qui touchent la France depuis l'apparition de la religion"},{t:"b",sa:true,o:["protestante"],a:"protestante"}],
+      [{t:"txt",c:"Luther et Calvin souhaitent revenir aux sources du christianisme et lancent la"},{t:"b",sa:true,o:["Réforme"],a:"Réforme"}],
+      [{t:"txt",c:"Les catholiques réagissent à l'apparition du protestantisme et lancent quant à eux la"},{t:"b",sa:true,o:["Contre-Réforme"],a:"Contre-Réforme"}],
+    ]},
+    {h:"LES GRANDS PRINCIPES DE L'HUMANISME",parts:[
+      [{t:"txt",c:"L'humanisme souhaite revenir aux auteurs antiques et remet en cause la période qui a précédé la Renaissance à savoir"},{t:"b",sa:true,o:["le Moyen Age"],a:"le Moyen Age"}],
+      [{t:"txt",c:"L'humanisme est fortement influencé par deux grands courants de pensée antiques : le stoïcisme et"},{t:"b",sa:true,o:["l'épicurisme"],a:"l'épicurisme"}],
+      [{t:"txt",c:"L'humanisme souhaite avant tout remettre l'"},{t:"b",sa:false,o:["la religion","l'homme"],a:"l'homme"},{t:"txt",c:"au centre."}],
+      [{t:"txt",c:"L'humanisme se caractérise par une grande soif de connaissances et met au premier plan l'"},{t:"b",sa:false,o:["l'obéissance aux règles","l'éducation","l'absence de libre-arbitre"],a:"l'éducation"},{t:"txt",c:"et la culture."}],
+      [{t:"txt",c:"De nombreux auteurs humanistes, dont Thomas More, inventent des cités et sociétés idéales qu'on appelle"},{t:"b",sa:true,o:["utopies"],a:"utopies"}],
+      [{t:"txt",c:"Les auteurs humanistes souhaitent s'exprimer en langue"},{t:"b",sa:true,o:["française"],a:"française"},{t:"txt",c:"et non plus en latin."}],
+    ]},
+    {h:"LES GRANDS NOMS DE L'HUMANISME",parts:[
+      [{t:"txt",c:"L'oeuvre la plus célèbre de Montaigne s'appelle"},{t:"b",sa:true,o:["les Essais"],a:"les Essais"}],
+      [{t:"txt",c:"L'oeuvre la plus célèbre d'Etienne de la Boétie s'appelle"},{t:"b",sa:true,o:["Discours sur la servitude volontaire"],a:"Discours sur la servitude volontaire"}],
+      [{t:"txt",c:"L'auteur de Gargantua et de Pantagruel s'appelle François"},{t:"b",sa:true,o:["Rabelais"],a:"Rabelais"}],
+    ]},
+  ]},
+  {key:"PLEIADE",label:"La Pléiade",periode:"XVIe siècle",sections:[
+    {h:null,parts:[
+      [{t:"txt",c:"LA PLEIADE"}],
+      [{t:"txt",c:"Le mouvement de la Pléiade est apparu"},{t:"b",sa:false,o:["au XVIème siècle","au XVIIème siècle","au XVIIIème siècle"],a:"au XVIème siècle"}],
+      [{t:"txt",c:"La Pléiade est à l'origine"},{t:"b",sa:false,o:["un groupe de nymphes de l'Antiquité","une constellation","un instrument de musique"],a:"une constellation"}],
+      [{t:"txt",c:"Les poètes de la Pléiade sont pour la plupart issus d'un groupe appelé"},{t:"b",sa:false,o:["l'Escorte","la Brigade","L'Equipe"],a:"la Brigade"}],
+      [{t:"txt",c:"Deux poètes emblématiques de la Pléiade sont"},{t:"b",sa:false,o:["Charles Baudelaire et Victor Hugo","Alfred de Musset et Alphonse de Lamartine","Pierre de Ronsard et Joachim du Bellay"],a:"Pierre de Ronsard et Joachim du Bellay"}],
+      [{t:"txt",c:"Les poètes de la Pléiade ont été fortement influencés par"},{t:"b",sa:false,o:["les auteurs orientaux","les auteurs grecs et latins","les scientifiques de la Renaissance"],a:"les auteurs grecs et latins"}],
+      [{t:"txt",c:"Les poètes de la Pléiade souhaitent"},{t:"b",sa:false,o:["continuer à écrire en latin","ridiculiser les auteurs antiques","rivaliser avec les auteurs antiques et défendre la langue française"],a:"rivaliser avec les auteurs antiques et défendre la langue française"}],
+      [{t:"txt",c:"Les grands thèmes abordés par la Pléiade sont"},{t:"b",sa:false,o:["la fuite du temps, la mythologie et le sentiment amoureux","la métamorphose, l'illusion, l'apparence","l'étude des mœurs, l'influence du milieu sur l'individu, la société"],a:"la fuite du temps, la mythologie et le sentiment amoureux"}],
+      [{t:"txt",c:"Joachim du Bellay a écrit"},{t:"b",sa:false,o:["Odes à Cassandre","Défense et illustration de la langue française et Les Regrets","Les Fleurs du Mal"],a:"Défense et illustration de la langue française et Les Regrets"}],
+    ]},
+  ]},
+  {key:"BAROQUE",label:"Baroque",periode:"fin XVIe–XVIIe",sections:[
+    {h:null,parts:[
+      [{t:"txt",c:"LE BAROQUE"}],
+    ]},
+    {h:"UN QCM POUR COMMENCER",parts:[
+      [{t:"txt",c:"Le mot \"baroque\" vient"},{t:"b",sa:false,o:["du grec « barocco » signifiant « mouvement »","du portugais « barroco » signifiant « perle irrégulière »","du latin « barocum » signifiant « étrangeté »"],a:"du portugais « barroco » signifiant « perle irrégulière »"}],
+      [{t:"txt",c:"Le mouvement baroque s'est développé principalement"},{t:"b",sa:false,o:["au XVIème siècle","au XVIIème siècle","au XVIIIème siècle"],a:"au XVIIème siècle"}],
+      [{t:"txt",c:"Deux auteurs emblématiques du mouvement baroque sont"},{t:"b",sa:false,o:["Racine et Boileau","Saint-Amant et Théophile de Viau","Samuel Beckett et Eugène Ionesco"],a:"Saint-Amant et Théophile de Viau"}],
+      [{t:"txt",c:"Les grands thèmes abordés par le mouvement baroque sont"},{t:"b",sa:false,o:["la fuite du temps, la mythologie et le sentiment amoureux","la critique des préjugés, la lutte contre fanatisme, le refus des dogmes religieux, la tolérance et la liberté","l'instabilité, l'apparence, l'illusion, le mouvement, le bizarre, l'eau en mouvement, le miroir"],a:"l'instabilité, l'apparence, l'illusion, le mouvement, le bizarre, l'eau en mouvement, le miroir"}],
+      [{t:"txt",c:"Les auteurs baroques ont écrit"},{t:"b",sa:false,o:["uniquement des romans","des oeuvres dans tous les genres","uniquement de la poésie"],a:"des oeuvres dans tous les genres"}],
+      [{t:"txt",c:"Un compositeur baroque porte le nom de"},{t:"b",sa:false,o:["Beethoven","Monteverdi","Mozart"],a:"Monteverdi"}],
+      [{t:"txt",c:"Un peintre baroque porte le nom de"},{t:"b",sa:false,o:["le Caravage","Nicolas Poussin","René Magritte"],a:"le Caravage"}],
+    ]},
+    {h:"CONTEXTE DU MOUVEMENT",parts:[
+      [{t:"txt",c:"Le mouvement baroque a des origines"},{t:"b",sa:false,o:["françaises","italiennes","anglaises"],a:"italiennes"},{t:"txt",c:"mais ce mouvement s'est développé partout en"},{t:"b",sa:true,o:["Europe"],a:"Europe"},{t:"txt",c:"."}],
+      [{t:"txt",c:"Le baroque émerge dans une période de"},{t:"b",sa:false,o:["stabilité","crise"],a:"crise"},{t:"txt",c:"et prend place dans une époque métamorphosée par les grandes découvertes et les progrès techniques."}],
+      [{t:"txt",c:"Le baroque est fortement marqué par la réaction des catholiques à la Réforme qui s'appelle la"},{t:"b",sa:true,o:["Contre-Réforme"],a:"Contre-Réforme"},{t:"txt",c:"."}],
+    ]},
+    {h:"LES PRINCIPES DU BAROQUE",parts:[
+      [{t:"txt",c:"Privilégiant l'excès, la profusion et l'illusion, le mouvement baroque s'oppose au mouvement"},{t:"b",sa:true,o:["classique"],a:"classique"},{t:"txt",c:"."}],
+      [{t:"txt",c:"Un recueil célèbre de poésie baroque s'appelant Les Amours tragiques de Pyrame et Thisbé a été écrit par Théophile"},{t:"b",sa:true,o:["de Viau"],a:"de Viau"}],
+      [{t:"txt",c:"Le théâtre baroque joue sur les frontières floues entre la réalité et l'illusion. L'Illusion comique, pièce baroque, a été écrite par Pierre"},{t:"b",sa:true,o:["Corneille"],a:"Corneille"},{t:"txt",c:", connu également pour ses pièces classiques."}],
+    ]},
+  ]},
+  {key:"CLASSICISME",label:"Classicisme",periode:"XVIIe siècle",sections:[
+    {h:null,parts:[
+      [{t:"txt",c:"LE CLASSICISME"}],
+    ]},
+    {h:"UN QCM POUR COMMENCER",parts:[
+      [{t:"txt",c:"Le mot « classicisme » vient"},{t:"b",sa:false,o:["du mot grec « klassikos » signifiant traditionnel","du mot hébreu « klassos » signifiant ancien","du mot latin « classicus » signifiant de première classe"],a:"du mot latin « classicus » signifiant de première classe"}],
+      [{t:"txt",c:"Le mouvement du classicisme s'est développé principalement"},{t:"b",sa:false,o:["au XVIème siècle","au XVIIème siècle","au XVIIIème siècle"],a:"au XVIIème siècle"}],
+      [{t:"txt",c:"Deux auteurs emblématiques du classicisme sont"},{t:"b",sa:false,o:["Jean Racine et Nicolas Boileau","Victor Hugo et Alfred de Musset","Samuel Beckett et Eugène Ionesco"],a:"Jean Racine et Nicolas Boileau"}],
+      [{t:"txt",c:"Les deux grands principes du classicisme sont"},{t:"b",sa:false,o:["convaincre et persuader","oser et agir","plaire et instruire"],a:"plaire et instruire"}],
+      [{t:"txt",c:"Les principes plus précis du classicisme sont"},{t:"b",sa:false,o:["la critique des préjugés, la lutte contre fanatisme, le refus des dogmes religieux, la tolérance et la liberté","la séparation des genres, le respect des règles, les principes d'ordre, d'équilibre, de mesure et de simplicité","l'importance accordée à l'individu et à la sensibilité"],a:"la séparation des genres, le respect des règles, les principes d'ordre, d'équilibre, de mesure et de simplicité"}],
+      [{t:"txt",c:"Les auteurs classiques ont écrit"},{t:"b",sa:false,o:["des œuvres dans tous les genres","uniquement des pièces de théâtre","uniquement de la poésie"],a:"des œuvres dans tous les genres"}],
+      [{t:"txt",c:"Un peintre classique porte le nom de"},{t:"b",sa:false,o:["le Caravage","Nicolas Poussin","Caspar David Friedrich"],a:"Nicolas Poussin"}],
+    ]},
+    {h:"LE CONTEXTE",parts:[
+      [{t:"txt",c:"Les dates du classicisme correspondent à peu près aux dates du règne du roi"},{t:"b",sa:true,o:["Louis XIV"],a:"Louis XIV"},{t:"txt",c:"qui régna de la deuxième moitié du"},{t:"b",sa:true,o:["XVII"],a:"XVII"},{t:"txt",c:"ème siècle à l'année"},{t:"b",sa:true,o:["1715"],a:"1715"},{t:"txt",c:"."}],
+      [{t:"txt",c:"L’esthétique classique servira l’image de puissance et d’autorité soit en pleine monarchie"},{t:"b",sa:false,o:["constitutionnelle","absolue"],a:"absolue"},{t:"txt",c:"avec un pouvoir centralisé qui cherche à imposer l'ordre et son autorité."}],
+      [{t:"txt",c:"La centralisation monarchique dépasse le cadre politique pour toucher le domaine culturel."}],
+      [{t:"txt",c:"« La querelle des Anciens et des"},{t:"b",sa:true,o:["Modernes"],a:"Modernes"},{t:"txt",c:"», à partir de 1687, préfigure la fin de ce courant."}],
+    ]},
+    {h:"LES GRANDS PRINCIPES DU CLASSICISME",parts:[
+      [{t:"txt",c:"Comme les écrivains de la Renaissance, les classiques se donnent pour modèles, les auteurs"},{t:"b",sa:true,o:["grecs"],a:"grecs"},{t:"txt",c:"et"},{t:"b",sa:true,o:["latins"],a:"latins"},{t:"txt",c:"comme Esope et Phèdre par exemple pour les fables."}],
+      [{t:"txt",c:"L'imitation n’est pas un plagiat : il s’agit de s’inspirer d’un auteur antique connu pour atteindre l'universel."}],
+      [{t:"txt",c:"Le mouvement classique voue un véritable culte à la raison."}],
+      [{t:"txt",c:"Sous l’autorité de la raison, s’érige un système très strict de règles dans chaque genre respectant la recherche de la clarté, de la logique et de la vraisemblance."}],
+      [{t:"txt",c:"Au théâtre la règle des trois"},{t:"b",sa:true,o:["unités"],a:"unités"},{t:"txt",c:"est primordiale."}],
+      [{t:"txt",c:"La règle de"},{t:"b",sa:true,o:["vraisemblance"],a:"vraisemblance"},{t:"txt",c:"rend compte du souci classique de rendre compte du réel et la règle de"},{t:"b",sa:true,o:["bienséance"],a:"bienséance"},{t:"txt",c:"révèle la volonté classique de ne pas choquer le lecteur ou le spectateur."}],
+      [{t:"txt",c:"Le souci de clarté se traduit en littérature, par le recours à un langage simple et précis, principe résumé par Nicolas"},{t:"b",sa:true,o:["Boileau"],a:"Boileau"},{t:"txt",c:"dans son Art poétique : « Ce qui se conçoit bien s’énonce clairement / Et les mots pour le dire viennent aisément. »"}],
+      [{t:"txt",c:"Les productions classiques se donnent pour finalité d'élever les hommes."}],
+      [{t:"txt",c:"L'"},{t:"b",sa:true,o:["honnête"],a:"honnête"},{t:"txt",c:"homme incarne la perfection classique de mesure et d'élégance."}],
+    ]},
+    {h:"LES GRANDS AUTEURS CLASSIQUES",parts:[
+      [{t:"txt",c:"Dans ses célèbres fables, Jean de La Fontaine s'inspire du fabuliste grec"},{t:"b",sa:true,o:["Esope"],a:"Esope"},{t:"txt",c:"et du fabuliste latin"},{t:"b",sa:true,o:["Phèdre"],a:"Phèdre"},{t:"txt",c:"."}],
+      [{t:"txt",c:"L'auteur des Caractères s'appelle Jean"},{t:"b",sa:true,o:["La Bruyère"],a:"La Bruyère"},{t:"txt",c:"."}],
+      [{t:"txt",c:"L'auteur de La Princesse de Clèves s'appelle Mme de"},{t:"b",sa:true,o:["La Fayette"],a:"La Fayette"},{t:"txt",c:"."}],
+      [{t:"txt",c:"L'auteur de Phèdre et de Britannicus s'appelle Jean"},{t:"b",sa:true,o:["Racine"],a:"Racine"},{t:"txt",c:"."}],
+      [{t:"txt",c:"Le plus célèbre auteur de comédies classiques est"},{t:"b",sa:true,o:["Molière"],a:"Molière"},{t:"txt",c:"."}],
+      [{t:"txt",c:"Un moyen mnémotechnique pour retenir le nom des grands auteurs classiques :"}],
+      [{t:"txt",c:"« Sur la racine de la bruyère, la corneille boit l’eau de la fontaine Molière »"}],
+    ]},
+  ]},
+  {key:"LUMIERES",label:"Lumières",periode:"XVIIIe siècle",sections:[
+    {h:null,parts:[
+      [{t:"txt",c:"LES LUMIERES"}],
+    ]},
+    {h:"UN QCM POUR COMMENCER",parts:[
+      [{t:"txt",c:"Le mouvement des Lumières s'appelle ainsi car il souhaite"},{t:"b",sa:false,o:["éclairer le peuple et le sortir de l'obscurantisme","mettre le roi en valeur","faire la lumière sur les textes antiques"],a:"éclairer le peuple et le sortir de l'obscurantisme"}],
+      [{t:"txt",c:"Le mouvement des Lumières s'est développé principalement"},{t:"b",sa:false,o:["au XVIIème siècle","au XVIIIème siècle","Mauvaise réponse"],a:"au XVIIIème siècle"}],
+      [{t:"txt",c:"Deux auteurs emblématiques des Lumières sont"},{t:"b",sa:false,o:["Racine et Boileau","Victor Hugo et Alfred de Musset","Voltaire et Diderot"],a:"Voltaire et Diderot"}],
+      [{t:"txt",c:"Les grands principes du mouvement des Lumières sont"},{t:"b",sa:false,o:["la critique des préjugés, la lutte contre fanatisme, le refus des dogmes religieux, la tolérance et la liberté","la séparation des genres, le respect des règles, les principes d'ordre, d'équilibre, de mesure et de simplicité","l'importance accordée à l'individu et à la sensibilité"],a:"la critique des préjugés, la lutte contre fanatisme, le refus des dogmes religieux, la tolérance et la liberté"}],
+      [{t:"txt",c:"Les auteurs des Lumières ont principalement écrit"},{t:"b",sa:false,o:["de la poésie","des romans","des essais, des discours et des contes philosophiques"],a:"des essais, des discours et des contes philosophiques"}],
+      [{t:"txt",c:"Les auteurs ayant présidé à la rédaction de l'Encyclopédie, œuvre phare des Lumières, sont"},{t:"b",sa:false,o:["Rousseau et l'abbé Prévost","Choderlos de Laclos et Olympe de Gouges","Diderot et d'Alembert"],a:"Diderot et d'Alembert"}],
+    ]},
+    {h:"LE CONTEXTE",parts:[
+      [{t:"txt",c:"Les Lumières sont un vaste mouvement philosophique, littéraire et scientifique qui domine le monde des idées en Europe au XVIIIème siècle."}],
+      [{t:"txt",c:"La mort du roi"},{t:"b",sa:true,o:["Louis XIV"],a:"Louis XIV"},{t:"txt",c:"en 1715 fait souffler un vent de liberté sur la France. La vie intellectuelle se libère et se diffuse dans les Cafés et les"},{t:"b",sa:true,o:["Salons"],a:"Salons"},{t:"txt",c:"lieux où se réunissent les lettrés. Les conversations trouvent un écho dans la littérature dans les dialogues philosophiques comme le Neveu de"},{t:"b",sa:true,o:["Rameau"],a:"Rameau"},{t:"txt",c:"de Denis Diderot."}],
+      [{t:"txt",c:"Le livre se diffuse et apparaît le premier quotidien français appelé le Journal de"},{t:"b",sa:true,o:["Paris"],a:"Paris"},{t:"txt",c:"."}],
+      [{t:"txt",c:"Les auteurs des Lumières sont impliqués dans les affaires politiques et sociales de leur temps : ce sont des auteurs engagés. On peut citer par exemple l'implication de Voltaire dans l'affaire Jean"},{t:"b",sa:true,o:["Calas"],a:"Calas"},{t:"txt",c:"."}],
+    ]},
+    {h:"LES PRINCIPES DES LUMIERES",parts:[
+      [{t:"txt",c:"La devise en latin des Lumières proposée par Emmanuel Kant dans son célèbre Qu'est-ce que les Lumières est la formule latine \"sapere"},{t:"b",sa:true,o:["aude"],a:"aude"},{t:"txt",c:", \"aie le courage de te servir de ton propre entendement\" ou \"ose savoir\"."}],
+      [{t:"txt",c:"Le grand combat des Lumières est résumé en ces termes de Voltaire : \"écrasez"},{t:"b",sa:true,o:["l'infâme"],a:"l'infâme"},{t:"txt",c:"\". Il s'agit de lutter contre le fanatisme, l'ignorance, les préjugés, le dogme religieux et tous les ennemis de la raison."}],
+      [{t:"txt",c:"Les Lumières luttent contre la superstition et le fanatisme religieux. Certains auteurs, comme Diderot, sont même athées voire anticléricaux. Voltaire quant à lui croit en un être supérieur mais rejette les rites religieux : il est"},{t:"b",sa:true,o:["déiste"],a:"déiste"},{t:"txt",c:"."}],
+      [{t:"txt",c:"Les auteurs des Lumières rejettent la monarchie absolue et prônent au contraire, pour certains, un nouveau modèle dirigé par un \"despote"},{t:"b",sa:true,o:["éclairé"],a:"éclairé"},{t:"txt",c:"."}],
+      [{t:"txt",c:"Les auteurs des Lumières s'engagent enfin sur des questions de société, notamment contre l'esclavage comme dans De l'esclavage des nègres de"},{t:"b",sa:true,o:["Montesquieu"],a:"Montesquieu"},{t:"txt",c:"."}],
+      [{t:"txt",c:"Comme Montaigne et les auteurs du mouvement"},{t:"b",sa:true,o:["humaniste"],a:"humaniste"},{t:"txt",c:"deux siècles avant eux, les auteurs des Lumières ont foi en l'homme et en l'humanité."}],
+      [{t:"txt",c:"Ils utilisent par ailleurs des formes originales pour diffuser le savoir comme les dictionnaires ou l'"},{t:"b",sa:true,o:["Encyclopédie"],a:"Encyclopédie"},{t:"txt",c:"grande oeuvre collaborative des Lumières ou encore des contes"},{t:"b",sa:true,o:["philosophiques"],a:"philosophiques"},{t:"txt",c:"comme Candide de Voltaire."}],
+    ]},
+    {h:"LES GRANDS AUTEURS DES LUMIERES",parts:[
+      [{t:"txt",c:"L'auteur du Dictionnaire philosophique, de Candide et du Traité sur la tolérance est"},{t:"b",sa:true,o:["Voltaire"],a:"Voltaire"},{t:"txt",c:"."}],
+      [{t:"txt",c:"L'auteur de De l'Esprit des"},{t:"b",sa:true,o:["lois"],a:"lois"},{t:"txt",c:"et des Lettres"},{t:"b",sa:true,o:["persanes"],a:"persanes"},{t:"txt",c:"est Montesquieu."}],
+      [{t:"txt",c:"L'auteur du Discours sur l'origine de l'inégalité parmi les hommes est Jean-Jacques"},{t:"b",sa:true,o:["Rousseau"],a:"Rousseau"}],
+    ]},
+  ]},
+  {key:"ROMANTISME",label:"Romantisme",periode:"1ère moitié XIXe",sections:[
+    {h:null,parts:[
+      [{t:"txt",c:"LE ROMANTISME"}],
+    ]},
+    {h:"UN QCM POUR COMMENCER",parts:[
+      [{t:"txt",c:"Le mot « romantisme » vient"},{t:"b",sa:false,o:["de l'ancien français « roman » qui signifie « en langue vulgaire »","du mot grec « romanos » qui signifie « inconnu »","d'une langue inconnue"],a:"de l'ancien français « roman » qui signifie « en langue vulgaire »"}],
+      [{t:"txt",c:"Le mouvement du romantisme s'est développé"},{t:"b",sa:false,o:["au XVIIème siècle","au XVIIIème siècle","au XIXème siècle"],a:"au XIXème siècle"}],
+      [{t:"txt",c:"Deux auteurs emblématiques du romantisme sont"},{t:"b",sa:false,o:["Racine et Boileau","Victor Hugo et Alfred de Musset","Samuel Beckett et Eugène Ionesco"],a:"Victor Hugo et Alfred de Musset"}],
+      [{t:"txt",c:"Le romantisme est en rupture avec"},{t:"b",sa:false,o:["les règles, le goût et le Beau classiques","la volonté de mettre le moi au centre","le goût pour la nature"],a:"les règles, le goût et le Beau classiques"}],
+      [{t:"txt",c:"Les grands principes du romantisme sont"},{t:"b",sa:false,o:["la critique des préjugés, la lutte contre fanatisme, le refus des dogmes religieux, la tolérance et la liberté","l'importance accordée à l'individu et à la sensibilité, la mélancolie et l'exotisme","la séparation des genres, le respect des règles, les principes d'ordre, d'équilibre, de mesure et de simplicité"],a:"l'importance accordée à l'individu et à la sensibilité, la mélancolie et l'exotisme"}],
+      [{t:"txt",c:"Les auteurs romantiques ont écrit"},{t:"b",sa:false,o:["des œuvres dans tous les genres","uniquement des romans","uniquement des pièces de théâtre"],a:"des œuvres dans tous les genres"}],
+      [{t:"txt",c:"Un compositeur romantique porte le nom de"},{t:"b",sa:false,o:["Monteverdi","Mozart","Chopin"],a:"Chopin"}],
+      [{t:"txt",c:"Un peintre romantique porte le nom de"},{t:"b",sa:false,o:["Nicolas Poussin","René Magritte","Caspar David Friedrich"],a:"Caspar David Friedrich"}],
+    ]},
+    {h:"LE CONTEXTE",parts:[
+      [{t:"txt",c:"Mouvement littéraire et culturel de la première moitié du"},{t:"b",sa:true,o:["XIX"],a:"XIX"},{t:"txt",c:"ème siècle, le romantisme exalte l'imagination, les émotions et la sensibilité mais il apparaît dès le XVIIIème siècle en Allemagne. Goethe et les artistes du Sturm un Drang célèbrent notamment l'accord entre l'homme et la"},{t:"b",sa:false,o:["culture","science","nature"],a:"nature"},{t:"txt",c:"."}],
+      [{t:"txt",c:"Les artistes romantiques français sont pris entre espoirs et désenchantements face aux mutations politiques. Ils n'hésitent pas à s'engager dans l'histoire pour défendre leurs idéaux et occupent mêmes des fonctions"},{t:"b",sa:true,o:["politiques"],a:"politiques"},{t:"txt",c:". Lamartine a été élu député par exemple."}],
+    ]},
+    {h:"LES GRANDS PRINCIPES DU ROMANTISME",parts:[
+      [{t:"txt",c:"Le romantisme est avant tout une réaction contre le mouvement"},{t:"b",sa:true,o:["classique"],a:"classique"},{t:"txt",c:"du XVIIème siècle qui privilégie la raison ainsi que la mesure et refuse les épanchements lyriques."}],
+      [{t:"txt",c:"Une attention particulière est portée au Moi et à ses états d'âme."}],
+      [{t:"txt",c:"De nombreux auteurs romantiques sont touchés par une tristesse si emblématique qu'on l'appelle \"Mal du"},{t:"b",sa:true,o:["siècle"],a:"siècle"},{t:"txt",c:"\"."}],
+      [{t:"txt",c:"Les thèmes phares du romantisme sont l'amour, le goût pour la nature, l'Orient et la tentation de l'Ailleurs, le culte du passé, la rêverie, la solitude et la mélancolie, l'homme éphémère face à la nature éternelle, la révolte et la société, le poète investi d'une mission politique et sociale."}],
+      [{t:"txt",c:"En poésie, les poètes privilégient le registre"},{t:"b",sa:true,o:["lyrique"],a:"lyrique"},{t:"txt",c:"c'est-à-dire l'expression des sentiments et le registre"},{t:"b",sa:true,o:["élégiaque"],a:"élégiaque"},{t:"txt",c:"c'est-à-dire l'expression de la plainte. Mais les poètes romantiques peuvent également écrire des poèmes épiques et des pamphlets."}],
+      [{t:"txt",c:"Victor Hugo théorise le"},{t:"b",sa:true,o:["drame"],a:"drame"},{t:"txt",c:"romantique qui remet en cause les règles du théâtre"},{t:"b",sa:true,o:["classique"],a:"classique"},{t:"txt",c:"et refuse la séparation des genres pour privilégier l'expression des sentiments souvent exaltés."}],
+      [{t:"txt",c:"Le roman est lui aussi très prisé des auteurs romantiques."}],
+    ]},
+    {h:"LES GRANDS AUTEURS ROMANTIQUES",parts:[
+      [{t:"txt",c:"L'auteur des Misérables, des Châtiments et de la Préface de Cromwell s'appelle Victor"},{t:"b",sa:true,o:["Hugo"],a:"Hugo"}],
+      [{t:"txt",c:"L'auteur des Méditations poétiques est Alphonse de"},{t:"b",sa:true,o:["Lamartine"],a:"Lamartine"},{t:"txt",c:", l'un des fondateurs du romantisme."}],
+      [{t:"txt",c:"L'auteur de Lorenzaccio et des Confessions d'un enfant du siècle est Alfred de"},{t:"b",sa:true,o:["Musset"],a:"Musset"},{t:"txt",c:"."}],
+    ]},
+  ]},
+  {key:"PARNASSE",label:"Parnasse",periode:"milieu XIXe",sections:[
+    {h:null,parts:[
+      [{t:"txt",c:"LE PARNASSE"}],
+    ]},
+    {h:"UN QCM POUR COMMENCER",parts:[
+      [{t:"txt",c:"Le mot «Parnasse » vient"},{t:"b",sa:false,o:["d'une nymphe grec","du nom d'un massif montagneux consacré à Apollon et aux Muses","d'un quartier de Paris"],a:"du nom d'un massif montagneux consacré à Apollon et aux Muses"}],
+      [{t:"txt",c:"Le mouvement du Parnasse s'est développé"},{t:"b",sa:false,o:["au XVIIème siècle","au XVIIIème siècle","au milieu du XIXème siècle"],a:"au milieu du XIXème siècle"}],
+      [{t:"txt",c:"Deux auteurs emblématiques du Parnasse sont"},{t:"b",sa:false,o:["Leconte de Lisle et Théophile Gautier","Rimbaud et Mallarmé","Samuel Beckett et Eugène Ionesco"],a:"Leconte de Lisle et Théophile Gautier"}],
+      [{t:"txt",c:"Le Parnasse est né"},{t:"b",sa:false,o:["dans le prolongement des Lumières","dans le prolongement du naturalisme","en réaction contre la poésie romantique"],a:"en réaction contre la poésie romantique"}],
+      [{t:"txt",c:"Les grands thèmes du Parnasse sont"},{t:"b",sa:false,o:["l'instabilité, l'apparence, l'illusion, le mouvement, le bizarre, l'eau en mouvement, le miroir","la beauté froide des bijoux et l'Antiquité","l'étude des mœurs, l'influence du milieu sur l'individu, la société"],a:"la beauté froide des bijoux et l'Antiquité"}],
+      [{t:"txt",c:"Les grands principes du Parnasse sont"},{t:"b",sa:false,o:["l'étude des mœurs, l'influence du milieu sur l'individu, la société","l'importance accordée à l'individu et à la sensibilité, la mélancolie et l'exotisme","le refus de la sensibilité, le goût pour la description dans la poésie et l'Art pour l'Art"],a:"le refus de la sensibilité, le goût pour la description dans la poésie et l'Art pour l'Art"}],
+      [{t:"txt",c:"Les auteurs du Parnasse ont principalement écrit"},{t:"b",sa:false,o:["des essais","des pièces de théâtre","de la poésie"],a:"de la poésie"}],
+    ]},
+    {h:"LE CONTEXTE",parts:[
+      [{t:"txt",c:"Le Parnasse est apparu en réaction contre les effusions du grand mouvement poétique du début du XIXème siècle, le"},{t:"b",sa:true,o:["romantisme"],a:"romantisme"},{t:"txt",c:". La poésie du début du XIXème siècle est en effet jugée trop éloquente et sentimentale par les poètes du Parnasse."}],
+    ]},
+    {h:"LES GRANDS PRINCIPES DU PARNASSE",parts:[
+      [{t:"txt",c:"L'autre nom du Parnasse est l'Art pour"},{t:"b",sa:true,o:["l'Art"],a:"l'Art"},{t:"txt",c:"."}],
+      [{t:"txt",c:"Ce mouvement a été théorisé par Théophile Gautier dans la préface de son roman Mademoiselle"},{t:"b",sa:true,o:["Maupin"],a:"Maupin"},{t:"txt",c:"."}],
+      [{t:"txt",c:"Les poètes du Parnasse récusent par ailleurs la mission civilisatrice et prophétique attribuée au poète par Victor"},{t:"b",sa:true,o:["Hugo"],a:"Hugo"},{t:"txt",c:"dans \"Fonction du poète\". L'art doit se dégager des contingences matérielles et traiter uniquement de la beauté. Le Parnasse refuse une poésie utile car comme le dit Théophile Gautier : \"tout ce qui est utile est"},{t:"b",sa:true,o:["laid"],a:"laid"},{t:"txt",c:"\". La poésie parnassienne est un véritable travail d'orfèvre. La valeur travail est valorisée au détriment de l'inspiration."}],
+      [{t:"txt",c:"Selon les Parnassiens, leur poésie est réservée à des initiés qui constituent une sorte d'élite."}],
+    ]},
+    {h:"LES AUTEURS DU PARNASSE",parts:[
+      [{t:"txt",c:"Le recueil Poèmes"},{t:"b",sa:true,o:["barbares"],a:"barbares"},{t:"txt",c:"a été écrit par Leconte de Lisle."}],
+      [{t:"txt",c:"Le recueil Emaux et"},{t:"b",sa:true,o:["camées"],a:"camées"},{t:"txt",c:"a été écrit par Théophile Gautier."}],
+    ]},
+  ]},
+  {key:"REALISME",label:"Réalisme",periode:"milieu XIXe",sections:[
+    {h:null,parts:[
+      [{t:"txt",c:"LE REALISME"}],
+    ]},
+    {h:"UN QCM POUR COMMENCER",parts:[
+      [{t:"txt",c:"Le mouvement du réalisme s'est développé"},{t:"b",sa:false,o:["au XVIIème siècle","au XVIIIème siècle","au milieu du XIXème siècle"],a:"au milieu du XIXème siècle"}],
+      [{t:"txt",c:"Deux auteurs emblématiques du réalisme sont"},{t:"b",sa:false,o:["Leconte de Lisle et Théophile Gautier","Rimbaud et Mallarmé","Balzac et Flaubert"],a:"Balzac et Flaubert"}],
+      [{t:"txt",c:"Le réalisme est né"},{t:"b",sa:false,o:["dans le prolongement des Lumières","en réaction contre le lyrisme et l'idéalisation romantique","dans le prolongement du naturalisme"],a:"en réaction contre le lyrisme et l'idéalisation romantique"}],
+      [{t:"txt",c:"Les grands thèmes du réalisme sont"},{t:"b",sa:false,o:["l'étude des mœurs, l'influence du milieu sur l'individu, la société","l'instabilité, l'apparence, l'illusion, le mouvement, le bizarre, l'eau en mouvement, le miroir","la critique des préjugés, la lutte contre fanatisme, le refus des dogmes religieux, la tolérance et la liberté"],a:"l'étude des mœurs, l'influence du milieu sur l'individu, la société"}],
+      [{t:"txt",c:"Les grands principes du réalisme sont"},{t:"b",sa:false,o:["le refus de la sensibilité, le goût pour la description dans la poésie et l'Art pour l'Art","la séparation des genres, le respect des règles, les principes d'ordre, d'équilibre, de mesure et de simplicité","l'observation et la reproduction fidèle du réel"],a:"l'observation et la reproduction fidèle du réel"}],
+      [{t:"txt",c:"Les auteurs du réalisme ont principalement écrit"},{t:"b",sa:false,o:["des romans et des nouvelles","des pièces de théâtre","de la poésie"],a:"des romans et des nouvelles"}],
+      [{t:"txt",c:"Un peintre réaliste porte le nom de"},{t:"b",sa:false,o:["Nicolas Poussin","Arnold Böcklin","Gustave Courbet"],a:"Gustave Courbet"}],
+    ]},
+    {h:"LE CONTEXTE",parts:[
+      [{t:"txt",c:"Le réalisme apparaît après la désillusion de la révolution de l'année"},{t:"b",sa:true,o:["1848"],a:"1848"},{t:"txt",c:": la bourgeoisie, classe dominante se soucie de ses seuls intérêts."}],
+      [{t:"txt",c:"La révolution"},{t:"b",sa:true,o:["industrielle"],a:"industrielle"},{t:"txt",c:"crée des emplois en ville et crée un exode rural."}],
+      [{t:"txt",c:"La foi en le progrès se répand et la science est perçue comme la solution à tous les problèmes."}],
+      [{t:"txt",c:"La philosophie positiviste d'Auguste"},{t:"b",sa:true,o:["Comte"],a:"Comte"},{t:"txt",c:"est en plein essor."}],
+      [{t:"txt",c:"Dans ce contexte positiviste, le réalisme naît aussi en réaction contre le mouvement"},{t:"b",sa:true,o:["romantique"],a:"romantique"},{t:"txt",c:"et ses épanchements lyriques."}],
+    ]},
+    {h:"LES GRANDS PRINCIPES",parts:[
+      [{t:"txt",c:"Le mot \"réalisme\" apparaît en 1850 et a été utilisé en premier pour caractériser la manière de peindre de Gustave Courbet notamment dans son tableau Enterrement à"},{t:"b",sa:true,o:["Ornans"],a:"Ornans"},{t:"txt",c:"."}],
+      [{t:"txt",c:"Il s'agit de dire le réel au plus près en proposant des descriptions précises et en rejetant les intrigues trop romanesques. L'observation du monde contemporain est un moteur importance de la création chez les réalistes qui réunissent souvent une abondante documentation."}],
+      [{t:"txt",c:"Les romans et les nouvelles réalistes traitent de la banalité de la vie, accordent une grande importance au corps et refusent la bienséance comme en témoigne le procès intenté à Flaubert pour son roman Madame"},{t:"b",sa:true,o:["Bovary"],a:"Bovary"}],
+      [{t:"txt",c:"De nouvelles classes sociales deviennent des personnages à part entière : la bourgeoisie et le monde ouvrier."}],
+      [{t:"txt",c:"Les personnages ne sont plus idéalisés et sont bien loin d'être héroïques : on passe de personnages extraordinaires à des personnages de la vie"},{t:"b",sa:true,o:["quotidienne"],a:"quotidienne"}],
+    ]},
+    {h:"LES GRANDS AUTEURS REALISTES",parts:[
+      [{t:"txt",c:"L'auteur d'une vaste oeuvre romanesque appelée La Comédie humaine s'appelle Honoré de"},{t:"b",sa:true,o:["Balzac"],a:"Balzac"}],
+      [{t:"txt",c:"L'auteur de La Chartreuse de Parme et du roman Le Rouge et le Noir s'appelle"},{t:"b",sa:true,o:["Stendhal"],a:"Stendhal"}],
+      [{t:"txt",c:"L'auteur de l'Education sentimentale s'appelle Gustave"},{t:"b",sa:true,o:["Flaubert"],a:"Flaubert"}],
+    ]},
+  ]},
+  {key:"NATURALISME",label:"Naturalisme",periode:"fin XIXe",sections:[
+    {h:null,parts:[
+      [{t:"txt",c:"LE NATURALISME"}],
+    ]},
+    {h:"UN QCM POUR COMMENCER",parts:[
+      [{t:"txt",c:"Le mouvement du naturalisme s'est développé"},{t:"b",sa:false,o:["au XVIIème siècle","au XVIIIème siècle","à la fin du du XIXème siècle"],a:"à la fin du du XIXème siècle"}],
+      [{t:"txt",c:"Le mot « naturalisme » signifie initialement"},{t:"b",sa:false,o:["qui prône le retour à la nature","qui étudie l'histoire et les sciences naturelles","qui s'oppose à la culture"],a:"qui étudie l'histoire et les sciences naturelles"}],
+      [{t:"txt",c:"Deux auteurs emblématiques du naturalisme sont"},{t:"b",sa:false,o:["Leconte de Lisle et Théophile Gautier","Rimbaud et Mallarmé","Zola et les frères Goncourt"],a:"Zola et les frères Goncourt"}],
+      [{t:"txt",c:"Le naturalisme est né"},{t:"b",sa:false,o:["dans le prolongement des Lumières","dans le prolongement des règles classiques","dans le prolongement du réalisme"],a:"dans le prolongement du réalisme"}],
+      [{t:"txt",c:"Les grands thèmes du naturalisme sont"},{t:"b",sa:false,o:["l'instabilité, l'apparence, l'illusion, le mouvement, le bizarre, l'eau en mouvement, le miroir","la beauté froide des bijoux, l'Antiquité et l'archéologie","l'étude de l'hérédité et du milieu, le monde du travail et la Révolution industrielle"],a:"l'étude de l'hérédité et du milieu, le monde du travail et la Révolution industrielle"}],
+      [{t:"txt",c:"Les grands principes du naturalisme sont"},{t:"b",sa:false,o:["l'importance accordée à l'individu et à la sensibilité, la mélancolie et l'exotisme","la séparation des genres, le respect des règles, les principes d'ordre, d'équilibre, de mesure et de simplicité","l'approfondissement du réalisme et l'influence des sciences expérimentales et de la médecine"],a:"l'approfondissement du réalisme et l'influence des sciences expérimentales et de la médecine"}],
+      [{t:"txt",c:"Les auteurs du naturalisme ont principalement écrit"},{t:"b",sa:false,o:["des romans et des nouvelles","des pièces de théâtre","de la poésie"],a:"des romans et des nouvelles"}],
+    ]},
+    {h:"LE CONTEXTE",parts:[
+      [{t:"txt",c:"Le naturalisme apparaît après le réalisme qui fait lui-même suite à la désillusion de la révolution de l'année"},{t:"b",sa:true,o:["1848"],a:"1848"},{t:"txt",c:": la bourgeoisie, classe dominante, se soucie de ses seuls intérêts."}],
+      [{t:"txt",c:"La révolution"},{t:"b",sa:true,o:["industrielle"],a:"industrielle"},{t:"txt",c:"crée des emplois en ville et crée un exode rural."}],
+      [{t:"txt",c:"La foi en le progrès se répand et la scienceest perçue comme la solution à tous les problèmes."}],
+      [{t:"txt",c:"La philosophie positiviste d'Auguste"},{t:"b",sa:true,o:["Comte"],a:"Comte"},{t:"txt",c:"est en plein essor."}],
+      [{t:"txt",c:"Dans ce contexte positiviste, le naturalisme s'inscrit dans la droite lignée du mouvement"},{t:"b",sa:true,o:["réaliste"],a:"réaliste"},{t:"txt",c:"apparu lui aussi au XIXème siècle."}],
+    ]},
+    {h:"LES GRANDS PRINCIPES",parts:[
+      [{t:"txt",c:"Comme dans le mouvement réaliste, il s'agit pour les auteurs naturalistes de dire le réel au plus près en proposant des descriptions précises et en rejetant les intrigues trop romanesques. L'observation du monde contemporain est un moteur importance de la création chez les réalistes qui réunissent souvent une abondante documentation."}],
+      [{t:"txt",c:"Emile Zola utilise pour la première fois le terme \"naturaliste\" en 1866 après avoir lu l’Introduction à l’étude de la médecine expérimentale du physiologiste Claude"},{t:"b",sa:true,o:["Bernard"],a:"Bernard"},{t:"txt",c:"."}],
+      [{t:"txt",c:"Emile Zola prend comme modèle d'écriture la méthode"},{t:"b",sa:false,o:["abstraite","scientifique"],a:"scientifique"}],
+      [{t:"txt",c:"Dans ses ouvrages, Zola s’attache à montrer « scientifiquement » les effets du"},{t:"b",sa:false,o:["potentiel","déterminisme"],a:"déterminisme"},{t:"txt",c:"biologique (l’hérédité de l’alcoolisme, entre autres) sur le comportement de ses héros."}],
+      [{t:"txt",c:"De nouvelles classes sociales deviennent des personnages à part entière : la bourgeoisie et le monde"},{t:"b",sa:false,o:["artistique","ouvrier"],a:"ouvrier"},{t:"txt",c:". Le naturalisme s’attache à peindre les milieux populaires. ( Les ouvriers chez Zola ou les paysans normands chez Maupassant)."}],
+    ]},
+    {h:"LES GRANDS AUTEURS NATURALISTES",parts:[
+      [{t:"txt",c:"Emile Zola écrit un cycle de vingt romans, Les Rougon-"},{t:"b",sa:true,o:["Macquart"],a:"Macquart"},{t:"txt",c:",Histoire naturelle et sociale d’une famille sous le second Empire."}],
+      [{t:"txt",c:"Réunis autour de Zola, les auteurs naturalistes publient un recueil de nouvelles naturalistes qui servent de manifeste au mouvement : Les soirées de"},{t:"b",sa:true,o:["Médan"],a:"Médan"},{t:"txt",c:"(1880)"}],
+      [{t:"txt",c:"Les frères"},{t:"b",sa:true,o:["Goncourt"],a:"Goncourt"},{t:"txt",c:", qui ont donné leur nom à un célèbre prix littéraire, publient quant à eux par exemple Germinie Lacerteux."}],
+    ]},
+  ]},
+  {key:"SYMBOLISME",label:"Symbolisme",periode:"fin XIXe",sections:[
+    {h:null,parts:[
+      [{t:"txt",c:"LE SYMBOLISME"}],
+    ]},
+    {h:"UN QCM POUR COMMENCER",parts:[
+      [{t:"txt",c:"Le mot « symbolisme » vient"},{t:"b",sa:false,o:["du mot grec « symbolon » qui signifie « signe de reconnaissance »","d'une langue inconnue","de l'anglais « symbolize » signifiant « symboliser »"],a:"du mot grec « symbolon » qui signifie « signe de reconnaissance »"}],
+      [{t:"txt",c:"Le mouvement du symbolisme s'est développé"},{t:"b",sa:false,o:["au XVIème siècle","au début du XIXème siècle","à la fin du XIXème siècle"],a:"à la fin du XIXème siècle"}],
+      [{t:"txt",c:"Deux auteurs emblématiques du symbolisme sont"},{t:"b",sa:false,o:["Rimbaud et Mallarmé","Leconte de Lisle et Théophile Gautier","Victor Hugo et Alfred de Musset"],a:"Rimbaud et Mallarmé"}],
+      [{t:"txt",c:"Le symbolisme est né"},{t:"b",sa:false,o:["en réaction contre la poésie baudelairienne","dans le prolongement de la poésie de Baudelaire et en réaction contre le naturalisme","dans le prolongement des règles classiques"],a:"dans le prolongement de la poésie de Baudelaire et en réaction contre le naturalisme"}],
+      [{t:"txt",c:"Les grands thèmes du symbolisme sont"},{t:"b",sa:false,o:["la critique des préjugés, la lutte contre fanatisme, le refus des dogmes religieux, la tolérance et la liberté","l'étude des mœurs, l'influence du milieu sur l'individu, la société","la mythologie, les mondes cachés et les correspondances"],a:"la mythologie, les mondes cachés et les correspondances"}],
+      [{t:"txt",c:"Les auteurs symbolistes ont principalement écrit"},{t:"b",sa:false,o:["des essais","des romans","de la poésie"],a:"de la poésie"}],
+      [{t:"txt",c:"Un compositeur symboliste porte le nom de"},{t:"b",sa:false,o:["Monteverdi","Debussy","Dusapin"],a:"Debussy"}],
+      [{t:"txt",c:"Un peintre symboliste porte le nom de"},{t:"b",sa:false,o:["Nicolas Poussin","Salvador Dali","Arnold Böcklin"],a:"Arnold Böcklin"}],
+    ]},
+    {h:"LE CONTEXTE",parts:[
+      [{t:"txt",c:"Le symbolisme apparaît en pleine émergence du positivisme, mouvement initié par Auguste"},{t:"b",sa:true,o:["Comte"],a:"Comte"},{t:"txt",c:"qui naît avec le triomphe des sciences et des techniques. Le symbolisme s'y oppose et privilégie la sensibilité et l'irrationnel."}],
+      [{t:"txt",c:"Le terme \"symbolisme\" est utilisé pour la première fois dans Le Manifeste littéraire de Jean"},{t:"b",sa:true,o:["Moréas"],a:"Moréas"},{t:"txt",c:"qui considère l'auteur des Fleurs du Mal, Charles"},{t:"b",sa:true,o:["Baudelaire"],a:"Baudelaire"},{t:"txt",c:"comme le précurseur de ce mouvement."}],
+      [{t:"txt",c:"Le poète Stéphane"},{t:"b",sa:true,o:["Mallarmé"],a:"Mallarmé"},{t:"txt",c:"fera figure de chef de file du symbolisme."}],
+    ]},
+    {h:"LES PRINCIPES DU SYMBOLISME",parts:[
+      [{t:"txt",c:"Le symbolisme rejette la vision matérialiste du monde, le naturalisme et la poésie parnassienne."}],
+      [{t:"txt",c:"L'écrivain et le poète sont investis d'une mission sacrée comme l'indique Arthur Rimbaud dans sa célèbre Lettre du"},{t:"b",sa:true,o:["voyant"],a:"voyant"}],
+      [{t:"txt",c:"Pour le symbolisme, il est possible d'associer un être ou un objet à une idée. Les figures de l'analogie qui opèrent des rapprochements comme la comparaison et la"},{t:"b",sa:true,o:["métaphore"],a:"métaphore"},{t:"txt",c:"sont des figures fondamentales dans ce mouvement."}],
+      [{t:"txt",c:"Le symbolisme présuppose une adéquation entre le monde matériel et le monde spirituel : on parle de"},{t:"b",sa:true,o:["correspondances"],a:"correspondances"},{t:"txt",c:", terme qui est d'ailleurs le titre d'un poème de Charles Baudelaire."}],
+      [{t:"txt",c:"Le symbolisme joue beaucoup sur la suggestion comme l'indique le poète Stéphane Mallarmé: \"Nommer un objet, c'est supprimer les trois quarts de la jouissance du poème qui est faite de deviner peu à peu;"},{t:"b",sa:true,o:[],a:""},{t:"txt",c:", voilà le rêve.\""}],
+      [{t:"txt",c:"La musicalité du poème est primordiale comme l'indique Paul Verlaine dans la phrase : \"De la"},{t:"b",sa:true,o:["musique"],a:"musique"},{t:"txt",c:"avant toute chose\"."}],
+    ]},
+    {h:"LES AUTEURS SYMBOLISTES",parts:[
+      [{t:"txt",c:"L'auteur d'un Coup de dés est Stéphane"},{t:"b",sa:true,o:["Mallarmé"],a:"Mallarmé"},{t:"txt",c:"."}],
+      [{t:"txt",c:"L'auteur des Fêtes galantes et des Poèmes saturniens est Paul"},{t:"b",sa:true,o:["Verlaine"],a:"Verlaine"}],
+    ]},
+  ]},
+  {key:"SURREALISME",label:"Surréalisme",periode:"début XXe",sections:[
+    {h:null,parts:[
+      [{t:"txt",c:"LE SURREALISME"}],
+    ]},
+    {h:"UN QCM POUR COMMENCER",parts:[
+      [{t:"txt",c:"Le mot « surréalisme » apparaît pour la première fois"},{t:"b",sa:false,o:["dans un texte du poète Guillaume Apollinaire en 1918","dans un texte d'André Breton, figure de proue du surréalisme","Mauvaise réponse dans un texte de Victor Hugo"],a:"dans un texte du poète Guillaume Apollinaire en 1918"}],
+      [{t:"txt",c:"Le mouvement surréaliste s'est développé"},{t:"b",sa:false,o:["à la fin du XIXème siècle","dans les premières années du XXème siècle","de la fin de la Première Guerre mondiale à la deuxième moitié du XXème siècle"],a:"de la fin de la Première Guerre mondiale à la deuxième moitié du XXème siècle"}],
+      [{t:"txt",c:"Deux auteurs emblématiques du surréalisme sont"},{t:"b",sa:false,o:["Rimbaud et Mallarmé","René Char et Yves Bonnefoy","André Breton et Robert Desnos"],a:"André Breton et Robert Desnos"}],
+      [{t:"txt",c:"Le surréalisme est né"},{t:"b",sa:false,o:["en réaction contre le dadaïsme","au lendemain de la Première Guerre mondiale dans le prolongement du dadaïsme","dans le prolongement du naturalisme"],a:"au lendemain de la Première Guerre mondiale dans le prolongement du dadaïsme"}],
+      [{t:"txt",c:"Les grands principes du surréalisme sont"},{t:"b",sa:false,o:["la séparation des genres, le respect des règles, les principes d'ordre, d'équilibre, de mesure et de simplicité","l'approfondissement du réalisme et l'influence des sciences expérimentales et de la médecine","l'importance du hasard et de l'insolite, le refus des règles et de la rationalité"],a:"l'importance du hasard et de l'insolite, le refus des règles et de la rationalité"}],
+      [{t:"txt",c:"Les grands thèmes du surréalisme sont"},{t:"b",sa:false,o:["l'instabilité, l'apparence, l'illusion, le mouvement, le bizarre, l'eau en mouvement, le miroir","l'amour fou, la magie, le rêve et l'inconscient","l'étude des mœurs, l'influence du milieu sur l'individu, la société"],a:"l'amour fou, la magie, le rêve et l'inconscient"}],
+      [{t:"txt",c:"Un peintre surréaliste porte le nom de"},{t:"b",sa:false,o:["Nicolas Poussin","Arnold Böcklin","René Magritte"],a:"René Magritte"}],
+    ]},
+    {h:"LE CONTEXTE",parts:[
+      [{t:"txt",c:"Le mouvement surréaliste se développe au lendemain de la"},{t:"b",sa:true,o:["Première"],a:"Première"},{t:"txt",c:"Guerre mondiale. Ce mouvement succède au"},{t:"b",sa:true,o:["dadaïsme"],a:"dadaïsme"},{t:"txt",c:"de Tristan Tzara."}],
+    ]},
+    {h:"LES PRINCIPES DU SURREALISME",parts:[
+      [{t:"txt",c:"André"},{t:"b",sa:true,o:["Breton"],a:"Breton"},{t:"txt",c:"est considéré comme le chef de file du surréalisme et son principal théoricien. Il publie en 1921 le premier"},{t:"b",sa:true,o:["Breton"],a:"Breton"},{t:"txt",c:"du Surréalisme et pose les bases de l’esthétique surréaliste : « Automatisme psychique pur, par lequel on se propose d’exprimer, soit verbalement, soit par écrit, soit de toute autre manière, le fonctionnement réel de la pensée. Dictée de la pensée, en l’absence de tout"},{t:"b",sa:true,o:["contrôle"],a:"contrôle"},{t:"txt",c:"exercé par la raison, en dehors de toute préoccupation esthétique ou"},{t:"b",sa:true,o:["morale"],a:"morale"},{t:"txt",c:".Le surréalisme repose sur la croyance à la réalité supérieure de certaines formes d’associations négligées jusqu’à lui, à la toute-puissance du"},{t:"b",sa:true,o:["rêve"],a:"rêve"},{t:"txt",c:", au jeu désintéressé de la pensée. Il tend à ruiner définitivement tous les autres mécanismes psychiques et à se substituer à eux dans la résolution des principaux problèmes de la vie. »"}],
+      [{t:"txt",c:"Le surréalisme est inspiré par les découvertes par Sigmund"},{t:"b",sa:true,o:["Freud"],a:"Freud"},{t:"txt",c:"et explore les zones de l'"},{t:"b",sa:true,o:["inconscient"],a:"inconscient"},{t:"txt",c:". Pour cela les écrivains surréalistes recourent à l'"},{t:"b",sa:true,o:["écriture"],a:"écriture"},{t:"txt",c:"automatique."}],
+      [{t:"txt",c:"Les surréalistes proposent également de nombreux jeux poétiques comme les \"cadavres"},{t:"b",sa:true,o:["exquis"],a:"exquis"},{t:"txt",c:"\"."}],
+      [{t:"txt",c:"Les poètes surréalistes éclatent les formes fixes et recourent souvent aux vers"},{t:"b",sa:true,o:["libres"],a:"libres"}],
+    ]},
+    {h:"LES GRANDS NOMS DU SURREALISME",parts:[
+      [{t:"txt",c:"Les surréalistes les plus célèbres sont Louis"},{t:"b",sa:true,o:["Aragon"],a:"Aragon"},{t:"txt",c:", Paul"},{t:"b",sa:true,o:["Eluard"],a:"Eluard"},{t:"txt",c:"et Philippe"},{t:"b",sa:true,o:["Soupault"],a:"Soupault"},{t:"txt",c:"."}],
+    ]},
+  ]},
+  {key:"NOUVEAU ROMAN",label:"Nouveau Roman",periode:"milieu XXe",sections:[
+    {h:null,parts:[
+      [{t:"txt",c:"LE NOUVEAU ROMAN"}],
+      [{t:"txt",c:"Le Nouveau Roman s'est développé"},{t:"b",sa:false,o:["au début du XIXème siècle","dans les premières années du XXème siècle","dans la deuxième moitié du XXème siècle"],a:"dans la deuxième moitié du XXème siècle"}],
+      [{t:"txt",c:"Deux auteurs emblématiques du Nouveau Roman sont"},{t:"b",sa:false,o:["André Breton et Robert Desnos","Alain Robbe-Grillet et Michel Butor","Samuel Beckett et Eugène Ionesco"],a:"Alain Robbe-Grillet et Michel Butor"}],
+      [{t:"txt",c:"Les grands principes du Nouveau Roman sont"},{t:"b",sa:false,o:["l'importance du hasard et de l'insolite, le refus des règles et de la rationalité","la séparation des genres, le respect des règles, les principes d'ordre, d'équilibre, de mesure et de simplicité","le refus des règles traditionnelles du roman, la déconstruction du personnage et de l'intrigue, la remise en cause du personnage"],a:"le refus des règles traditionnelles du roman, la déconstruction du personnage et de l'intrigue, la remise en cause du personnage"}],
+    ]},
+  ]},
+  {key:"THEATRE DE L'ABSURDE",label:"Théâtre de l'Absurde",periode:"milieu XXe",sections:[
+    {h:null,parts:[
+      [{t:"txt",c:"LE THEATRE DE L'ABSURDE"}],
+    ]},
+    {h:"UN QCM POUR COMMENCER",parts:[
+      [{t:"txt",c:"Le théâtre de l'Absurde s'est développé"},{t:"b",sa:false,o:["au début du XIXème siècle","dans les premières années du XXème siècle","au milieu du XXème siècle"],a:"au milieu du XXème siècle"}],
+      [{t:"txt",c:"Deux auteurs emblématiques du théâtre de l'Absurde sont"},{t:"b",sa:false,o:["André Breton et Robert Desnos","Samuel Beckett et Eugène Ionesco","Alain Robbe-Grillet et Michel Butor"],a:"Samuel Beckett et Eugène Ionesco"}],
+      [{t:"txt",c:"Les grands principes du théâtre de l'Absurde sont"},{t:"b",sa:false,o:["l'approfondissement du réalisme et l'influence des sciences expérimentales et de la médecine","la séparation des genres, le respect des règles, les principes d'ordre, d'équilibre, de mesure et de simplicité","l'expression de l'étrangeté de l'homme, le refus du théâtre classique, de la psychologie et des règles traditionnelles"],a:"l'expression de l'étrangeté de l'homme, le refus du théâtre classique, de la psychologie et des règles traditionnelles"}],
+    ]},
+    {h:"LE CONTEXTE",parts:[
+      [{t:"txt",c:"Les auteurs du théâtre de l'absurde sont fortement marqués par la"},{t:"b",sa:true,o:["Deuxième"],a:"Deuxième"},{t:"txt",c:"Guerre mondiale."}],
+    ]},
+    {h:"LES PRINCIPES",parts:[
+      [{t:"txt",c:"L'Absurde est l'expression de l'impuissance de l'homme à trouver un sens à l'existence."}],
+      [{t:"txt",c:"Le théâtre de l'Absurde propose souvent une réflexion sur le destin, la mort, l'incompréhension qui sont des thèmes relevant du registre"},{t:"b",sa:true,o:["tragique"],a:"tragique"},{t:"txt",c:"mais les aborde souvent avec des procédés du registre"},{t:"b",sa:true,o:["comique"],a:"comique"},{t:"txt",c:"afin de faire sourire les spectateurs."}],
+      [{t:"txt",c:"Dans La Cantatrice chauve, le dramaturge Eugène"},{t:"b",sa:true,o:["Ionesco"],a:"Ionesco"},{t:"txt",c:"évoque la question centrale de l'inadaptation et de la désarticulation du langage en écrivant notamment des dialogues délibérément incohérents ou contradictoires."}],
+    ]},
+  ]},
+];
+
+function MouvementsModule({onBack}){
+  const [sel,setSel]=useState(0);
+  const [answers,setAnswers]=useState({});
+  const [checked,setChecked]=useState(false);
+  const [mode,setMode]=useState('fiche');
+  const mv=MOUVEMENTS[sel];
+  const selectMv=i=>{setSel(i);setAnswers({});setChecked(false);};
+  const setAns=(key,val)=>{setAnswers(a=>({...a,[key]:val}));};
+  let totalBlanks=0, correctCount=0;
+  mv.sections.forEach((sec,si)=>sec.parts.forEach((part,pi)=>part.forEach((seg,gi)=>{
+    if(seg.t==='b'){
+      totalBlanks++;
+      const key=`${si}-${pi}-${gi}`;
+      const given=(answers[key]||'').trim().toLowerCase();
+      const expected=(seg.a||'').trim().toLowerCase();
+      if(given===expected&&given!=='')correctCount++;
+    }
+  })));
+  const renderSeg=(seg,si,pi,gi)=>{
+    if(seg.t==='txt') return <span key={gi}>{seg.c} </span>;
+    const key=`${si}-${pi}-${gi}`;
+    const given=answers[key]||'';
+    const isCorrect=given.trim().toLowerCase()===(seg.a||'').trim().toLowerCase();
+    if(mode==='fiche'){
+      return <strong key={gi} style={{color:'#8e44ad',background:'#f5f0ff',padding:'0 4px',borderRadius:3}}>{seg.a} </strong>;
+    }
+    if(seg.sa){
+      return(
+        <span key={gi} style={{display:'inline-block',margin:'2px 0'}}>
+          <input value={given} onChange={e=>setAns(key,e.target.value)} disabled={checked} placeholder="…"
+            style={{fontSize:13,padding:'2px 6px',borderRadius:5,border:`1.5px solid ${checked?(isCorrect?'#27ae60':'#e74c3c'):'#bbb'}`,background:checked?(isCorrect?'#eafaf1':'#fdf0ef'):'white',width:Math.max(60,Math.min(220,(seg.a||'').length*8))+'px',outline:'none'}}/>
+          {checked&&!isCorrect&&<span style={{fontSize:11,color:'#27ae60',marginLeft:4}}>→ {seg.a}</span>}{' '}
+        </span>
+      );
+    }
+    return(
+      <span key={gi} style={{display:'inline-flex',flexWrap:'wrap',gap:4,margin:'2px 4px',verticalAlign:'middle'}}>
+        {seg.o.map((opt,oi)=>{
+          const chosen=given===opt;
+          const isAns=opt===seg.a;
+          let bg='white',bc='#ccc',col='#444';
+          if(checked){
+            if(isAns){bg='#eafaf1';bc='#27ae60';col='#1a6b3a';}
+            else if(chosen){bg='#fdf0ef';bc='#e74c3c';col='#a93226';}
+          }else if(chosen){bg='#f5f0ff';bc='#8e44ad';col='#5b2d8e';}
+          return <button key={oi} onClick={()=>!checked&&setAns(key,opt)} disabled={checked} style={{fontSize:12,padding:'3px 8px',borderRadius:6,border:`1px solid ${bc}`,background:bg,color:col,cursor:checked?'default':'pointer',lineHeight:1.3}}>{opt}</button>;
+        })}{' '}
+      </span>
+    );
+  };
+  return(
+    <div>
+      <button onClick={onBack} style={{...s.btn,marginBottom:'1.25rem',fontSize:12}}>← Retour à l'accueil</button>
+      <h2 style={{fontSize:16,fontWeight:600,marginBottom:4}}>📜 Mouvements littéraires</h2>
+      <p style={{fontSize:13,color:'#666',marginBottom:'1rem'}}>Révise les 13 grands mouvements pour le commentaire. Mode fiche pour apprendre, mode quiz pour te tester.</p>
+      <div style={{display:'flex',gap:6,flexWrap:'wrap',marginBottom:'1rem'}}>
+        {MOUVEMENTS.map((m,i)=>(
+          <button key={m.key} onClick={()=>selectMv(i)} style={{...s.btn,fontSize:11,padding:'5px 10px',background:sel===i?'#8e44ad':'white',color:sel===i?'white':'#8e44ad',border:'1px solid #8e44ad60',fontWeight:sel===i?600:400}}>{m.label}</button>
+        ))}
+      </div>
+      <div style={{display:'flex',gap:0,marginBottom:'1rem',background:'#f0ede8',borderRadius:8,padding:3,maxWidth:320}}>
+        <button onClick={()=>{setMode('fiche');setChecked(false);}} style={{flex:1,padding:'6px 0',fontSize:12,fontWeight:mode==='fiche'?600:400,background:mode==='fiche'?'white':'transparent',border:'none',borderRadius:6,color:mode==='fiche'?'#1a1a18':'#888',boxShadow:mode==='fiche'?'0 1px 4px rgba(0,0,0,0.1)':'none'}}>📖 Fiche</button>
+        <button onClick={()=>{setMode('quiz');setChecked(false);setAnswers({});}} style={{flex:1,padding:'6px 0',fontSize:12,fontWeight:mode==='quiz'?600:400,background:mode==='quiz'?'white':'transparent',border:'none',borderRadius:6,color:mode==='quiz'?'#1a1a18':'#888',boxShadow:mode==='quiz'?'0 1px 4px rgba(0,0,0,0.1)':'none'}}>✏️ Quiz</button>
+      </div>
+      <div style={s.card}>
+        <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'1rem',paddingBottom:'0.75rem',borderBottom:'2px solid #8e44ad'}}>
+          <h3 style={{fontSize:20,fontWeight:700,color:'#8e44ad',margin:0}}>{mv.label}</h3>
+          <span style={{fontSize:12,background:'#f5f0ff',color:'#8e44ad',padding:'3px 10px',borderRadius:20,fontWeight:500}}>{mv.periode}</span>
+        </div>
+        {mv.sections.map((sec,si)=>(
+          <div key={si} style={{marginBottom:'1rem'}}>
+            {sec.h&&<p style={{fontSize:11,fontWeight:700,color:'#8e44ad',textTransform:'uppercase',letterSpacing:'0.06em',marginBottom:8,marginTop:si>0?'1rem':0}}>{sec.h}</p>}
+            {sec.parts.map((part,pi)=>(
+              <p key={pi} style={{fontSize:13.5,lineHeight:2,color:'#2a2a28',marginBottom:8}}>
+                {part.map((seg,gi)=>renderSeg(seg,si,pi,gi))}
+              </p>
+            ))}
+          </div>
+        ))}
+        {mode==='quiz'&&(
+          <div style={{marginTop:'1rem',paddingTop:'1rem',borderTop:'0.5px solid #eee'}}>
+            {!checked?(
+              <button onClick={()=>setChecked(true)} style={{...s.btn,background:'#8e44ad',color:'white',border:'none',fontWeight:600}}>Vérifier mes réponses</button>
+            ):(
+              <div style={{textAlign:'center'}}>
+                <p style={{fontSize:24,fontWeight:700,color:correctCount===totalBlanks?'#27ae60':'#8e44ad',marginBottom:4}}>{correctCount} / {totalBlanks}</p>
+                <p style={{fontSize:13,color:'#888',marginBottom:'1rem'}}>{correctCount===totalBlanks?'Sans faute, bravo ! 🎉':correctCount>=totalBlanks*0.7?'Bien joué, presque parfait !':'Relis la fiche et réessaie 💪'}</p>
+                <button onClick={()=>{setChecked(false);setAnswers({});}} style={{...s.btn,fontWeight:500}}>🔄 Recommencer</button>
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
@@ -2176,139 +2637,6 @@ function FlashMode({onBack}){
   );
 }
 
-/* ── COMPOSANT : GÉNÉRATEUR DE SUJETS DE DISSERTATION ───────────────────── */
-const SUJETS_DISSERT={
-  roman:[
-    {type:"question",q:"Dans quelle mesure Manon Lescaut est-il avant tout un roman du plaisir romanesque ?"},
-    {type:"question",q:"En quoi Des Grieux et Manon sont-ils des personnages « en marge » de la société ?"},
-    {type:"question",q:"La marginalité des personnages les rend-elle condamnables ou attachants ?"},
-    {type:"question",q:"Le roman de Prévost cherche-t-il davantage à instruire ou à plaire ?"},
-    {type:"question",q:"Le plaisir de lecture naît-il, dans Manon Lescaut, de la transgression ?"},
-    {type:"question",q:"Peut-on dire que Des Grieux est le seul artisan de sa propre chute ?"},
-    {type:"question",q:"La passion amoureuse est-elle, dans le roman, une force qui élève ou qui dégrade ?"},
-    {type:"question",q:"En quoi la figure du personnage marginal nourrit-elle le plaisir romanesque ?"},
-    {type:"question",q:"Le roman condamne-t-il vraiment les passions qu'il met en scène ?"},
-    {type:"question",q:"Manon est-elle un personnage ou une énigme pour le lecteur ?"},
-    {type:"question",q:"Le récit de Des Grieux, narrateur de sa propre histoire, est-il digne de confiance ?"},
-    {type:"question",q:"En quoi le récit des malheurs des deux amants peut-il être une source de plaisir pour le lecteur ?"},
-    {type:"citation",cite:"Outre le plaisir d'une lecture agréable, on y trouvera peu d'événements qui ne puissent servir à l'instruction des mœurs.",source:"Prévost, Avis de l'auteur",consigne:"Dans quelle mesure cette formule de l'Avis de l'auteur rend-elle compte de votre lecture de Manon Lescaut ?"},
-    {type:"citation",cite:"un traité de morale, réduit agréablement en exercice",source:"Prévost, Avis de l'auteur",consigne:"Manon Lescaut tient-il, selon vous, cette promesse d'un roman qui « instruit en amusant » ?"},
-    {type:"citation",cite:"un exemple terrible de la force des passions",source:"Prévost, Avis de l'auteur",consigne:"Le roman est-il selon vous une mise en garde contre la passion, ou en fait-il plutôt l'éloge ?"},
-    {type:"citation",cite:"Manon plaît, quoique le héros soit un fripon et l'héroïne une catin.",source:"Montesquieu, Pensées",consigne:"Comment expliquez-vous le plaisir de lecture que procure le roman, malgré l'immoralité de ses personnages ?"},
-  ],
-  theatre:[
-    {type:"question",q:"En quoi le conflit entre H1 et H2 dépasse-t-il une simple querelle d'amis ?"},
-    {type:"question",q:"La dispute est-elle, dans la pièce, le véritable sujet ou un simple prétexte ?"},
-    {type:"question",q:"Comment le langage devient-il, chez Sarraute, à la fois le lieu et l'arme du conflit ?"},
-    {type:"question",q:"Peut-on dire qu'il ne se passe « rien » dans Pour un oui ou pour un non ?"},
-    {type:"question",q:"En quoi cette pièce renouvelle-t-elle la forme traditionnelle du conflit théâtral ?"},
-    {type:"question",q:"La dispute révèle-t-elle les personnages ou, au contraire, les dissout-elle ?"},
-    {type:"question",q:"Dans quelle mesure le théâtre de Sarraute fait-il du non-dit un véritable ressort dramatique ?"},
-    {type:"question",q:"Le spectateur est-il invité à prendre parti entre H1 et H2 ?"},
-    {type:"question",q:"En quoi l'absence d'intrigue traditionnelle sert-elle le propos de la pièce ?"},
-    {type:"question",q:"Le tropisme est-il, finalement, le véritable personnage de la pièce ?"},
-    {type:"citation",cite:"C'est bien… ça",source:"Pour un oui ou pour un non",consigne:"En quoi ce presque rien, une phrase et son intonation, suffit-il à faire théâtre ?"},
-    {type:"citation",cite:"des mouvements indéfinissables qui glissent très rapidement aux limites de notre conscience",source:"Nathalie Sarraute, à propos des tropismes",consigne:"En quoi la dispute de la pièce met-elle au jour ces « tropismes » ?"},
-    {type:"citation",cite:"Théâtre et dispute",source:"intitulé du parcours",consigne:"La dispute est-elle, dans cette pièce, ce qui sépare ou ce qui lie les deux personnages ?"},
-  ],
-  poesie:[
-    {type:"question",q:"En quoi la nature est-elle, dans Mes forêts, un chemin vers l'intime ?"},
-    {type:"question",q:"La forêt n'est-elle qu'un décor dans le recueil de Dorion ?"},
-    {type:"question",q:"Comment la poésie de Dorion fait-elle dialoguer le monde extérieur et le monde intérieur ?"},
-    {type:"question",q:"La nature, dans Mes forêts, console-t-elle ou révèle-t-elle l'intime ?"},
-    {type:"question",q:"En quoi l'écriture de Dorion renouvelle-t-elle le lyrisme de la nature ?"},
-    {type:"question",q:"Peut-on dire que la forêt est, chez Dorion, une métaphore du moi ?"},
-    {type:"question",q:"La fragmentation de l'écriture sert-elle l'expression de l'intime ?"},
-    {type:"question",q:"En quoi le recueil relie-t-il l'intime à l'universel ?"},
-    {type:"question",q:"La nature est-elle, dans Mes forêts, une présence apaisante ou inquiète ?"},
-    {type:"question",q:"Comment le recueil interroge-t-il le lien entre l'homme et le vivant ?"},
-    {type:"citation",cite:"La Nature est un temple où de vivants piliers / Laissent parfois sortir de confuses paroles.",source:"Baudelaire, « Correspondances »",consigne:"Cette vision de la nature comme langage éclaire-t-elle votre lecture de Mes forêts ?"},
-    {type:"citation",cite:"Mes forêts",source:"le titre du recueil",consigne:"En quoi ce titre, qui lie un possessif intime à un paysage, programme-t-il tout le recueil ?"},
-    {type:"citation",cite:"La poésie, la nature, l'intime",source:"intitulé du parcours",consigne:"En quoi Mes forêts fait-il de la nature le miroir de l'intime ?"},
-  ],
-  idees:[
-    {type:"question",q:"Comment La Boétie explique-t-il la servitude volontaire des peuples ?"},
-    {type:"question",q:"Le Discours est-il un texte philosophique ou un texte de combat ?"},
-    {type:"question",q:"En quoi le Discours invite-t-il à la fois à « défendre » et à « entretenir » la liberté ?"},
-    {type:"question",q:"La liberté est-elle, selon La Boétie, un état naturel ou une conquête ?"},
-    {type:"question",q:"Dans quelle mesure la force du Discours tient-elle à sa rhétorique ?"},
-    {type:"question",q:"Le Discours de la servitude volontaire est-il encore d'actualité ?"},
-    {type:"question",q:"Peut-on être responsable de sa propre servitude ?"},
-    {type:"question",q:"En quoi La Boétie déplace-t-il la question du pouvoir du tyran vers le peuple lui-même ?"},
-    {type:"question",q:"La seule désobéissance suffit-elle, selon La Boétie, à conquérir la liberté ?"},
-    {type:"question",q:"En quoi l'habitude et l'éducation expliquent-elles, pour La Boétie, le maintien de la tyrannie ?"},
-    {type:"citation",cite:"Soyez résolus de ne servir plus, et vous voilà libres.",source:"La Boétie, Discours de la servitude volontaire",consigne:"Cette affirmation vous paraît-elle suffire à défendre et entretenir la liberté ?"},
-    {type:"citation",cite:"une exercitation rhétorique",source:"La Boétie, à propos de son propre Discours",consigne:"Le Discours se réduit-il, selon vous, à un brillant exercice de style ?"},
-    {type:"citation",cite:"Comment tant d'hommes endurent quelquefois un tyran seul ?",source:"d'après La Boétie",consigne:"En quoi cette question fondatrice commande-t-elle tout le propos du Discours ?"},
-  ],
-};
-
-function tirageSujet(pool,mode,exclude){
-  let f=mode==='all'?pool:pool.filter(x=>x.type===mode);
-  if(!f.length)f=pool;
-  let cand=f.filter(x=>x!==exclude);
-  if(!cand.length)cand=f;
-  return cand[Math.floor(Math.random()*cand.length)];
-}
-
-function DissertGenerator({onBack}){
-  const [oid,setOid]=useState('roman');
-  const [mode,setMode]=useState('all');
-  const [sujet,setSujet]=useState(null);
-  const o=OBJETS.find(x=>x.id===oid);
-  const info=OBJETS_INFO[oid];
-  const c=o.c;
-  const pool=SUJETS_DISSERT[oid]||[];
-  const gen=()=>setSujet(prev=>tirageSujet(pool,mode,prev));
-  const pickO=id=>{setOid(id);setSujet(null);};
-  const pickM=m=>{setMode(m);setSujet(null);};
-  const MODES=[['all','Aléatoire'],['question','Question'],['citation','Sur citation']];
-  return(
-    <div>
-      <button onClick={onBack} style={{...s.btn,marginBottom:'1rem',fontSize:12}}>← Retour à l'accueil</button>
-      <h2 style={{fontSize:18,fontWeight:600,margin:'0 0 4px'}}>📝 Générateur de sujets de dissertation</h2>
-      <p style={{fontSize:13,color:'#888',margin:'0 0 1.5rem'}}>Questions directes et sujets sur citation, rattachés à chaque parcours.</p>
-      <p style={s.label}>1 · Objet d'étude</p>
-      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10,marginBottom:'1.4rem'}}>
-        {OBJETS.map(ob=>{
-          const inf=OBJETS_INFO[ob.id];const act=ob.id===oid;
-          return(
-            <button key={ob.id} onClick={()=>pickO(ob.id)} style={{textAlign:'left',padding:'0.8rem 0.9rem',borderRadius:12,border:act?`1.5px solid ${ob.c}`:'0.5px solid #ddd',background:act?ob.c+'12':'#fff',cursor:'pointer',fontFamily:'inherit'}}>
-              <div style={{fontSize:10.5,textTransform:'uppercase',letterSpacing:'0.08em',color:ob.c,fontWeight:700,marginBottom:4}}>{ob.label}</div>
-              <div style={{fontSize:14,fontStyle:'italic',marginBottom:2}}>{inf.oeuvre}</div>
-              <div style={{fontSize:12,color:'#777'}}>{inf.auteur}</div>
-            </button>
-          );
-        })}
-      </div>
-      <p style={s.label}>2 · Type de sujet</p>
-      <div style={{display:'flex',gap:6,marginBottom:'1.4rem',flexWrap:'wrap'}}>
-        {MODES.map(([k,l])=><button key={k} onClick={()=>pickM(k)} style={s.lvl(mode===k,c)}>{l}</button>)}
-      </div>
-      <button onClick={gen} style={{width:'100%',padding:'0.85rem',borderRadius:12,border:'none',background:c,color:'#fff',fontSize:15,fontWeight:600,cursor:'pointer',fontFamily:'inherit',boxShadow:`0 2px 10px ${c}33`}}>{sujet?'Un autre sujet':'Générer un sujet'}</button>
-      {sujet&&(
-        <div style={{marginTop:'1.5rem',padding:'1.4rem',borderRadius:14,background:'#fff',border:'0.5px solid #e6e3de',boxShadow:'0 1px 3px rgba(0,0,0,0.04)'}}>
-          <div style={{fontSize:10.5,textTransform:'uppercase',letterSpacing:'0.07em',color:c,fontWeight:700,marginBottom:4}}>{info.oeuvre} — {info.auteur}</div>
-          <div style={{fontSize:12,color:'#999',fontStyle:'italic',marginBottom:'1rem'}}>Parcours : {info.parcours}</div>
-          {sujet.type==='citation'?(
-            <div>
-              <div style={{paddingLeft:'1.1rem',borderLeft:`3px solid ${c}`}}>
-                <p style={{margin:0,fontSize:17,fontStyle:'italic',lineHeight:1.55}}>« {sujet.cite} »</p>
-                <p style={{fontSize:12.5,color:'#888',margin:'8px 0 0'}}>— {sujet.source}</p>
-              </div>
-              <p style={{fontSize:16,lineHeight:1.6,margin:'1.1rem 0 0'}}>{sujet.consigne}</p>
-            </div>
-          ):(
-            <p style={{fontSize:18,lineHeight:1.6,margin:0}}>{sujet.q}</p>
-          )}
-        </div>
-      )}
-      {!sujet&&<p style={{fontSize:12.5,color:'#aaa',textAlign:'center',marginTop:'1.4rem',fontStyle:'italic'}}>Choisis un objet d'étude et un type, puis lance le tirage.</p>}
-      <p style={{fontSize:11.5,color:'#bbb',textAlign:'center',marginTop:'2.5rem',lineHeight:1.6}}>Astuce : avant de rédiger, reformule la problématique et cherche un plan en deux ou trois parties.</p>
-    </div>
-  );
-}
-
 function App(){
   const [view,setView]=useState('home');
   const [cur,setCur]=useState(null);
@@ -2377,7 +2705,7 @@ function App(){
                 <div style={{height:'0.5px',background:'#eee',margin:'4px 0'}}/>
                 <button onClick={()=>setView('flash')} style={{...s.btn,background:'#f5f0ff',color:'#8e44ad',border:'1px solid #8e44ad60',fontWeight:600,width:'100%',textAlign:'left'}}>🃏 Flash</button>
                 <button onClick={()=>setView('tirage')} style={{...s.btn,background:'#fff8e8',color:'#c0851a',border:'1px solid #c0851a60',fontWeight:600,width:'100%',textAlign:'left'}}>🎲 Tirage</button>
-                <button onClick={()=>setView('dissert')} style={{...s.btn,background:'#eef4fb',color:'#2c4a6e',border:'1px solid #2c4a6e55',fontWeight:600,width:'100%',textAlign:'left'}}>📝 Dissert</button>
+                <button onClick={()=>setView('mouvements')} style={{...s.btn,background:'#f5f0ff',color:'#8e44ad',border:'1px solid #8e44ad60',fontWeight:600,width:'100%',textAlign:'left'}}>📜 Mouvements</button>
               </div>
             </div>
           </div>
@@ -2386,7 +2714,7 @@ function App(){
       {view==='objet'&&cur&&<ObjetModule objet={cur} onBack={home}/>}
       {view==='flash'&&<FlashMode onBack={home}/>}
       {view==='tirage'&&<TirageEL onBack={home}/>}
-      {view==='dissert'&&<DissertGenerator onBack={home}/>}
+      {view==='mouvements'&&<MouvementsModule onBack={home}/>}
       {(view==='methode'||view==='grammaire'||view==='entretien')&&(
         <div>
           <button onClick={home} style={{...s.btn,marginBottom:'1rem',fontSize:12}}>← Retour à l'accueil</button>
