@@ -2637,6 +2637,147 @@ function FlashMode({onBack}){
   );
 }
 
+/* ── GÉNÉRATEUR DE SUJETS DE DISSERTATION ──────────────────────────────── */
+const SUJETS_DISSERT={
+  roman:[
+    {type:"question",q:"Dans quelle mesure Manon Lescaut est-il avant tout un roman du plaisir romanesque ?"},
+    {type:"question",q:"En quoi Des Grieux et Manon sont-ils des personnages « en marge » de la société ?"},
+    {type:"question",q:"La marginalité des personnages les rend-elle condamnables ou attachants ?"},
+    {type:"question",q:"Le roman de Prévost cherche-t-il davantage à instruire ou à plaire ?"},
+    {type:"question",q:"Le plaisir de lecture naît-il, dans Manon Lescaut, de la transgression ?"},
+    {type:"question",q:"Peut-on dire que Des Grieux est le seul artisan de sa propre chute ?"},
+    {type:"question",q:"La passion amoureuse est-elle, dans le roman, une force qui élève ou qui dégrade ?"},
+    {type:"question",q:"En quoi la figure du personnage marginal nourrit-elle le plaisir romanesque ?"},
+    {type:"question",q:"Le roman condamne-t-il vraiment les passions qu'il met en scène ?"},
+    {type:"question",q:"Manon est-elle un personnage ou une énigme pour le lecteur ?"},
+    {type:"question",q:"Le récit de Des Grieux, narrateur de sa propre histoire, est-il digne de confiance ?"},
+    {type:"question",q:"En quoi le récit des malheurs des deux amants peut-il être une source de plaisir pour le lecteur ?"},
+    {type:"question",q:"Le personnage de Manon échappe-t-il au jugement moral ?"},
+    {type:"question",q:"En quoi l'argent est-il un ressort essentiel de l'intrigue romanesque ?"},
+    {type:"question",q:"Le couple que forment Manon et Des Grieux est-il un couple tragique ?"},
+    {type:"citation",cite:"Outre le plaisir d'une lecture agréable, on y trouvera peu d'événements qui ne puissent servir à l'instruction des mœurs.",source:"Prévost, Avis de l'auteur",consigne:"Dans quelle mesure cette formule de l'Avis de l'auteur rend-elle compte de votre lecture de Manon Lescaut ?"},
+    {type:"citation",cite:"un traité de morale, réduit agréablement en exercice",source:"Prévost, Avis de l'auteur",consigne:"Manon Lescaut tient-il, selon vous, cette promesse d'un roman qui « instruit en amusant » ?"},
+    {type:"citation",cite:"Personnages en marge, plaisirs du romanesque",source:"intitulé du parcours",consigne:"En quoi la marginalité des personnages fait-elle, dans Manon Lescaut, le plaisir du romanesque ?"},
+  ],
+  theatre:[
+    {type:"question",q:"La dispute est-elle, dans la pièce, le véritable sujet ou un simple prétexte ?"},
+    {type:"question",q:"Comment le langage devient-il, chez Sarraute, à la fois le lieu et l'arme du conflit ?"},
+    {type:"question",q:"Peut-on dire qu'il ne se passe « rien » dans Pour un oui ou pour un non ?"},
+    {type:"question",q:"En quoi cette pièce renouvelle-t-elle la forme traditionnelle du conflit théâtral ?"},
+    {type:"question",q:"La dispute révèle-t-elle les personnages ou, au contraire, les dissout-elle ?"},
+    {type:"question",q:"Dans quelle mesure le théâtre de Sarraute fait-il du non-dit un véritable ressort dramatique ?"},
+    {type:"question",q:"Le spectateur est-il invité à prendre parti entre H1 et H2 ?"},
+    {type:"question",q:"En quoi l'absence d'intrigue traditionnelle sert-elle le propos de la pièce ?"},
+    {type:"question",q:"Le tropisme est-il, finalement, le véritable personnage de la pièce ?"},
+    {type:"question",q:"En quoi les mots les plus anodins peuvent-ils devenir, dans la pièce, source de violence ?"},
+    {type:"question",q:"La parole, dans Pour un oui ou pour un non, rapproche-t-elle ou éloigne-t-elle les êtres ?"},
+    {type:"question",q:"Peut-on rire de la dispute qui oppose H1 et H2 ?"},
+    {type:"citation",cite:"C'est bien… ça",source:"Pour un oui ou pour un non",consigne:"En quoi ce presque rien, une phrase et son intonation, suffit-il à faire théâtre ?"},
+    {type:"citation",cite:"des mouvements indéfinissables qui glissent très rapidement aux limites de notre conscience",source:"Nathalie Sarraute, à propos des tropismes",consigne:"En quoi la dispute de la pièce met-elle au jour ces « tropismes » ?"},
+    {type:"citation",cite:"Théâtre et dispute",source:"intitulé du parcours",consigne:"La dispute est-elle, dans cette pièce, ce qui sépare ou ce qui lie les deux personnages ?"},
+  ],
+  poesie:[
+    {type:"question",q:"En quoi la nature est-elle, dans Mes forêts, un chemin vers l'intime ?"},
+    {type:"question",q:"La forêt n'est-elle qu'un décor dans le recueil de Dorion ?"},
+    {type:"question",q:"Comment la poésie de Dorion fait-elle dialoguer le monde extérieur et le monde intérieur ?"},
+    {type:"question",q:"La nature, dans Mes forêts, console-t-elle ou révèle-t-elle l'intime ?"},
+    {type:"question",q:"En quoi l'écriture de Dorion renouvelle-t-elle le lyrisme de la nature ?"},
+    {type:"question",q:"Peut-on dire que la forêt est, chez Dorion, une métaphore du moi ?"},
+    {type:"question",q:"La fragmentation de l'écriture sert-elle l'expression de l'intime ?"},
+    {type:"question",q:"En quoi le recueil relie-t-il l'intime à l'universel ?"},
+    {type:"question",q:"La nature est-elle, dans Mes forêts, une présence apaisante ou inquiète ?"},
+    {type:"question",q:"Comment le recueil interroge-t-il le lien entre l'homme et le vivant ?"},
+    {type:"question",q:"En quoi le motif de l'arbre structure-t-il l'ensemble du recueil ?"},
+    {type:"question",q:"La poésie de Dorion est-elle une poésie du silence ou de la parole ?"},
+    {type:"citation",cite:"La Nature est un temple où de vivants piliers / Laissent parfois sortir de confuses paroles.",source:"Baudelaire, « Correspondances »",consigne:"Cette vision de la nature comme langage éclaire-t-elle votre lecture de Mes forêts ?"},
+    {type:"citation",cite:"Mes forêts",source:"le titre du recueil",consigne:"En quoi ce titre, qui lie un possessif intime à un paysage, programme-t-il tout le recueil ?"},
+    {type:"citation",cite:"La poésie, la nature, l'intime",source:"intitulé du parcours",consigne:"En quoi Mes forêts fait-il de la nature le miroir de l'intime ?"},
+  ],
+  idees:[
+    {type:"question",q:"Comment La Boétie explique-t-il la servitude volontaire des peuples ?"},
+    {type:"question",q:"Le Discours est-il un texte philosophique ou un texte de combat ?"},
+    {type:"question",q:"En quoi le Discours invite-t-il à la fois à « défendre » et à « entretenir » la liberté ?"},
+    {type:"question",q:"La liberté est-elle, selon La Boétie, un état naturel ou une conquête ?"},
+    {type:"question",q:"Dans quelle mesure la force du Discours tient-elle à sa rhétorique ?"},
+    {type:"question",q:"Le Discours de la servitude volontaire est-il encore d'actualité ?"},
+    {type:"question",q:"Peut-on être responsable de sa propre servitude ?"},
+    {type:"question",q:"En quoi La Boétie déplace-t-il la question du pouvoir du tyran vers le peuple lui-même ?"},
+    {type:"question",q:"La seule désobéissance suffit-elle, selon La Boétie, à conquérir la liberté ?"},
+    {type:"question",q:"En quoi l'habitude et l'éducation expliquent-elles, pour La Boétie, le maintien de la tyrannie ?"},
+    {type:"question",q:"Le Discours s'adresse-t-il au tyran ou au peuple ?"},
+    {type:"question",q:"En quoi l'amitié représente-t-elle, dans le Discours, le contraire de la tyrannie ?"},
+    {type:"citation",cite:"Soyez résolus de ne servir plus, et vous voilà libres.",source:"La Boétie, Discours de la servitude volontaire",consigne:"Cette affirmation vous paraît-elle suffire à défendre et entretenir la liberté ?"},
+    {type:"citation",cite:"une exercitation rhétorique",source:"La Boétie, à propos de son propre Discours",consigne:"Le Discours se réduit-il, selon vous, à un brillant exercice de style ?"},
+    {type:"citation",cite:"Comment tant d'hommes endurent quelquefois un tyran seul ?",source:"d'après La Boétie",consigne:"En quoi cette question fondatrice commande-t-elle tout le propos du Discours ?"},
+  ],
+};
+
+function tirageSujet(pool,mode,exclude){
+  let f=mode==='all'?pool:pool.filter(x=>x.type===mode);
+  if(!f.length)f=pool;
+  let cand=f.filter(x=>x!==exclude);
+  if(!cand.length)cand=f;
+  return cand[Math.floor(Math.random()*cand.length)];
+}
+
+function DissertGenerator({onBack}){
+  const [oid,setOid]=useState('roman');
+  const [mode,setMode]=useState('all');
+  const [sujet,setSujet]=useState(null);
+  const o=OBJETS.find(x=>x.id===oid);
+  const info=OBJETS_INFO[oid];
+  const c=o.c;
+  const pool=SUJETS_DISSERT[oid]||[];
+  const gen=()=>setSujet(prev=>tirageSujet(pool,mode,prev));
+  const pickO=id=>{setOid(id);setSujet(null);};
+  const pickM=m=>{setMode(m);setSujet(null);};
+  const MODES=[['all','Aléatoire'],['question','Question'],['citation','Sur citation']];
+  return(
+    <div>
+      <button onClick={onBack} style={{...s.btn,marginBottom:'1rem',fontSize:12}}>← Retour à l'accueil</button>
+      <h2 style={{fontSize:18,fontWeight:600,margin:'0 0 4px'}}>📝 Générateur de sujets de dissertation</h2>
+      <p style={{fontSize:13,color:'#888',margin:'0 0 1.5rem'}}>Questions directes et sujets sur citation, rattachés à chaque parcours.</p>
+      <p style={s.label}>1 · Objet d'étude</p>
+      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10,marginBottom:'1.4rem'}}>
+        {OBJETS.map(ob=>{
+          const inf=OBJETS_INFO[ob.id];const act=ob.id===oid;
+          return(
+            <button key={ob.id} onClick={()=>pickO(ob.id)} style={{textAlign:'left',padding:'0.8rem 0.9rem',borderRadius:12,border:act?`1.5px solid ${ob.c}`:'0.5px solid #ddd',background:act?ob.c+'12':'#fff',cursor:'pointer',fontFamily:'inherit'}}>
+              <div style={{fontSize:10.5,textTransform:'uppercase',letterSpacing:'0.08em',color:ob.c,fontWeight:700,marginBottom:4}}>{ob.label}</div>
+              <div style={{fontSize:14,fontStyle:'italic',marginBottom:2}}>{inf.oeuvre}</div>
+              <div style={{fontSize:12,color:'#777'}}>{inf.auteur}</div>
+            </button>
+          );
+        })}
+      </div>
+      <p style={s.label}>2 · Type de sujet</p>
+      <div style={{display:'flex',gap:6,marginBottom:'1.4rem',flexWrap:'wrap'}}>
+        {MODES.map(([k,l])=><button key={k} onClick={()=>pickM(k)} style={s.lvl(mode===k,c)}>{l}</button>)}
+      </div>
+      <button onClick={gen} style={{width:'100%',padding:'0.85rem',borderRadius:12,border:'none',background:c,color:'#fff',fontSize:15,fontWeight:600,cursor:'pointer',fontFamily:'inherit',boxShadow:`0 2px 10px ${c}33`}}>{sujet?'Un autre sujet':'Générer un sujet'}</button>
+      {sujet&&(
+        <div style={{marginTop:'1.5rem',padding:'1.4rem',borderRadius:14,background:'#fff',border:'0.5px solid #e6e3de',boxShadow:'0 1px 3px rgba(0,0,0,0.04)'}}>
+          <div style={{fontSize:10.5,textTransform:'uppercase',letterSpacing:'0.07em',color:c,fontWeight:700,marginBottom:4}}>{info.oeuvre} — {info.auteur}</div>
+          <div style={{fontSize:12,color:'#999',fontStyle:'italic',marginBottom:'1rem'}}>Parcours : {info.parcours}</div>
+          {sujet.type==='citation'?(
+            <div>
+              <div style={{paddingLeft:'1.1rem',borderLeft:`3px solid ${c}`}}>
+                <p style={{margin:0,fontSize:17,fontStyle:'italic',lineHeight:1.55}}>« {sujet.cite} »</p>
+                <p style={{fontSize:12.5,color:'#888',margin:'8px 0 0'}}>— {sujet.source}</p>
+              </div>
+              <p style={{fontSize:16,lineHeight:1.6,margin:'1.1rem 0 0'}}>{sujet.consigne}</p>
+            </div>
+          ):(
+            <p style={{fontSize:18,lineHeight:1.6,margin:0}}>{sujet.q}</p>
+          )}
+        </div>
+      )}
+      {!sujet&&<p style={{fontSize:12.5,color:'#aaa',textAlign:'center',marginTop:'1.4rem',fontStyle:'italic'}}>Choisis un objet d'étude et un type, puis lance le tirage.</p>}
+      <p style={{fontSize:11.5,color:'#bbb',textAlign:'center',marginTop:'2.5rem',lineHeight:1.6}}>Astuce : avant de rédiger, reformule la problématique et cherche un plan en deux ou trois parties.</p>
+    </div>
+  );
+}
+
 function App(){
   const [view,setView]=useState('home');
   const [cur,setCur]=useState(null);
@@ -2706,6 +2847,7 @@ function App(){
                 <button onClick={()=>setView('flash')} style={{...s.btn,background:'#f5f0ff',color:'#8e44ad',border:'1px solid #8e44ad60',fontWeight:600,width:'100%',textAlign:'left'}}>🃏 Flash</button>
                 <button onClick={()=>setView('tirage')} style={{...s.btn,background:'#fff8e8',color:'#c0851a',border:'1px solid #c0851a60',fontWeight:600,width:'100%',textAlign:'left'}}>🎲 Tirage</button>
                 <button onClick={()=>setView('mouvements')} style={{...s.btn,background:'#f5f0ff',color:'#8e44ad',border:'1px solid #8e44ad60',fontWeight:600,width:'100%',textAlign:'left'}}>📜 Mouvements</button>
+                <button onClick={()=>setView('dissert')} style={{...s.btn,background:'#eef4fb',color:'#2c4a6e',border:'1px solid #2c4a6e55',fontWeight:600,width:'100%',textAlign:'left'}}>📝 Dissert</button>
               </div>
             </div>
           </div>
@@ -2715,6 +2857,7 @@ function App(){
       {view==='flash'&&<FlashMode onBack={home}/>}
       {view==='tirage'&&<TirageEL onBack={home}/>}
       {view==='mouvements'&&<MouvementsModule onBack={home}/>}
+      {view==='dissert'&&<DissertGenerator onBack={home}/>}
       {(view==='methode'||view==='grammaire'||view==='entretien')&&(
         <div>
           <button onClick={home} style={{...s.btn,marginBottom:'1rem',fontSize:12}}>← Retour à l'accueil</button>
