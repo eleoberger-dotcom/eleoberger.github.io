@@ -69,7 +69,7 @@ button.b:not(:disabled):hover,.b.click:hover{transform:translate(-2px,-2px);box-
 <body>
 <div id="root"></div>
 <script type="text/babel">
-const {useState,useEffect,useRef,useCallback}=React;
+const {useState,useEffect,useRef,useCallback,useMemo}=React;
 
 /* ── GLOSSAIRE DES FIGURES DE STYLE ─────────────────────────────────────── */
 const GLOSSAIRE={
@@ -3575,6 +3575,204 @@ function JeuxPiece({initial}){
   );
 }
 
+/* ── RÉVISION DU JOUR ─────────────────────────────────────────────────────────
+   5 questions par jour (les mêmes pour tout le monde le même jour), tirées des
+   quiz du site. La série de jours est comptée en plumes ✒️, chaque jour ajoute un
+   livre sur l'étagère, et la révision terminée débloque une citation. */
+const CITATIONS_JOUR=[
+  ["Le cœur a ses raisons que la raison ne connaît point.","Pascal, Pensées"],
+  ["Ce que l'on conçoit bien s'énonce clairement.","Boileau, L'Art poétique"],
+  ["Je est un autre.","Rimbaud, Lettre du voyant"],
+  ["Il faut cultiver notre jardin.","Voltaire, Candide"],
+  ["Le style est l'homme même.","Buffon, Discours sur le style"],
+  ["Ô temps, suspends ton vol !","Lamartine, « Le Lac »"],
+  ["Un seul être vous manque, et tout est dépeuplé.","Lamartine, « L'Isolement »"],
+  ["Va, je ne te hais point.","Corneille, Le Cid"],
+  ["L'homme n'est qu'un roseau, le plus faible de la nature ; mais c'est un roseau pensant.","Pascal, Pensées"],
+  ["Que diable allait-il faire dans cette galère ?","Molière, Les Fourberies de Scapin"],
+  ["Le temps ne fait rien à l'affaire.","Molière, Le Misanthrope"],
+  ["Heureux qui, comme Ulysse, a fait un beau voyage…","Du Bellay, Les Regrets"],
+  ["Mignonne, allons voir si la rose…","Ronsard, « Ode à Cassandre »"],
+  ["Soyez résolus de ne servir plus, et vous voilà libres.","La Boétie, Discours de la servitude volontaire"],
+  ["Rien ne sert de courir ; il faut partir à point.","La Fontaine, « Le Lièvre et la Tortue »"],
+  ["La lecture est une amitié.","Proust, Sur la lecture"],
+  ["Ah ! que la vie est quotidienne.","Laforgue, « Complainte sur certains ennuis »"],
+  ["C'est bien… ça…","Sarraute, Pour un oui ou pour un non"],
+  ["Il faut être toujours ivre. […] De vin, de poésie ou de vertu, à votre guise.","Baudelaire, Le Spleen de Paris"],
+  ["Je pense, donc je suis.","Descartes, Discours de la méthode"],
+];
+const RANGS=[[0,"Page blanche","Tout commence ici."],[1,"Premier chapitre","L'histoire est lancée."],[3,"Lecture assidue","Tu prends le pli !"],[7,"Plume affûtée","Une semaine d'affilée, bravo."],[14,"Grand roman","Deux semaines : quelle constance !"],[30,"Bibliothèque de Babel","Un mois entier : ta bibliothèque devient infinie."]];
+const rangDe=n=>[...RANGS].reverse().find(r=>n>=r[0]);
+const CATS_REV={oeuvre:["🎭","L'œuvre"],grammaire:["📌","Grammaire"],figure:["🎨","Figure de style"],quiparle:["🗣","Qui parle ?"],methode:["📐","Méthode"]};
+
+function cleJour(d){d=d||new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
+function jourAvant(k,n){const [y,m,d]=k.split('-').map(Number);return cleJour(new Date(y,m-1,d-n));}
+function rngDe(seed){let h=1779033703^seed.length;for(let i=0;i<seed.length;i++){h=Math.imul(h^seed.charCodeAt(i),3432918353);h=h<<13|h>>>19;}return function(){h=Math.imul(h^h>>>16,2246822507);h=Math.imul(h^h>>>13,3266489909);h^=h>>>16;return (h>>>0)/4294967296;};}
+function melanger(arr,rnd){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(rnd()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+function questionsDuJour(cle){
+  const rnd=rngDe('revision-'+cle);
+  const lv=d=>Object.values(d).flatMap(n=>n.questions);
+  const pool={
+    oeuvre:lv(QUIZ_OBJETS.theatre).filter(q=>q.o),
+    grammaire:lv(QUIZ_GRAM).filter(q=>q.o),
+    methode:[...lv(QUIZ_METHODE),...lv(QUIZ_COMMENTAIRE),...lv(QUIZ_DISSERTATION)].filter(q=>q.o),
+    figure:FIGURES.map(f=>({q:`Quelle figure de style dans : « ${f.ex} » ?`,o:[f.nom,...melanger(FIGURES.filter(x=>x.nom!==f.nom),rnd).slice(0,3).map(x=>x.nom)],r:0,ex:`${f.nom} : ${f.def} Effet : ${f.effet}`})),
+    quiparle:QUI_PARLE.map(x=>({q:`Qui prononce cette réplique ? « ${x.t} »`,o:['H1','H2'],r:x.p-1,ex:x.ex})),
+  };
+  return ['oeuvre','figure','grammaire','quiparle','methode'].map(cat=>{
+    const src=pool[cat][Math.floor(rnd()*pool[cat].length)];
+    const idx=src.o.map((_,i)=>i);
+    const ord=cat==='quiparle'?idx:melanger(idx,rnd);
+    return {cat,q:src.q,o:ord.map(i=>src.o[i]),r:ord.indexOf(src.r),ex:src.ex};
+  });
+}
+
+function lireRevision(){try{return JSON.parse(localStorage.getItem('revision_jour')||'{}');}catch(e){return {};}}
+function ecrireRevision(d){try{localStorage.setItem('revision_jour',JSON.stringify(d));}catch(e){}}
+function serieDe(jours,auj){
+  let k=jours[auj]!==undefined?auj:jourAvant(auj,1);
+  let n=0;while(jours[k]!==undefined){n++;k=jourAvant(k,1);}
+  return n;
+}
+
+function Etagere({jours,auj,nb=14,taille=1}){
+  const couleurs=['#6c4ce0','#ff7a59','#ffd23f','#9ee6b8','#ffb3d1','#8fc4ff','#d9ccff'];
+  return(
+    <div aria-label="Ton étagère : un livre par jour de révision" style={{display:'flex',alignItems:'flex-end',gap:3*taille,padding:`0 ${6*taille}px`,borderBottom:`${4*taille}px solid var(--ink)`,minHeight:62*taille}}>
+      {Array.from({length:nb},(_,i)=>{
+        const k=jourAvant(auj,nb-1-i);
+        const fait=jours[k]!==undefined;
+        const h=(38+((k.charCodeAt(9)*7+k.charCodeAt(6)*3)%20))*taille;
+        return <div key={k} title={`${k}${fait?` · ${jours[k]}/5`:''}`} style={{width:13*taille,height:fait?h:h*0.55,borderRadius:`${3*taille}px ${3*taille}px 0 0`,background:fait?couleurs[(k.charCodeAt(9)+k.charCodeAt(8))%couleurs.length]:'transparent',border:fait?'2px solid var(--ink)':`2px dashed ${k===auj?'var(--ink)':'rgba(22,18,29,0.2)'}`,borderBottom:'none',position:'relative'}}>
+          {fait&&<span style={{position:'absolute',left:'50%',top:'22%',width:'60%',height:2,background:'rgba(22,18,29,0.5)',transform:'translateX(-50%)'}}/>}
+        </div>;
+      })}
+    </div>
+  );
+}
+
+function CarteRevisionAccueil({onOpen}){
+  const data=lireRevision();const jours=data.jours||{};const auj=cleJour();
+  const n=serieDe(jours,auj);const fait=jours[auj]!==undefined;const rang=rangDe(n);
+  return(
+    <button className="b span-2" onClick={onOpen} style={{background:'var(--yellow)',display:'flex',flexDirection:'column',gap:10}}>
+      <span className="kicker" style={{alignSelf:'flex-start'}}>📅 Révision du jour</span>
+      <span style={{fontFamily:'var(--display)',fontWeight:800,fontSize:24,lineHeight:1.05}}>{fait?'Faite aujourd\'hui ✓':'5 questions, 2 minutes'}</span>
+      <span style={{fontSize:13.5,fontWeight:600}}>✒️ {n} jour{n>1?'s':''} d'affilée · {rang[1]}</span>
+      <Etagere jours={jours} auj={auj} nb={10} taille={0.8}/>
+      <span style={{fontSize:13,marginTop:2}}>{fait?'Reviens demain pour ajouter un livre à ton étagère.':n>0?'Révise aujourd\'hui pour ne pas perdre ta série !':'Commence ta série aujourd\'hui →'}</span>
+    </button>
+  );
+}
+
+function RevisionDuJour({onBack}){
+  const auj=cleJour();
+  const [data,setData]=useState(lireRevision);
+  const jours=data.jours||{};
+  const dejaFait=jours[auj]!==undefined;
+  const qs=useMemo(()=>questionsDuJour(auj),[auj]);
+  const [phase,setPhase]=useState(dejaFait?'fini':'intro');
+  const [i,setI]=useState(0);
+  const [ans,setAns]=useState(null);
+  const [score,setScore]=useState(0);
+  const [bonus,setBonus]=useState(false);
+  const n=serieDe(jours,auj);
+  const rang=rangDe(n);
+  const prochain=RANGS.find(r=>r[0]>n);
+  const citation=CITATIONS_JOUR[Math.floor(rngDe('citation-'+auj)()*CITATIONS_JOUR.length)];
+  const q=qs[i];
+
+  const terminer=sc=>{
+    if(!dejaFait&&!bonus){
+      const nouvJours={...jours,[auj]:sc};
+      const nd={...data,jours:nouvJours,meilleure:Math.max(data.meilleure||0,serieDe(nouvJours,auj))};
+      setData(nd);ecrireRevision(nd);
+    }
+    setPhase('fini');
+  };
+  const choisir=k=>{if(ans!==null)return;setAns(k);if(k===q.r)setScore(s=>s+1);};
+  const suivant=()=>{if(i+1>=qs.length)terminer(score);else{setI(i+1);setAns(null);}};
+
+  const entete=(
+    <div className="b" style={{background:'var(--yellow)',marginBottom:16}}>
+      <div style={{display:'flex',justifyContent:'space-between',gap:12,flexWrap:'wrap',alignItems:'flex-end'}}>
+        <div>
+          <span className="kicker">📅 Révision du jour · {new Date().toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'})}</span>
+          <h2 style={{fontSize:'clamp(26px,4.5vw,36px)',lineHeight:1.05,margin:'10px 0 4px'}}>✒️ {n} jour{n>1?'s':''} d'affilée</h2>
+          <p style={{fontSize:14.5,fontWeight:700}}>{rang[1]} <span style={{fontWeight:400}}>· {rang[2]}</span></p>
+          {prochain&&<p style={{fontSize:12.5,marginTop:2}}>Encore {prochain[0]-n} jour{prochain[0]-n>1?'s':''} pour devenir « {prochain[1]} ».</p>}
+          {(data.meilleure||0)>n&&<p style={{fontSize:12.5}}>Ta meilleure série : {data.meilleure} jours.</p>}
+        </div>
+        <div style={{flex:'1 1 260px',maxWidth:380}}><Etagere jours={jours} auj={auj}/><p style={{fontSize:11.5,marginTop:4,textAlign:'right'}}>Ton étagère des 14 derniers jours</p></div>
+      </div>
+    </div>
+  );
+
+  if(phase==='intro') return(
+    <div>
+      {entete}
+      <div className="b" style={{background:'var(--surface)',textAlign:'center',padding:'2rem 1.25rem'}}>
+        <p style={{fontSize:15,lineHeight:1.6,maxWidth:520,margin:'0 auto'}}>Chaque jour, 5 nouvelles questions : l'œuvre, une figure de style, la grammaire, « qui parle ? » et la méthode. Termine-les pour ajouter un livre à ton étagère et débloquer la citation du jour.</p>
+        <div style={{display:'flex',gap:6,justifyContent:'center',flexWrap:'wrap',margin:'14px 0'}}>{qs.map((x,k)=><span key={k} className="chip">{CATS_REV[x.cat][0]} {CATS_REV[x.cat][1]}</span>)}</div>
+        <button onClick={()=>setPhase('jeu')} style={{...s.btn,padding:'12px 26px',fontSize:15,background:'var(--ink)',color:'#fff'}}>C'est parti →</button>
+      </div>
+    </div>
+  );
+
+  if(phase==='fini'){
+    const sc=bonus?score:(jours[auj]??score);
+    return(
+      <div>
+        {entete}
+        <div className="b pop" style={{background:'var(--surface)',textAlign:'center',padding:'1.75rem 1.25rem'}}>
+          <p style={{fontSize:40}}>📚</p>
+          <p style={{fontFamily:'var(--display)',fontWeight:800,fontSize:30}}>{sc}/5 {bonus?'(pour le plaisir)':"aujourd'hui"}</p>
+          <p style={{fontSize:14.5,marginTop:4}}>{bonus?"Cette partie ne change pas ta série.":"Un nouveau livre rejoint ton étagère. Reviens demain pour 5 nouvelles questions !"}</p>
+          <div style={{margin:'18px auto 0',maxWidth:560,padding:'16px 18px',background:'var(--lilac)',border:'2px solid var(--ink)',borderRadius:16}}>
+            <span className="kicker">🔓 La citation du jour</span>
+            <p style={{fontFamily:'var(--serif)',fontStyle:'italic',fontSize:'clamp(18px,2.8vw,22px)',lineHeight:1.4,marginTop:10}}>« {citation[0]} »</p>
+            <p style={{fontSize:13,fontWeight:600,marginTop:6}}>{citation[1]}</p>
+          </div>
+          <div style={{display:'flex',gap:8,justifyContent:'center',flexWrap:'wrap',marginTop:16}}>
+            <button onClick={()=>{setBonus(true);setI(0);setAns(null);setScore(0);setPhase('jeu');}} style={s.btn}>🔁 Refaire les questions</button>
+            <button onClick={onBack} style={{...s.btn,background:'var(--ink)',color:'#fff'}}>← Accueil</button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  const ok=ans!==null&&ans===q.r;
+  return(
+    <div>
+      {entete}
+      <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',gap:8,marginBottom:10}}>
+        <span className="chip">{CATS_REV[q.cat][0]} {CATS_REV[q.cat][1]} · {i+1}/5</span>
+        <span className="chip" style={{background:'var(--mint)'}}>Score : {score}</span>
+      </div>
+      <div style={{display:'flex',gap:4,marginBottom:14}}>{qs.map((_,k)=><div key={k} style={{flex:1,height:10,border:'2px solid var(--ink)',borderRadius:999,background:k<i||(k===i&&ans!==null)?'var(--violet)':'#fff'}}/>)}</div>
+      <div className="b" style={{background:'var(--surface)'}}>
+        <p key={i} className="fade" style={{fontSize:17,fontWeight:700,lineHeight:1.45}}>{q.q}</p>
+        <div style={{display:'flex',flexDirection:'column',gap:8,marginTop:14}}>
+          {q.o.map((o,k)=>{
+            let bg='#fff';
+            if(ans!==null){if(k===q.r)bg='var(--mint)';else if(k===ans)bg='#ffd0c6';}
+            return <button key={k} onClick={()=>choisir(k)} disabled={ans!==null} style={{textAlign:'left',padding:'11px 14px',fontSize:14.5,lineHeight:1.45,border:'2px solid var(--ink)',borderRadius:14,background:bg,boxShadow:ans===null?'2px 2px 0 var(--ink)':'none',cursor:ans===null?'pointer':'default'}}>{o}</button>;
+          })}
+        </div>
+        {ans!==null&&(
+          <div className={'fade'+(ok?'':' shake')} style={{marginTop:14,padding:'12px 14px',borderRadius:14,border:'2px solid var(--ink)',background:ok?'var(--mint)':'#ffd9d1'}}>
+            <p style={{fontWeight:800}}>{ok?'✓ Bravo !':`✗ La bonne réponse : ${q.o[q.r]}`}</p>
+            {q.ex&&<p style={{fontSize:14,marginTop:4,lineHeight:1.55}}>{q.ex}</p>}
+            <button onClick={suivant} style={{...s.btn,marginTop:10,background:'var(--ink)',color:'#fff'}}>{i+1>=qs.length?'Terminer ✒️':'Question suivante →'}</button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 /* ── APP ────────────────────────────────────────────────────────────────── */
 const OUTILS=[
   {id:'entretien',ico:'🎡',titre:'Entretien',desc:'La roue des questions du jury',bg:'var(--yellow)'},
@@ -3647,7 +3845,7 @@ function App(){
           </header>
 
           <div className="bento">
-            <div className="b click span-6" onClick={()=>openObjet(o)} style={{background:'var(--violet)',color:'#fff',display:'flex',flexDirection:'column',gap:14}}>
+            <div className="b click span-4" onClick={()=>openObjet(o)} style={{background:'var(--violet)',color:'#fff',display:'flex',flexDirection:'column',gap:14}}>
               <div className="deco" aria-hidden="true" style={{position:'absolute',right:-70,top:-70,width:170,height:170,borderRadius:'50%',background:'var(--pink)',border:'2px solid var(--ink)'}}/>
               <div className="deco" aria-hidden="true" style={{position:'absolute',right:22,top:92,width:30,height:30,borderRadius:'50%',background:'var(--yellow)',border:'2px solid var(--ink)'}}/>
               <span className="kicker" style={{color:'var(--ink)',background:'var(--yellow)',alignSelf:'flex-start',position:'relative'}}>L'œuvre du moment</span>
@@ -3677,6 +3875,7 @@ function App(){
               </div>
             </div>
 
+            <CarteRevisionAccueil onOpen={()=>go('revision')}/>
           </div>
 
 
@@ -3702,6 +3901,7 @@ function App(){
       {view==='dissert'&&<DissertGenerator onBack={home}/>}
       {view==='entretien'&&<Entretien/>}
       {view==='methode'&&<Methode/>}
+      {view==='revision'&&<RevisionDuJour onBack={home}/>}
       {view==='procedes'&&<ProcedesModule/>}
       {view==='grammaire'&&<Grammaire/>}
       <a href="mailto:eleo.berger@gmail.com?subject=Question%20-%20Révision%20oral%20bac%20français"
