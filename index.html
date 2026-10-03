@@ -1080,7 +1080,7 @@ function ObjetModule({objet,onBack,startTab,startGame}){
   const [musicError,setMusicError]=useState(null);
   const musicRef=useRef(null);
   const info=OBJETS_INFO[objet.id];
-  const TABS=[['cours','📖 Cours'],['el','📝 EL'],['atelier','🧠 Atelier EL'],['jeux','🎮 Jeux'],['sarraute','💬 Parler à Sarraute'],['quiz','🎯 Quiz']];
+  const TABS=[['cours','📖 Cours'],['jeux','🎮 Jeux'],['sarraute','💬 Parler à Sarraute'],['quiz','🎯 Quiz']];
   const niveaux=[['n1','Niveau 1'],['n2','Niveau 2'],['n3','Niveau 3']];
 
   const toggleMusic=()=>{
@@ -1133,8 +1133,6 @@ function ObjetModule({objet,onBack,startTab,startGame}){
         {TABS.map(([k,l])=><button key={k} style={s.tab(tab===k)} onClick={()=>setTab(k)}>{l}</button>)}
       </div>
       {tab==='cours'&&<CoursObjet info={info} c={objet.c}/>}
-      {tab==='el'&&<ELObjet objetId={objet.id} c={objet.c}/>}
-      {tab==='atelier'&&<AtelierEL/>}
       {tab==='jeux'&&<JeuxPiece initial={startGame}/>}
       {tab==='sarraute'&&<DiscussionSarraute/>}
       {tab==='quiz'&&<QuizGeneric data={QUIZ_OBJETS[objet.id]} niveaux={niveaux} objetId={objet.id}/>}
@@ -2013,7 +2011,7 @@ function FlashMode({onBack}){
   return(
     <div>
       <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'1rem'}}>
-        <button onClick={onBack} style={{...s.btn,fontSize:12}}>← Retour</button>
+        <span/>
         <span style={{fontSize:12,color:'#888'}}>Carte {idx+1} / {total}</span>
       </div>
 
@@ -2683,6 +2681,28 @@ function AtelierEL(){
   );
 }
 
+/* ── MODULE EXPLICATIONS LINÉAIRES (EL + atelier + flash) ───────────────── */
+function ExplicationsLineaires({startTab,onBack}){
+  const [tab,setTab]=useState(startTab||'el');
+  const TABS=[['el','📝 Les EL'],['atelier','🧠 Atelier'],['flash','🃏 Flash'],['tirage','🎲 Tirage']];
+  return(
+    <div>
+      <div className="b" style={{background:'var(--lilac)',marginBottom:'1.25rem'}}>
+        <span className="kicker">Pour un oui ou pour un non · Théâtre et dispute</span>
+        <h2 style={{fontSize:'clamp(26px,4.5vw,36px)',lineHeight:1.05,margin:'10px 0 6px'}}>Explications linéaires</h2>
+        <p style={{fontSize:14.5,lineHeight:1.55,maxWidth:640}}>Revois chaque EL (texte, problématique, mouvements, procédés), entraîne-toi à l'expliquer passage par passage dans l'atelier, puis teste-toi avec les cartes flash et le tirage au sort, en conditions d'examen.</p>
+      </div>
+      <div style={s.tabbar}>
+        {TABS.map(([k,l])=><button key={k} style={s.tab(tab===k)} onClick={()=>setTab(k)}>{l}</button>)}
+      </div>
+      {tab==='el'&&<ELObjet objetId="theatre" c={OBJETS[0].c}/>}
+      {tab==='atelier'&&<AtelierEL/>}
+      {tab==='flash'&&<FlashMode onBack={onBack}/>}
+      {tab==='tirage'&&<TirageEL onBack={onBack}/>}
+    </div>
+  );
+}
+
 /* ── JEU 1 : QUI PARLE ? ───────────────────────────────────────────────────
    Courtes répliques de la pièce (citations brèves, usage pédagogique). p = 1 (H1) ou 2 (H2). */
 const QUI_PARLE=[
@@ -2971,8 +2991,7 @@ const OUTILS=[
   {id:'entretien',ico:'🎡',titre:'Entretien',desc:'La roue des questions du jury',bg:'var(--yellow)'},
   {id:'methode',ico:'📐',titre:'Méthode',desc:"Fiches et quiz sur l'oral",bg:'var(--sky)'},
   {id:'grammaire',ico:'📌',titre:'Grammaire',desc:'Fiches et quiz pour la question de grammaire',bg:'var(--pink)'},
-  {id:'flash',ico:'🃏',titre:'Flash',desc:'Mouvements et problématiques des EL',bg:'var(--lilac)'},
-  {id:'tirage',ico:'🎲',titre:'Tirage',desc:'Un texte au hasard, 30 min de préparation',bg:'var(--coral)'},
+  {id:'els',ico:'🔎',titre:'Explications linéaires',desc:"Les EL, l'atelier, les cartes flash et le tirage au sort",bg:'var(--lilac)'},
   {id:'mouvements',ico:'📜',titre:'Mouvements',desc:'Les 13 mouvements littéraires',bg:'var(--mint)'},
   {id:'dissert',ico:'📝',titre:'Dissertation',desc:'Générateur de sujets',bg:'var(--blue)'},
 ];
@@ -3000,6 +3019,8 @@ function App(){
   const [cur,setCur]=useState(null);
   const [startTab,setStartTab]=useState('cours');
   const [startGame,setStartGame]=useState(null);
+  const [elsTab,setElsTab]=useState('el');
+  const openEls=t=>{setElsTab(t||'el');setView('els');window.scrollTo(0,0);};
   const home=()=>{setView('home');setCur(null);window.scrollTo(0,0);};
   const go=v=>{setView(v);window.scrollTo(0,0);};
   const openObjet=(o,tab,game)=>{setCur(o);setStartTab(tab||'cours');setStartGame(game||null);setView('objet');window.scrollTo(0,0);};
@@ -3048,9 +3069,10 @@ function App(){
                 </div>
               </div>
               <div style={{display:'flex',gap:6,flexWrap:'wrap',position:'relative'}}>
-                {[['cours','📖 Cours'],['el','📝 EL 1 à 4'],['atelier','🧠 Atelier EL'],['jeux','🎮 Jeux'],['sarraute','💬 Parler à Sarraute'],['quiz','🎯 Quiz']].map(([k,t])=>(
+                {[['cours','📖 Cours'],['jeux','🎮 Jeux'],['sarraute','💬 Parler à Sarraute'],['quiz','🎯 Quiz']].map(([k,t])=>(
                   <button key={k} className="chip" onClick={stop(()=>openObjet(o,k))} style={{cursor:'pointer'}}>{t}</button>
                 ))}
+                <button className="chip" onClick={stop(()=>openEls('el'))} style={{cursor:'pointer',background:'var(--yellow)'}}>🔎 Explications linéaires →</button>
               </div>
               <div style={{marginTop:'auto',position:'relative'}}>
                 <div style={{display:'flex',justifyContent:'space-between',fontSize:12,fontWeight:600,marginBottom:6}}>
@@ -3071,7 +3093,7 @@ function App(){
           <h2 className="sec">S'entraîner</h2>
           <div className="tools">
             {OUTILS.map(t=>(
-              <button key={t.id} className="b" onClick={()=>go(t.id)} style={{background:t.bg,display:'flex',flexDirection:'column',gap:10,padding:18}}>
+              <button key={t.id} className="b" onClick={()=>t.id==='els'?openEls('el'):go(t.id)} style={{background:t.bg,display:'flex',flexDirection:'column',gap:10,padding:18}}>
                 <span className="ico">{t.ico}</span>
                 <span>
                   <span style={{display:'block',fontFamily:'var(--display)',fontWeight:800,fontSize:21,lineHeight:1.1}}>{t.titre}</span>
@@ -3085,8 +3107,7 @@ function App(){
 
       {view!=='home'&&<Beckett compact/>}
       {view==='objet'&&cur&&<ObjetModule key={startTab+(startGame||'')} objet={cur} onBack={home} startTab={startTab} startGame={startGame}/>}
-      {view==='flash'&&<FlashMode onBack={home}/>}
-      {view==='tirage'&&<TirageEL onBack={home}/>}
+      {view==='els'&&<ExplicationsLineaires key={elsTab} startTab={elsTab} onBack={home}/>}
       {view==='mouvements'&&<MouvementsModule onBack={home}/>}
       {view==='dissert'&&<DissertGenerator onBack={home}/>}
       {view==='entretien'&&<Entretien/>}
