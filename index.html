@@ -3580,29 +3580,22 @@ function JeuxPiece({initial}){
    quiz du site. La série de jours est comptée en plumes ✒️, chaque jour ajoute un
    livre sur l'étagère, et la révision terminée débloque une citation. */
 const CITATIONS_JOUR=[
-  ["Ni vous sans moi, ni moi sans vous.","Marie de France, « Le Chèvrefeuille »"],
-  ["Seulette suis et seulette veux être.","Christine de Pizan, Ballades"],
-  ["Je vis, je meurs : je me brûle et me noie.","Louise Labé, Sonnets"],
-  ["Je m'en vais vous mander la chose la plus étonnante, la plus surprenante, la plus merveilleuse…","Madame de Sévigné, Lettres"],
-  ["L'ambition et la galanterie étaient l'âme de cette cour.","Madame de La Fayette, La Princesse de Clèves"],
-  ["La femme a le droit de monter sur l'échafaud ; elle doit avoir également celui de monter à la tribune.","Olympe de Gouges, Déclaration des droits de la femme et de la citoyenne"],
-  ["J'ai voulu ce matin te rapporter des roses.","Marceline Desbordes-Valmore, « Les Roses de Saadi »"],
-  ["Il n'y a qu'un bonheur dans la vie, c'est d'aimer et d'être aimé.","George Sand, Correspondance"],
-  ["On ne naît pas femme : on le devient.","Simone de Beauvoir, Le Deuxième Sexe"],
-  ["Très vite dans ma vie il a été trop tard.","Marguerite Duras, L'Amant"],
-  ["Le véritable lieu de naissance est celui où l'on a porté pour la première fois un coup d'œil intelligent sur soi-même.","Marguerite Yourcenar, Mémoires d'Hadrien"],
-  ["C'est bien… ça…","Nathalie Sarraute, Pour un oui ou pour un non"],
-  ["Mes forêts sont un champ silencieux.","Hélène Dorion, Mes forêts"],
-  ["L'homme n'est qu'un roseau, le plus faible de la nature ; mais c'est un roseau pensant.","Pascal, Pensées"],
-  ["Ce que l'on conçoit bien s'énonce clairement.","Boileau, L'Art poétique"],
-  ["Je est un autre.","Rimbaud, Lettre du voyant"],
-  ["Il faut cultiver notre jardin.","Voltaire, Candide"],
-  ["Un seul être vous manque, et tout est dépeuplé.","Lamartine, « L'Isolement »"],
-  ["Va, je ne te hais point.","Corneille, Le Cid"],
-  ["Que diable allait-il faire dans cette galère ?","Molière, Les Fourberies de Scapin"],
-  ["Heureux qui, comme Ulysse, a fait un beau voyage…","Du Bellay, Les Regrets"],
-  ["Soyez résolus de ne servir plus, et vous voilà libres.","La Boétie, Discours de la servitude volontaire"],
-  ["La lecture est une amitié.","Proust, Sur la lecture"],
+  ["[Je ne puis faire autre chose que] prier les vertueuses Dames d'élever un peu leurs esprits par-dessus leurs quenouilles et fuseaux.","Louise Labé, Épître à Clémence de Bourges (1555)","Une poétesse de la Renaissance encourage les femmes à écrire : utile pour parler de la place des femmes en littérature."],
+  ["Je suis moi-même la matière de mon livre.","Montaigne, Essais, « Au lecteur »","L'écriture de soi, de l'essai à l'autobiographie."],
+  ["L'art n'est pas une étude de la réalité positive ; c'est une recherche de la vérité idéale.","George Sand, La Mare au diable","Pour opposer réalisme et idéalisme dans le roman."],
+  ["Vingt fois sur le métier remettez votre ouvrage.","Boileau, L'Art poétique","L'écriture comme travail patient, idéal de l'écrivain classique."],
+  ["Écrire ! pouvoir écrire ! cela signifie la longue rêverie devant la feuille blanche…","Colette, La Vagabonde","L'écriture entre rêverie, désir et difficulté."],
+  ["Je voudrais bien savoir si la grande règle de toutes les règles n'est pas de plaire.","Molière, La Critique de L'École des femmes","Plaire au public, première règle du théâtre : utile pour toute réflexion sur le spectateur."],
+  ["Une femme doit avoir de l'argent et une chambre à soi si elle veut écrire de la fiction.","Virginia Woolf, Une chambre à soi","Les conditions matérielles de l'écriture, et les obstacles faits aux femmes."],
+  ["Il n'y a ni règles ni modèles.","Victor Hugo, Préface de Cromwell","Le romantisme contre les règles du théâtre classique."],
+  ["Il faut que la femme s'écrive.","Hélène Cixous, Le Rire de la Méduse","Écrire, pour les femmes, c'est prendre la parole sur elles-mêmes."],
+  ["Ce qui me semble beau, ce que je voudrais faire, c'est un livre sur rien.","Flaubert, Lettre à Louise Colet (1852)","Une œuvre tenue par le seul style… comme une pièce bâtie sur un « rien » chez Sarraute."],
+  ["Écrire, c'est hurler sans bruit.","Marguerite Duras, Écrire","L'écriture comme cri silencieux : pense au non-dit et à la sous-conversation chez Sarraute."],
+  ["Tu m'as donné ta boue et j'en ai fait de l'or.","Baudelaire, projet d'épilogue des Fleurs du mal","La poésie transforme le laid en beau."],
+  ["J'écrirai pour venger ma race.","Annie Ernaux, Journal (cité dans son discours du prix Nobel)","Écrire pour son milieu social : la littérature comme revanche."],
+  ["Le Poète se fait voyant par un long, immense et raisonné dérèglement de tous les sens.","Rimbaud, Lettre du voyant","Le poète qui invente une langue nouvelle pour voir autrement."],
+  ["[Les tropismes sont] des mouvements indéfinissables, qui glissent très rapidement aux limites de notre conscience.","Nathalie Sarraute, préface de L'Ère du soupçon","La matière même de son œuvre, et de Pour un oui ou pour un non."],
+  ["La vraie vie, la vie enfin découverte et éclaircie, […] c'est la littérature.","Proust, Le Temps retrouvé","La littérature, plus vraie que la vie : idéale pour conclure une dissertation."],
 ];
 const RANGS=[[0,"Page blanche","Tout commence ici."],[1,"Premier chapitre","L'histoire est lancée."],[3,"Lecture assidue","Tu prends le pli !"],[7,"Plume affûtée","Une semaine d'affilée, bravo."],[14,"Grand roman","Deux semaines : quelle constance !"],[30,"Bibliothèque de Babel","Un mois entier : ta bibliothèque devient infinie."]];
 const rangDe=n=>[...RANGS].reverse().find(r=>n>=r[0]);
@@ -3736,6 +3729,7 @@ function RevisionDuJour({onBack}){
             <span className="kicker">🔓 La citation du jour</span>
             <p style={{fontFamily:'var(--serif)',fontStyle:'italic',fontSize:'clamp(18px,2.8vw,22px)',lineHeight:1.4,marginTop:10}}>« {citation[0]} »</p>
             <p style={{fontSize:13,fontWeight:600,marginTop:6}}>{citation[1]}</p>
+            {citation[2]&&<p style={{fontSize:13,marginTop:8,paddingTop:8,borderTop:'1px dashed rgba(22,18,29,0.3)'}}>💡 {citation[2]}</p>}
           </div>
           <div style={{display:'flex',gap:8,justifyContent:'center',flexWrap:'wrap',marginTop:16}}>
             <button onClick={()=>{setBonus(true);setI(0);setAns(null);setScore(0);setPhase('jeu');}} style={s.btn}>🔁 Refaire les questions</button>
